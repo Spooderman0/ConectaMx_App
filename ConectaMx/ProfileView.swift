@@ -95,6 +95,12 @@ struct ProfileView: View {
     func profileButton(icon: String, text: String) -> some View {
         Button(action: {
             // Acción para botones
+            if text == "Datos personales" {
+                let editProfileView = EditProfileView(profileImage: $profileImage)
+                let navigationController = UINavigationController(rootViewController: UIHostingController(rootView: editProfileView))
+                navigationController.navigationBar.prefersLargeTitles = true
+                UIApplication.shared.windows.first?.rootViewController?.present(navigationController, animated: true, completion: nil)
+            }
         }) {
             HStack {
                 Image(systemName: icon)
@@ -115,4 +121,3 @@ struct ProfileView_Previews: PreviewProvider {
         ProfileView()
     }
 }
-
