@@ -25,7 +25,7 @@ struct Intereses_Tags_Login: View {
             Spacer()
             // Lista de tags
             ScrollView {
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 20) {
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 100)), count: 3), spacing: 20) {
                     ForEach(intereses, id: \.self) { interes in
                         Button(action: {
                             if seleccionados.contains(interes) {
@@ -35,7 +35,9 @@ struct Intereses_Tags_Login: View {
                             }
                         }) {
                             Text(interes)
-                                .padding()
+                                .lineLimit(1) // Asegura que el texto solo ocupa una línea
+                                .padding(.all, 10)
+                                .frame(minWidth: 100) // Establece un ancho mínimo para cada tag
                                 .background(seleccionados.contains(interes) ? Color(hex: "625C87") : Color.gray.opacity(0.2))
                                 .foregroundColor(seleccionados.contains(interes) ? .white : .black)
                                 .cornerRadius(15)
