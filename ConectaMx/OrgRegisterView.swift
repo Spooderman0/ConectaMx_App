@@ -32,90 +32,76 @@ struct OrganizationRegistrationView: View {
                     .font(.largeTitle)
                     .padding()
                 
-                VStack(alignment: .leading, spacing: 10) {
+                VStack(alignment: .leading, spacing: 10){
+                    
                     Text("Nombre de la organización*")
                     TextField("Nombre", text: $name)
-                        .background(Color(hex: 0xedeef1))
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-    
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray.opacity(0.5), lineWidth: 1))
                     
-                }
-                .padding()
-                
-                
-                VStack(alignment: .leading, spacing: 10) {
                     Text("Alias")
                     TextField("Alias", text: $alias)
-                        .background(Color.gray.opacity(0.9))
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                }
-                .padding()
-                
-                VStack(alignment: .leading, spacing: 10) {
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray.opacity(0.5), lineWidth: 1))
+                    
                     Text("Teléfono*")
                     TextField("Teléfono", text: $phone)
-                        .keyboardType(.numberPad)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                }
-                .padding()
-                
-                VStack(alignment: .leading, spacing: 10) {
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray.opacity(0.5), lineWidth: 1))
+                    
                     Text("Correo Electrónico*")
                     TextField("Correo electrónico", text: $email)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                }
-                .padding()
-                
-                VStack(alignment: .leading, spacing: 10) {
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray.opacity(0.5), lineWidth: 1))
+                    
                     Text("Dirección*")
                     TextField("Dirección", text: $address)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                }
-                .padding()
-                
-                VStack(alignment: .leading, spacing: 1) {
-                    Text("Horarios de atención")
-                        .padding(.vertical)
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray.opacity(0.5), lineWidth: 1))
+                    
+                    Text("Horarios de atención*")
+                        .padding(.vertical, 10)
                     DatePicker(
-                    "Inicio",
-                    selection: $startTime,
-                    displayedComponents: .hourAndMinute
+                        "Inicio",
+                        selection: $startTime,
+                        displayedComponents: .hourAndMinute
                     )
                     .datePickerStyle(.compact)
-                }
-                .padding()
-                
-                VStack(alignment: .leading, spacing: 1) {
-                    Text("")
+
                     DatePicker(
                         "Fin",
                         selection: $endTime,
                         displayedComponents: .hourAndMinute
                     )
                     .datePickerStyle(.compact)
-                }
-                .padding()
-                
-                VStack(alignment: .leading, spacing: 10) {
+                    .padding(.bottom, 10)
+                    
                     Text("Página web")
                     TextField("Página web", text: $webPage)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                }
-                .padding()
-                
-                VStack(alignment: .leading, spacing: 10) {
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray.opacity(0.5), lineWidth: 1))
+                    
+                    
                     Text("Instagram")
                     TextField("Instagram", text: $instagramUsername)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                }
-                .padding()
-                
-                VStack(alignment: .leading, spacing: 10) {
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray.opacity(0.5), lineWidth: 1))
+                    
+                    
                     Text("Facebook")
                     TextField("Facebook", text: $facebookPage)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray.opacity(0.5), lineWidth: 1))
+                    
                 }
-                .padding()
                 
                 HStack(alignment: .bottom){
                     Button(action: {
