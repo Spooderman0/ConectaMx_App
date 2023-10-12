@@ -10,20 +10,24 @@ import SwiftData
 
 struct ContentView: View {
     @State private var activePage: ActivePage = .home
-    
+    @StateObject var tagsModel = TagsModel() // Using @StateObject for observable objects
+    var orgModel = OrganizationModel()
+    var postsModel = PostModel()
+    var personsModel = PersonModel()
+
     var body: some View {
         NavigationView {
             ZStack {
                 VStack {
                     switch activePage {
                     case .home:
-                        HomeView()
+                        HomeView(tags: $tagsModel.tags, orgModel: orgModel)
                     case .search:
-                        SearchView()
+                        SearchView(tags: $tagsModel.tags)
                     case .favorites:
-                        FavoritesView()
+                        FavoritesView(tags: $tagsModel.tags)
                     case .profile:
-                        ProfileView()
+                        ProfileView()//personsModel: personsModel)
                     }
                 }
                 VStack {
@@ -32,12 +36,18 @@ struct ContentView: View {
                 }
             }
         }
+        .onAppear(){
+            tagsModel.fetchTags()
+            orgModel.fetchOrganizations()
+            postsModel.fetchPosts()
+            personsModel.fetchPersons()
+        }
     }
 }
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
 }
+

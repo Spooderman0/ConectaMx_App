@@ -20,6 +20,8 @@ struct FavoritesView: View {
     @State private var showDetails = false
     @State private var selectedOrganization = ""
     
+    @Binding var tags: [String]
+    
     var body: some View {
         ZStack {
             VStack (spacing: 0) {
@@ -63,7 +65,10 @@ struct FavoritesView: View {
 }
 
 struct FavoritesView_Previews: PreviewProvider {
+    @State static var dummyTags: [String] = []
+
     static var previews: some View {
-        FavoritesView()
+        FavoritesView(tags: $dummyTags)
     }
 }
+

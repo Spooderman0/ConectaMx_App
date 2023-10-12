@@ -20,6 +20,8 @@ struct SearchView: View {
     @State private var searchQuery = ""
     @State private var showFilterSheet = false
     @State private var activePage: ActivePage = .search
+    
+    @Binding var tags: [String]
 
     
     var body: some View {
@@ -103,7 +105,10 @@ struct SearchView: View {
 }
 
 struct SearchView_Previews: PreviewProvider {
+    @State static var dummyTags: [String] = []
+
     static var previews: some View {
-        SearchView()
+        SearchView(tags: $dummyTags)
     }
 }
+

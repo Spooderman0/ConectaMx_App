@@ -22,6 +22,9 @@ struct HomeView: View {
     @State private var selectedOrganization = ""
     @State private var activePage: ActivePage = .home
     
+    @Binding var tags: [String]
+    var orgModel: OrganizationModel
+    
     var body: some View {
         ZStack {
             VStack (spacing: 0) {
@@ -206,7 +209,8 @@ struct OrganizationDetailView: View {
 }
 
 struct HomeView_Previews: PreviewProvider {
+    @State static var dummyTags: [String] = []
     static var previews: some View {
-        HomeView()
+        HomeView(tags: $dummyTags, orgModel: OrganizationModel())
     }
 }
