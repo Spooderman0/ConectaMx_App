@@ -9,44 +9,68 @@ import SwiftUI
 
 enum OrgActivePage {
     case home
+    case messages
     case profile
 }
 
-struct OrganizationBottomBarView: View {
-    @Binding var orgactivePage: OrgActivePage
+struct OrgBottomBarView: View {
+    @Binding var activePage: OrgActivePage
     
     var body: some View {
-        HStack {
-            Button(action: {
-                orgactivePage = .home
-            }) {
-                Image(systemName: orgactivePage == .home ? "house.fill" : "house")
-                    .resizable()
-                    .frame(width: 30, height: 30)
-                    .foregroundColor(.white)
-                    .opacity(orgactivePage == .home ? 1.0 : 0.5)
-            }
-            
+        VStack{ // Agrega
             Spacer()
-            
-            
-            Button(action: {
-                orgactivePage = .profile
-            }) {
-                Image(systemName: orgactivePage == .profile ? "person.fill" : "person")
-                    .resizable()
-                    .frame(width: 30, height: 30)
-                    .foregroundColor(.white)
-                    .opacity(orgactivePage == .profile ? 1.0 : 0.5)
+            HStack {
+                Button(action: {
+                    activePage = .home
+                }) {
+                    Image(systemName: activePage == .home ? "house.fill" : "house")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(.white)
+                        .opacity(activePage == .home ? 1.0 : 0.5)
+                }
+                
+                Spacer()
+                
+                
+                Button(action: {
+                    activePage = .messages
+                }) {
+                    Image(systemName: activePage == .messages ? "message.fill" : "message")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(.white)
+                        .opacity(activePage == .messages ? 1.0 : 0.5)
+                }
+                
+                Spacer()
+                
+                Button(action: {
+                    activePage = .profile
+                }) {
+                    Image(systemName: activePage == .profile ? "person.fill" : "person")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(.white)
+                        .opacity(activePage == .profile ? 1.0 : 0.5)
+                }
             }
+            .padding(.horizontal, 40)
+            .padding(.vertical, 20)
+            .background(Color(hex: "3D3D4E"))
+            .cornerRadius(60)
+            .shadow(radius: 15)
+            .padding(.horizontal, 15)
+            .padding(.bottom, 3) // El espacio entre la barra y el límite inf
         }
-        .padding(.horizontal, 40)
-        .padding(.vertical, 20)
-        .background(Color(hex: "625C87"))
-        .cornerRadius(20)
-        .shadow(radius: 15)
-        .padding(.horizontal, 6)
-        .padding(.bottom, 0)
+        .edgesIgnoringSafeArea(.bottom)  // Ignora el área segura en la parte inferior
+
     }
 }
 
+
+struct OrgBottomBarView_Previews: PreviewProvider {
+    static var previews: some View {
+        OrgBottomBarView(activePage: .constant(.home))
+    }
+}

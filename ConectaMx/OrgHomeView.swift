@@ -35,26 +35,52 @@ struct PurpleToggleStyle: ToggleStyle {
 struct ProfileButton: Identifiable {
     var id: UUID = UUID()
     var title: String
+    var description: String
     var isVisible: Bool
     var iconName: String
 }
 
 struct SocialButton: Identifiable{
     var id: UUID = UUID()
+    var title: String
     var isVisible: Bool
-    var iconName: String
+    var image: String
 }
 
 struct OrgHomeView: View {
     
     @State private var description = ""
     
+    // Alertas
+    @State private var showAlert = false
+    @State private var selectedButtonDescription: String = ""
+    @State private var selectedButtonTitle: String = ""
     @State private var profileButtons: [ProfileButton] = [
         
-        ProfileButton(title: "Haz una cita", isVisible: true, iconName: "calendar"),
-        ProfileButton(title: "Contáctanos", isVisible: true, iconName: "message")
+        ProfileButton(
+            title: "Haz una cita",
+            description: "Este botón permite que el usuario agende una cita con tu organización.",
+            isVisible: true,
+            iconName: "calendar"),
+        ProfileButton(
+            title: "Contáctanos",
+            description: "Este botón permite que el usuario pueda enviarte un mensaje que aparecerán en la pantalla de chats.",
+            isVisible: true,
+            iconName: "message")
     ]
+    
+    @State private var socialButtons: [SocialButton] = [
+    
+        SocialButton(title: "Web", isVisible: true, image: "web"),
+        SocialButton(title: "Facebook",isVisible: true, image: "facebook"),
+        SocialButton(title: "Instagram",isVisible: true, image: "instagram"),
+        SocialButton(title: "Mail",isVisible: true, image: "mail"),
+        SocialButton(title: "Compartir",isVisible: true, image: "share")
 
+    ]
+    
+    @State private var isNotificationViewPresented = false
+    
     
     var body: some View {
         
@@ -62,10 +88,35 @@ struct OrgHomeView: View {
             
             VStack(spacing: 20) {
                 
-                Text("Organización")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding()
+                HStack{
+                    
+                    Spacer()
+                    Text("Organización")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .padding()
+
+                    Button(action: {
+                        
+                        isNotificationViewPresented = true
+                        
+                    }) {
+                        
+                        HStack {
+                            // Ícono
+                            Image("notif")
+                                .resizable()
+                                .frame(width: 40, height: 45)
+                        }
+                        .padding()
+                    }
+                    .sheet(isPresented: $isNotificationViewPresented) {
+                        OrgNotificationView()
+                        .presentationDetents([.large, .medium])
+                    }
+                    
+                }
+
                 
                 Text("Descripción")
                 TextEditor(text: $description)
@@ -81,7 +132,9 @@ struct OrgHomeView: View {
                         if button.isVisible {
                             Button(action: {
                                 // Acción del botón
-                                print("\(button.title) presionado")
+                                selectedButtonTitle = button.title
+                                selectedButtonDescription = button.description
+                                showAlert = true
                             }) {
                                 HStack {
                                     // Ícono
@@ -99,6 +152,14 @@ struct OrgHomeView: View {
                         }
                     }
                 }
+                .alert(isPresented: $showAlert) {
+                    Alert(
+                        title: Text("\(selectedButtonTitle)"),
+                        message: Text("\(selectedButtonDescription)"),
+                        dismissButton: .default(Text("Okay"))
+                    )
+                }
+
 
                 
                 // Toggles para que la organización decida qué botones mostrar
@@ -111,17 +172,62 @@ struct OrgHomeView: View {
                     }
                 }
                 
-                //Maoa
-                Text("Mapa:")
-                    .foregroundColor(Color(hex: "625C87"))
-                    .font(.title2)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.bottom, 10)
-                    .fontWeight(.bold)
+                //Mapa
+                Button(action: {
+                    // Acción del botón
+                    print("presionado")
+                }) {
+                    HStack(spacing: 15){
+                        // Ícono
+                        Image(systemName: "mappin.and.ellipse")
+                        // Título
+                        Text("Configurar mapa")
+
+                    }
+                        .frame(minWidth: 0, maxWidth: .infinity)
+                        .padding()
+                        .background(Color(hex: "3D3D4E"))
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
                 
                 
-                OrganizationMapView(latitude: 40.7128, longitude: -74.0060)
+                MapView(latitude: 40.7128, longitude: -74.0060)
                     .frame(height: 200)
+                
+                //Social Media buttons
+                HStack(spacing: 1) {
+                    ForEach(socialButtons) { button in
+                        if button.isVisible {
+                            Button(action: {
+                                // Acción del botón
+                                print("presionado")
+                            }) {
+                                HStack {
+                                    // Imagen
+                                    Image(button.image)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 30, height: 30)
+                                }
+                                .padding()
+                                .foregroundColor(.white)
+                            }
+                        }
+                    }
+                }
+                
+                VStack(spacing: 10) {
+                    ForEach(socialButtons.indices, id: \.self) { index in
+                        Toggle(isOn: $socialButtons[index].isVisible) {
+                            Text(socialButtons[index].title)
+                        }
+                        .toggleStyle(PurpleToggleStyle())
+                    }
+                }
+                
+                Spacer()
+                    .frame(minHeight: 10)
                  
                 
             }
@@ -135,39 +241,3 @@ struct OrgHomeView_Previews: PreviewProvider {
         OrgHomeView()
     }
 }
-
-/*
-
-struct OrgHomeView: View {
-
-    
-    var organizationName: String
-        
-        var body: some View {
-            
-            ScrollView {
-                
-                
-                Text("Mapa:")
-                    .foregroundColor(Color(hex: "625C87"))
-                    .font(.title2)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.bottom, 10)
-                    .fontWeight(.bold)
-
-                
-                OrganizationMapView(latitude: 40.7128, longitude: -74.0060)
-                    .frame(height: 200)
-            }
-            .padding()
-        }
-    }
-
-
-#Preview {
-    OrgHomeView(organizationName: "Arena")
-}
-
- */
-
-
