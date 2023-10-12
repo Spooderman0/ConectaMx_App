@@ -20,7 +20,8 @@ struct FavoritesView: View {
     @State private var showDetails = false
     @State private var selectedOrganization = ""
     
-    @Binding var tags: [String]
+   // @Binding 
+    var tags: [String]
     
     var body: some View {
         ZStack {
@@ -68,7 +69,7 @@ struct FavoritesView_Previews: PreviewProvider {
     @State static var dummyTags: [String] = []
 
     static var previews: some View {
-        FavoritesView(tags: $dummyTags)
+        FavoritesView(tags: ["austismo", "CanCer"])
     }
 }
 

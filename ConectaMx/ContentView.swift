@@ -10,7 +10,8 @@ import SwiftData
 
 struct ContentView: View {
     @State private var activePage: ActivePage = .home
-    @StateObject var tagsModel = TagsModel() // Using @StateObject for observable objects
+   // @StateObject
+    var tagsModel = TagsModel()
     var orgModel = OrganizationModel()
     var postsModel = PostModel()
     var personsModel = PersonModel()
@@ -21,11 +22,11 @@ struct ContentView: View {
                 VStack {
                     switch activePage {
                     case .home:
-                        HomeView(tags: $tagsModel.tags, orgModel: orgModel)
+                        HomeView(tags: tagsModel.tags, orgModel: orgModel)
                     case .search:
-                        SearchView(tags: $tagsModel.tags)
+                        SearchView(tags: tagsModel.tags)
                     case .favorites:
-                        FavoritesView(tags: $tagsModel.tags)
+                        FavoritesView(tags: tagsModel.tags)
                     case .profile:
                         ProfileView()//personsModel: personsModel)
                     }

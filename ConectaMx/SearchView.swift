@@ -21,7 +21,7 @@ struct SearchView: View {
     @State private var showFilterSheet = false
     @State private var activePage: ActivePage = .search
     
-    @Binding var tags: [String]
+     var tags: [String]
 
     
     var body: some View {
@@ -45,7 +45,7 @@ struct SearchView: View {
                             .foregroundColor(Color(hex: "625C87"))
                     }
                     .sheet(isPresented: $showFilterSheet) {
-                        FilterSheetView()
+                        FilterSheetView(tags: tags)
                     }
 
 
@@ -59,6 +59,7 @@ struct SearchView: View {
                 // Scroll horizontal de tags
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
+                        // Aqui van a ser las tags que el usario tiene selecionadas
                         ForEach(["tag1", "tag2", "tag3"], id: \.self) { tag in
                             Text(tag)
                                 .foregroundStyle(.white)
@@ -67,6 +68,7 @@ struct SearchView: View {
                                 .background(Color(hex: "625C87"))
                                 .cornerRadius(10)
                         }
+                        
                     }
                     .padding(.horizontal)
                 }
@@ -108,7 +110,7 @@ struct SearchView_Previews: PreviewProvider {
     @State static var dummyTags: [String] = []
 
     static var previews: some View {
-        SearchView(tags: $dummyTags)
+        SearchView(tags: ["autismo", "Cancer"])
     }
 }
 

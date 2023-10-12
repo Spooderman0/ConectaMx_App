@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct FilterSheetView: View {
-    let tags = ["Deporte", "Tecnología", "Música", "Comida", "Arte", "Ciencia"]
+    //let tags = ["Deporte", "Tecnología", "Música", "Comida", "Arte", "Ciencia"]
     @State var selectedTags = Set<String>()
+    var tags: [String]
     
     var body: some View {
         VStack(spacing: 20) {
@@ -62,7 +63,7 @@ struct FilterSheetView: View {
 
 struct FilterSheetView_Previews: PreviewProvider {
     static var previews: some View {
-        FilterSheetView()
+        FilterSheetView(tags: ["autismo", "cancer"])
     }
 }
 
