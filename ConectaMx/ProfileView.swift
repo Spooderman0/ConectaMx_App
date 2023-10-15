@@ -13,9 +13,17 @@ struct ProfileView: View {
     @State private var showImagePicker = false
     @State private var profileImage: UIImage? = UIImage(named: "messi_mock")
     
+    
+    var personsModel: PersonModel
+    var personas = [PersonModel]()
+    
+    //let personT = personsModel.fetchedPerson
+    
     var body: some View {
         ZStack {
             VStack(spacing: 20) {
+                
+                
                 
                 // Imagen de perfil
                 ZStack {
@@ -24,7 +32,9 @@ struct ProfileView: View {
                         .scaledToFill()
                         .frame(width: 150, height: 150)
                         .clipShape(Circle())
-                    
+//                        .onAppear{
+//                            print(personsModel.persons.first)
+//                        }
                     // Botón para editar imagen
                     Button(action: {
                         showImagePicker.toggle()
@@ -54,7 +64,7 @@ struct ProfileView: View {
                 
                 Spacer()
                 
-                // Botón web
+                
                 Button(action: {
                     // Acción para botón web
                 }) {
@@ -96,7 +106,7 @@ struct ProfileView: View {
         Button(action: {
             // Acción para botones
             if text == "Datos personales" {
-                let editProfileView = EditProfileView(profileImage: $profileImage)
+                let editProfileView = EditProfileView(profileImage: $profileImage, personsModel: personsModel)
                 let navigationController = UINavigationController(rootViewController: UIHostingController(rootView: editProfileView))
                 navigationController.navigationBar.prefersLargeTitles = true
                 UIApplication.shared.windows.first?.rootViewController?.present(navigationController, animated: true, completion: nil)
@@ -118,6 +128,6 @@ struct ProfileView: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView()
+        ProfileView(personsModel: PersonModel())
     }
 }
