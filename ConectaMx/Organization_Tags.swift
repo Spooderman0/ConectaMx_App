@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct Organization_Tags: View {
+    var tags: [String]
+    
     let intereses = ["Deporte", "Tecnología", "Música", "Comida", "Arte", "Ciencia"]
     
     @State var seleccionados = Set<String>()
@@ -24,18 +26,20 @@ struct Organization_Tags: View {
             // Lista de tags
             ScrollView {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 20) {
-                    ForEach(intereses, id: \.self) { interes in
+                    ForEach(tags, id: \.self) { tag in
                         Button(action: {
-                            if seleccionados.contains(interes) {
-                                seleccionados.remove(interes)
+                            if seleccionados.contains(tag) {
+                                seleccionados.remove(tag)
                             } else {
-                                seleccionados.insert(interes)
+                                seleccionados.insert(tag)
                             }
                         }) {
-                            Text(interes)
-                                .padding()
-                                .background(seleccionados.contains(interes) ? Color(hex: "625C87") : Color.gray.opacity(0.2))
-                                .foregroundColor(seleccionados.contains(interes) ? .white : .black)
+                            Text(tag)
+                                .lineLimit(1) // Asegura que el texto solo ocupa una línea
+                                .padding(.all, 10)
+                                .frame(minWidth: 100) // Establece un ancho mínimo para cada tag
+                                .background(seleccionados.contains(tag) ? Color(hex: "625C87") : Color.gray.opacity(0.2))
+                                .foregroundColor(seleccionados.contains(tag) ? .white : .black)
                                 .cornerRadius(15)
                         }
                     }
@@ -71,6 +75,6 @@ struct Organization_Tags: View {
 
 struct Organization_Tags_Previews: PreviewProvider {
     static var previews: some View {
-        Organization_Tags()
+        Organization_Tags(tags: ["autismo", "cancer"])
     }
 }

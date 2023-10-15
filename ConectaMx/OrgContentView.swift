@@ -11,6 +11,8 @@ import SwiftData
 struct OrgContentView: View {
     @State private var activePage: OrgActivePage = .home
     
+    var personsModel = PersonModel()
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -21,7 +23,7 @@ struct OrgContentView: View {
                     case .messages:
                         OrganizationInboxView()
                     case .profile:
-                        OrgProfileView()
+                        OrgProfileView(personsModel: PersonModel())
                     }
                 }
                 VStack {

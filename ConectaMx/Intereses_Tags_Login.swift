@@ -19,7 +19,7 @@ struct Intereses_Tags_Login: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            // Título "Selecciona tus Intereses:"
+            
             Text("Selecciona tus Intereses:")
                 .font(.title)
                 .fontWeight(.bold)

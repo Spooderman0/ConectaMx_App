@@ -136,47 +136,56 @@ struct OrganizationView: View {
 //                ScrollView{
 //                    HStack(spacing: 30) {
 //                        Text(organization.tags[1])
-//                            .padding(.horizontal, 10)
-//                            .padding(.vertical, 5)
+//                            .padding(.horizontal, 16)
+//                            .padding(.vertical, 8)
 //                            .background(Color(hex: "625C87"))
 //                            .foregroundColor(.white)
 //                            .cornerRadius(5)
+//                            .lineLimit(1) // Asegura que el texto solo ocupa una línea
+////                            .padding(.all, 10)
+//                            .frame(minWidth: 100) // Establece un ancho mínimo para cada tag
 //                        
 //                        
 //                        
 //                        Text(organization.tags[2])
-//                            .padding(.horizontal, 10)
-//                            .padding(.vertical, 5)
+//                            .padding(.horizontal, 16)
+//                            .padding(.vertical, 8)
 //                            .background(Color(hex: "625C87"))
 //                            .foregroundColor(.white)
 //                            .cornerRadius(5)
-//                        
+//                            .lineLimit(1) // Asegura que el texto solo ocupa una línea
+////                            .padding(.all, 10)
+//                            .frame(minWidth: 100) // Establece un ancho mínimo para cada tag
+//                            
 //                        Text(organization.tags[3])
-//                            .padding(.horizontal, 10)
-//                            .padding(.vertical, 5)
+//                            .padding(.horizontal, 16)
+//                            .padding(.vertical, 8)
 //                            .background(Color(hex: "625C87"))
 //                            .foregroundColor(.white)
 //                            .cornerRadius(5)
+//                            .lineLimit(1) // Asegura que el texto solo ocupa una línea
+////                            .padding(.all, 10)
+//                            .frame(minWidth: 100) // Establece un ancho mínimo para cada tag
 //                    }
 //                    .padding([.top, .bottom], 5)
 //                }
                 
-                ScrollView {
-                    HStack(spacing: 30) {
-                        ForEach(organization.tags, id: \.self) { tag in
-                            ScrollableTextView(text: tag)
-                                .frame(width: 100, height: 40)  // Adjust the frame size as needed
-                                .padding(.horizontal, 10)
-                                .padding(.vertical, 5)
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        ForEach(organization.tags.indices, id: \.self) { index in
+                            Text(organization.tags[index])
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 8)
                                 .background(Color(hex: "625C87"))
                                 .foregroundColor(.white)
-                                .cornerRadius(20)  // Adjust corner radius to achieve oval shape
+                                .cornerRadius(5)
+                                .lineLimit(1)
+                                .frame(minWidth: 100)
+                            
                         }
                     }
-                    .padding([.top, .bottom], 5)
                 }
-
-                
             }
             .padding()
         }
