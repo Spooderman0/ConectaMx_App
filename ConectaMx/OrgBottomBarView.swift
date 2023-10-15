@@ -1,17 +1,23 @@
+//
+//  OrganizationBottomBarView.swift
+//  ConectaMx
+//
+//  Created by Danna Valencia on 28/09/23.
+//
+
 import SwiftUI
 
-enum ActivePage {
+enum OrgActivePage {
     case home
-    case search
-    case favorites
+    case messages
     case profile
 }
 
-struct BottomBarView: View {
-    @Binding var activePage: ActivePage
+struct OrgBottomBarView: View {
+    @Binding var activePage: OrgActivePage
     
     var body: some View {
-        VStack{
+        VStack{ // Agrega
             Spacer()
             HStack {
                 Button(action: {
@@ -26,26 +32,15 @@ struct BottomBarView: View {
                 
                 Spacer()
                 
+                
                 Button(action: {
-                    activePage = .search
+                    activePage = .messages
                 }) {
-                    Image(systemName: activePage == .search ? "magnifyingglass" : "magnifyingglass")
+                    Image(systemName: activePage == .messages ? "message.fill" : "message")
                         .resizable()
                         .frame(width: 30, height: 30)
                         .foregroundColor(.white)
-                        .opacity(activePage == .search ? 1.0 : 0.5)
-                }
-                
-                Spacer()
-                
-                Button(action: {
-                    activePage = .favorites
-                }) {
-                    Image(systemName: activePage == .favorites ? "heart.fill" : "heart")
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                        .foregroundColor(.white)
-                        .opacity(activePage == .favorites ? 1.0 : 0.5)
+                        .opacity(activePage == .messages ? 1.0 : 0.5)
                 }
                 
                 Spacer()
@@ -62,11 +57,11 @@ struct BottomBarView: View {
             }
             .padding(.horizontal, 40)
             .padding(.vertical, 20)
-            .background(Color(hex: "625C87"))
+            .background(Color(hex: "3D3D4E"))
             .cornerRadius(60)
             .shadow(radius: 15)
             .padding(.horizontal, 15)
-            .padding(.bottom, 6) // El espacio entre la barra y el límite inf
+            .padding(.bottom, 3) // El espacio entre la barra y el límite inf
         }
         .edgesIgnoringSafeArea(.bottom)  // Ignora el área segura en la parte inferior
 
@@ -74,8 +69,8 @@ struct BottomBarView: View {
 }
 
 
-struct BottomBarView_Previews: PreviewProvider {
+struct OrgBottomBarView_Previews: PreviewProvider {
     static var previews: some View {
-        BottomBarView(activePage: .constant(.home))
+        OrgBottomBarView(activePage: .constant(.home))
     }
 }

@@ -1,14 +1,15 @@
 //
-//  MapView.swift
+//  OrganizationMapView.swift
 //  ConectaMx
 //
-//  Created by Guillermo Garcia Acosta on 19/09/23.
+//  Created by Danna Valencia on 02/10/23.
 //
+
 
 import SwiftUI
 import MapKit
 
-struct MapView: UIViewRepresentable {
+struct OrganizationMapView: UIViewRepresentable {
    
     // Variables de ejemplo
     var latitude: Double = 37.7749
@@ -36,9 +37,9 @@ struct MapView: UIViewRepresentable {
     }
 
     class Coordinator: NSObject, MKMapViewDelegate {
-        var parent: MapView
+        var parent: OrganizationMapView
 
-        init(_ parent: MapView) {
+        init(_ parent: OrganizationMapView) {
             self.parent = parent
         }
 
