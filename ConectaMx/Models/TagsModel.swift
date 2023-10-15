@@ -31,15 +31,13 @@ class TagsModel {
                         tags: (tag["tags"].arrayObject as? [String])!
                        
                     )
-                    print(newTags)
+                    //print(newTags)
                     tags.append(contentsOf: newTags.tags)
                 }
             }
         }
     }
 }
-
-
 
 
 /*

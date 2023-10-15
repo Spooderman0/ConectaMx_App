@@ -15,7 +15,7 @@ class PostModel {
     func fetchPosts() {
         posts.removeAll()
         
-       let url = "http://10.14.255.172:5000/get_posts"
+        let url = "http://10.14.255.172:5000/get_posts"
         
         AF.request(url, method: .get, encoding: URLEncoding.default).responseData { [self] data in
             if let error = data.error{
@@ -23,22 +23,34 @@ class PostModel {
             }else{
                 
                 let json = try! JSON(data: data.data!)
-            
-            if json.count > 0 {
-                let post = json[0]
-                let newPost = Post(
-                    id: post["_id"].stringValue,
-                    title: post["title"].stringValue,
-                    content: post["content"].stringValue,
-                    organizationId: post["organizationId"].stringValue,
-                    createdAt: post["createdAt"].stringValue,
-                    updatedAt: post["updatedAt"].stringValue
-                )
                 
-                posts.append(newPost)
-            }
+                for post in json {
+                    //let post = json[0]
+                    let newPost = Post(
+                        id: post.1["_id"].stringValue,
+                        title: post.1["title"].stringValue,
+                        content: post.1["content"].stringValue,
+                        organizationId: post.1["organizationId"].stringValue,
+                        createdAt: post.1["createdAt"].stringValue,
+                        updatedAt: post.1["updatedAt"].stringValue
+                    )
+                    //print(newPost)
+                    posts.append(newPost)
+                }
             }
         }
     }
+    
+    
+    //    func printPosts() {
+    //        let postsModel = PostModel()
+    //        postsModel.fetchPosts()
+    //        print("Printing posts")
+    //        print(postsModel.posts.count)
+    //        for post in postsModel.posts {
+    //            print("1+")
+    //            print(post)
+    //        }
+    //    }
+    //}
 }
-

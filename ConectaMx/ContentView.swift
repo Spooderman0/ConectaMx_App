@@ -15,6 +15,8 @@ struct ContentView: View {
     var orgModel = OrganizationModel()
     var postsModel = PostModel()
     var personsModel = PersonModel()
+    
+    
 
     var body: some View {
         NavigationView {
@@ -24,11 +26,11 @@ struct ContentView: View {
                     case .home:
                         HomeView(tags: tagsModel.tags, orgModel: orgModel)
                     case .search:
-                        SearchView(tags: tagsModel.tags)
+                        SearchView(orgModel: orgModel, tags: tagsModel.tags, personsModel: personsModel)
                     case .favorites:
-                        FavoritesView(tags: tagsModel.tags)
+                        FavoritesView(orgModel: orgModel, tags: tagsModel.tags)
                     case .profile:
-                        ProfileView()//personsModel: personsModel)
+                        ProfileView(personsModel: personsModel)//personsModel: personsModel)
                     }
                 }
                 VStack {
@@ -41,7 +43,17 @@ struct ContentView: View {
             tagsModel.fetchTags()
             orgModel.fetchOrganizations()
             postsModel.fetchPosts()
-            personsModel.fetchPersons()
+           // personsModel.fetchPersons()
+            personsModel.fetchPerson(phoneNumber: "55-3456-7890") { (person, error) in
+                if let person = person {
+                    // Handle the retrieved person
+                    print("Retrieved person: \(person.name)")
+                } else if let error = error {
+                    // Handle the error
+                    print("Error fetching person: \(error.localizedDescription)")
+                }
+            }
+            //orgModel.printOrgs()
         }
     }
 }

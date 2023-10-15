@@ -21,7 +21,11 @@ struct SearchView: View {
     @State private var showFilterSheet = false
     @State private var activePage: ActivePage = .search
     
-     var tags: [String]
+    var orgModel = OrganizationModel()
+    var tags: [String]
+    
+    var personsModel: PersonModel
+    var personas = [PersonModel]()
 
     
     var body: some View {
@@ -60,6 +64,7 @@ struct SearchView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         // Aqui van a ser las tags que el usario tiene selecionadas
+ /*
                         ForEach(["tag1", "tag2", "tag3"], id: \.self) { tag in
                             Text(tag)
                                 .foregroundStyle(.white)
@@ -68,6 +73,20 @@ struct SearchView: View {
                                 .background(Color(hex: "625C87"))
                                 .cornerRadius(10)
                         }
+  */
+                        ForEach(personsModel.fetchedPerson?.interestedTags ?? [], id: \.self) { tag in
+                            Text(tag)
+                                .foregroundStyle(.white)
+                                .padding(.all, 10)
+                                .padding(.horizontal, 30)
+                                .background(Color(hex: "625C87"))
+                                .cornerRadius(10)
+                        }
+
+                        
+                        
+                        
+                        
                         
                     }
                     .padding(.horizontal)
@@ -77,20 +96,36 @@ struct SearchView: View {
                 // Lista de organizaciones
                 ScrollView {
                     VStack {
-                        ForEach(organizaciones, id: \.self) { organizacion in
-                            Button(action: {
-                                self.selectedOrganization = organizacion
-                                self.showDetails = true
-                            }) {
-                                OrganizationView(organizationName: organizacion)
+//                        ForEach(organizaciones, id: \.self) { organizacion in
+//                            Button(action: {
+//                                self.selectedOrganization = organizacion
+//                                self.showDetails = true
+//                            }) {
+//                                OrganizationView(/*organizationName: organizacion*/)
+//                            }
+//                            .cornerRadius(10)
+//                            .shadow(radius: 5)
+//                            .padding(.bottom, 10)
+//                            .padding(.horizontal, 20)
+//                        }
+//                        .sheet(isPresented: $showDetails) {
+//                            OrganizationDetailView(/*organizationName: selectedOrganization*/)
+//                        }
+                        
+                        
+                        ForEach(orgModel.organizations) { organization in
+                            
+                            NavigationLink {
+                                OrganizationDetailView(organization: organization)
+                            } label: {
+                                OrganizationView(organization: organization)
                             }
+
+                            
                             .cornerRadius(10)
                             .shadow(radius: 5)
                             .padding(.bottom, 10)
                             .padding(.horizontal, 20)
-                        }
-                        .sheet(isPresented: $showDetails) {
-                            OrganizationDetailView(organizationName: selectedOrganization)
                         }
                     }
                 }
@@ -110,7 +145,7 @@ struct SearchView_Previews: PreviewProvider {
     @State static var dummyTags: [String] = []
 
     static var previews: some View {
-        SearchView(tags: ["autismo", "Cancer"])
+        SearchView(orgModel: OrganizationModel(), tags: ["autismo", "Cancer"], personsModel: PersonModel())
     }
 }
 

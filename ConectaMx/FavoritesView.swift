@@ -4,7 +4,7 @@
 //
 //  Created by Guillermo Garcia Acosta on 20/09/23.
 //
-
+//
 import SwiftUI
 
 struct FavoritesView: View {
@@ -20,6 +20,8 @@ struct FavoritesView: View {
     @State private var showDetails = false
     @State private var selectedOrganization = ""
     
+    var orgModel = OrganizationModel()
+    
    // @Binding 
     var tags: [String]
     
@@ -34,22 +36,36 @@ struct FavoritesView: View {
                 
                 ScrollView {
                     VStack {
-                        ForEach(organizaciones, id: \.self) { organizacion in
-                            Button(action: {
-                                self.selectedOrganization = organizacion
-                                self.showDetails = true
-                            }) {
-                                OrganizationView(organizationName: organizacion)
+//                        ForEach(organizaciones, id: \.self) { organizacion in
+//                            Button(action: {
+//                                self.selectedOrganization = organizacion
+//                                self.showDetails = true
+//                            }) {
+//                                OrganizationView(/*organizationName: organizacion*/)
+//                            }
+//                            .cornerRadius(10)
+//                            .shadow(radius: 5)
+//                            .padding(.bottom, 10)
+//                            .padding(.horizontal, 20)
+//                        }
+//                        .sheet(isPresented: $showDetails) {
+//                            OrganizationDetailView(/*organizationName: selectedOrganization*/)
+//                        }
+
+                        
+                        ForEach(orgModel.organizations) { organization in
+                            
+                            NavigationLink {
+                                OrganizationDetailView(organization: organization)
+                            } label: {
+                                OrganizationView(organization: organization)
                             }
                             .cornerRadius(10)
                             .shadow(radius: 5)
                             .padding(.bottom, 10)
                             .padding(.horizontal, 20)
-                        }
-                        .sheet(isPresented: $showDetails) {
-                            OrganizationDetailView(organizationName: selectedOrganization)
-                        }
 
+                        }
                     }
                 }
             }
@@ -69,7 +85,7 @@ struct FavoritesView_Previews: PreviewProvider {
     @State static var dummyTags: [String] = []
 
     static var previews: some View {
-        FavoritesView(tags: ["austismo", "CanCer"])
+        FavoritesView(orgModel: OrganizationModel(), tags: ["austismo", "CanCer"])
     }
 }
 
