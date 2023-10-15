@@ -11,7 +11,9 @@ import SwiftData
 struct OrgContentView: View {
     @State private var activePage: OrgActivePage = .home
     
-    var personsModel = PersonModel()
+    @State private var organization: Organization?
+       
+       var orgModel = OrganizationModel()
     
     var body: some View {
         NavigationView {
@@ -19,11 +21,11 @@ struct OrgContentView: View {
                 VStack {
                     switch activePage {
                     case .home:
-                        OrgHomeView()
+                        OrgHomeView(organization: organization)
                     case .messages:
                         OrganizationInboxView()
                     case .profile:
-                        OrgProfileView(personsModel: PersonModel())
+                        OrgProfileView()
                     }
                 }
                 VStack {
@@ -32,7 +34,19 @@ struct OrgContentView: View {
                 }
             }
         }
-    }
+        .onAppear {
+                    let organizationId = "652573ca0130690d2581318f"
+                    
+                    orgModel.fetchOrganization(organizationId: organizationId) { fetchedOrganization, error in
+                        if let fetchedOrganization = fetchedOrganization {
+                            self.organization = fetchedOrganization
+                        } else if let error = error {
+                            print("Error fetching organization: \(error)")
+                        }
+                    }
+                }
+            }
+    
 }
 
 

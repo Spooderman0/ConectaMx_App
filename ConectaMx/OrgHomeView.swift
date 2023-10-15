@@ -50,6 +50,7 @@ struct SocialButton: Identifiable{
 struct OrgHomeView: View {
     
     @State private var description = ""
+    var organization: Organization?
     
     // Alertas
     @State private var showAlert = false

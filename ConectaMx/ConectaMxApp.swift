@@ -17,7 +17,7 @@ struct ConectaMxApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            OrgContentView()
             
             
 //            Organization_Tags(tags: tagsModel.tags)

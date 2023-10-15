@@ -107,6 +107,59 @@ class OrganizationModel {
 //                       print(error)
 //                   }
     }
+    
+    func fetchOrganization(organizationId: String, completion: @escaping (Organization?, Error?) -> Void) {
+        let urlString = "\(baseURL)/get_organization/\(organizationId)"
+        
+        AF.request(urlString, method: .get, encoding: URLEncoding.default).responseData { response in
+            switch response.result {
+            case .success(let data):
+                do {
+                    let json = try JSON(data: data)
+                    let location = Location(
+                        address: json["location"]["address"].stringValue,
+                        city: json["location"]["city"].stringValue,
+                        state: json["location"]["state"].stringValue,
+                        country: json["location"]["country"].stringValue,
+                        zip: json["location"]["zip"].stringValue
+                    )
+                    
+                    let contact = Contact(
+                        email: json["contact"]["email"].stringValue,
+                        phone: json["contact"]["phone"].stringValue
+                    )
+                    
+                    let socialMedia = SocialMedia(
+                        facebook: json["socialMedia"]["facebook"].stringValue,
+                        twitter: json["socialMedia"]["twitter"].stringValue,
+                        instagram: json["socialMedia"]["instagram"].stringValue,
+                        linkedIn: json["socialMedia"]["linkedIn"].stringValue
+                    )
+                    
+                    let fetchedOrganization = Organization(
+                        id: json["_id"]["$oid"].stringValue,
+                        name: json["name"].stringValue,
+                        location: location,
+                        contact: contact,
+                        serviceHours: json["serviceHours"].stringValue,
+                        socialMedia: socialMedia,
+                        missionStatement: json["missionStatement"].stringValue,
+                        tags: (json["tags"].arrayObject as? [String])!
+                        //followers: (json["followers"].arrayObject as? [String])!
+                    )
+                    completion(fetchedOrganization, nil)
+                } catch {
+                    completion(nil, error)
+                }
+            case .failure(let error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    
+    
+    
 }
     
     

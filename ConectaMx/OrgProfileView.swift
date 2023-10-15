@@ -12,7 +12,7 @@ struct OrgProfileView: View {
     @State private var activePage: ActivePage = .profile
     @State private var showImagePicker = false
     @State private var profileImage: UIImage? = UIImage(named: "Org_Mock")
-    var personsModel: PersonModel
+//    var personsModel: PersonModel
     
     var body: some View {
         ZStack {
@@ -90,13 +90,14 @@ struct OrgProfileView: View {
     func profileButton(icon: String, text: String) -> some View {
         Button(action: {
             // Acción para botones
-            if text == "Datos personales" {
-                let editProfileView = EditProfileView(profileImage: $profileImage, personsModel: personsModel)
-                let navigationController = UINavigationController(rootViewController: UIHostingController(rootView: editProfileView))
-                navigationController.navigationBar.prefersLargeTitles = true
-                UIApplication.shared.windows.first?.rootViewController?.present(navigationController, animated: true, completion: nil)
-            }
-        }) {
+//            if text == "Datos personales" {
+//                let editProfileView = EditProfileView(profileImage: $profileImage, personsModel: personsModel)
+//                let navigationController = UINavigationController(rootViewController: UIHostingController(rootView: editProfileView))
+//                navigationController.navigationBar.prefersLargeTitles = true
+//                UIApplication.shared.windows.first?.rootViewController?.present(navigationController, animated: true, completion: nil)
+//            }
+        })
+        {
             HStack {
                 Image(systemName: icon)
                     .foregroundColor(.white)
@@ -112,5 +113,5 @@ struct OrgProfileView: View {
 }
 
 #Preview {
-    OrgProfileView(personsModel: PersonModel())
+    OrgProfileView(/*personsModel: PersonModel()*/)
 }
