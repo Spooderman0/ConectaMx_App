@@ -33,15 +33,15 @@ struct OrgBottomBarView: View {
                 Spacer()
                 
                 
-                Button(action: {
-                    activePage = .messages
-                }) {
-                    Image(systemName: activePage == .messages ? "message.fill" : "message")
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                        .foregroundColor(.white)
-                        .opacity(activePage == .messages ? 1.0 : 0.5)
-                }
+//                Button(action: {
+//                    activePage = .messages
+//                }) {
+//                    Image(systemName: activePage == .messages ? "message.fill" : "message")
+//                        .resizable()
+//                        .frame(width: 30, height: 30)
+//                        .foregroundColor(.white)
+//                        .opacity(activePage == .messages ? 1.0 : 0.5)
+//                }
                 
                 Spacer()
                 

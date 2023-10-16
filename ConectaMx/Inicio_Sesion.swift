@@ -45,6 +45,9 @@ struct Inicio_Sesion: View {
                         .foregroundColor(Color(hex: "625C87"))
                         .fontWeight(.medium)
                         .underline()
+                        .onAppear(){
+                            tagsModel.fetchTags()
+                        }
                 }
 
                 
@@ -70,14 +73,24 @@ struct Inicio_Sesion: View {
                 Spacer()
                 
                 // Botón para continuar como organización
-                Button(action: {
-                // Acción para continuar como organización
-                }, label: {
+//                Button(action: {
+//                // Acción para continuar como organización
+//                }, label: {
+//                    Text("Continuar como Organización")
+//                        .foregroundColor(Color(hex: "625C87"))
+//                        .fontWeight(.medium)
+//                        .underline()
+                
+                
+//                })
+                
+                
+                NavigationLink(destination: OrganizationRegistrationView()) {
                     Text("Continuar como Organización")
                         .foregroundColor(Color(hex: "625C87"))
                         .fontWeight(.medium)
                         .underline()
-                })
+                }
             }
             .padding()
         }

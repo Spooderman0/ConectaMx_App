@@ -19,6 +19,8 @@ struct OrganizationRegistrationView: View {
     @State private var startTime = Date()
     @State private var endTime = Date()
     
+    var tagsModel = TagsModel()
+    
     
     var body: some View {
         NavigationView{
@@ -116,21 +118,32 @@ struct OrganizationRegistrationView: View {
                         }
                         .padding()
                         
-                        Button(action: {
-                            // Add your registration logic here
-                            // You can access the entered values using self.name, self.email, etc.
-                            
-
-                        }) {
-                            Text("Continuar")
-                                .foregroundColor(.white)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color(hex: "625C87"))
-                                .cornerRadius(10)
-                                .padding(.trailing, 45)
+//                        Button(action: {
+//                            // Add your registration logic here
+//                            // You can access the entered values using self.name, self.email, etc.
+//                            
+//
+//                        }) {
+//                            Text("Continuar")
+//                                .foregroundColor(.white)
+//                                .padding()
+//                                .frame(maxWidth: .infinity)
+//                                .background(Color(hex: "625C87"))
+//                                .cornerRadius(10)
+//                                .padding(.trailing, 45)
+//                        }
+//                        .padding()
+//                        
+                        NavigationLink(destination: Organization_Tags(tags: tagsModel.tags)) {
+                            Text("Continuar ")
+                            .foregroundColor(.white)
+                             .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color(hex: "625C87"))
+                            .cornerRadius(10)
+                            .padding(.trailing, 45)
                         }
-                        .padding()
+                        
                         }
                     }
                     
@@ -139,8 +152,10 @@ struct OrganizationRegistrationView: View {
                     
                 }
                 .padding()
+            }.onAppear(){
+                tagsModel.fetchTags()
             }
-        }
+    }
     }
 
 struct OrganizationRegistrationView_Previews: PreviewProvider {

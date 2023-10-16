@@ -40,14 +40,18 @@ struct ProfileButton: Identifiable {
     var iconName: String
 }
 
-struct SocialButton: Identifiable{
+struct SocialButton: Identifiable {
     var id: UUID = UUID()
     var title: String
     var isVisible: Bool
     var image: String
+    var url: String
 }
 
+
 struct OrgHomeView: View {
+    var orgModel: OrganizationModel
+    var organization: Organization?
     
     @State private var description = ""
     
@@ -70,120 +74,137 @@ struct OrgHomeView: View {
     ]
     
     @State private var socialButtons: [SocialButton] = [
-    
-        SocialButton(title: "Web", isVisible: true, image: "web"),
-        SocialButton(title: "Facebook",isVisible: true, image: "facebook"),
-        SocialButton(title: "Instagram",isVisible: true, image: "instagram"),
-        SocialButton(title: "Mail",isVisible: true, image: "mail"),
-        SocialButton(title: "Compartir",isVisible: true, image: "share")
-
+        SocialButton(title: "Web", isVisible: true, image: "web", url: ""),
+        SocialButton(title: "Facebook",isVisible: true, image: "facebook", url: ""),
+        SocialButton(title: "Instagram",isVisible: true, image: "instagram", url: ""),
+        SocialButton(title: "Mail",isVisible: true, image: "mail", url: ""),
+        SocialButton(title: "Compartir",isVisible: true, image: "share", url: "")
     ]
     
     @State private var isNotificationViewPresented = false
     
+    private func updateSocialButtons() {
+            guard let organization = organization else { return }
+            
+            socialButtons = [
+                //SocialButton(title: "Web", isVisible: true, image: "web", url: organization.socialMedia.web ?? ""),
+                SocialButton(title: "Facebook", isVisible: true, image: "facebook", url: organization.socialMedia.facebook ?? ""),
+                SocialButton(title: "Instagram", isVisible: true, image: "instagram", url: organization.socialMedia.instagram ?? ""),
+                SocialButton(title: "Mail", isVisible: true, image: "mail", url: "mailto:\(organization.contact.email)"),
+                SocialButton(title: "Compartir", isVisible: true, image: "share", url: "")
+            ]
+        }
+    
     
     var body: some View {
-        
-        ScrollView{
+        if let organization = organization {
+          //  let description = organization.missionStatement
             
-            VStack(spacing: 20) {
+            
+            
+            ScrollView{
                 
-                HStack{
+                VStack(spacing: 20) {
                     
-                    Spacer()
-                    Text("Organización")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .padding()
-
-                    Button(action: {
+                    HStack{
                         
-                        isNotificationViewPresented = true
+                        Spacer()
+                        Text(organization.name)
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .padding()
+                            .onAppear{
+                                updateSocialButtons()
+                            }
                         
-                    }) {
-                        
-                        HStack {
-                            // Ícono
-                            Image("notif")
-                                .resizable()
-                                .frame(width: 40, height: 45)
+                        Button(action: {
+                            
+                            isNotificationViewPresented = true
+                            
+                        }) {
+                            
+                            HStack {
+                                // Ícono
+                                Image("notif")
+                                    .resizable()
+                                    .frame(width: 40, height: 45)
+                            }
+                            .padding()
                         }
-                        .padding()
-                    }
-                    .sheet(isPresented: $isNotificationViewPresented) {
-                        OrgNotificationView()
-                        .presentationDetents([.large, .medium])
+                        .sheet(isPresented: $isNotificationViewPresented) {
+                            OrgNotificationView()
+                                .presentationDetents([.large, .medium])
+                        }
+                        
                     }
                     
-                }
-
-                
-                Text("Descripción")
-                TextEditor(text: $description)
-                    .frame(height: 150)
-                    .padding()
-                    .background(RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.gray.opacity(0.5), lineWidth: 1))
-                
-                
-                // Vista previa de cómo se verían los botones en el perfil
-                HStack(spacing: 10) {
-                    ForEach(profileButtons) { button in
-                        if button.isVisible {
-                            Button(action: {
-                                // Acción del botón
-                                selectedButtonTitle = button.title
-                                selectedButtonDescription = button.description
-                                showAlert = true
-                            }) {
-                                HStack {
-                                    // Ícono
-                                    Image(systemName: button.iconName)
-                                        .foregroundColor(.white)
-                                    // Título
-                                    Text(button.title)
+                    
+                    Text("Descripción")
+                    TextEditor(text: $description)
+                        .frame(height: 150)
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray.opacity(0.5), lineWidth: 1))
+                    
+                    
+                    // Vista previa de cómo se verían los botones en el perfil
+                    HStack(spacing: 10) {
+                        ForEach(profileButtons) { button in
+                            if button.isVisible {
+                                Button(action: {
+                                    // Acción del botón
+                                    selectedButtonTitle = button.title
+                                    selectedButtonDescription = button.description
+                                    showAlert = true
+                                }) {
+                                    HStack {
+                                        // Ícono
+                                        Image(systemName: button.iconName)
+                                            .foregroundColor(.white)
+                                        // Título
+                                        Text(button.title)
+                                    }
+                                    .frame(minWidth: 0, maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color(hex: "3D3D4E"))
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
                                 }
-                                .frame(minWidth: 0, maxWidth: .infinity)
-                                .padding()
-                                .background(Color(hex: "3D3D4E"))
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
                             }
                         }
                     }
-                }
-                .alert(isPresented: $showAlert) {
-                    Alert(
-                        title: Text("\(selectedButtonTitle)"),
-                        message: Text("\(selectedButtonDescription)"),
-                        dismissButton: .default(Text("Okay"))
-                    )
-                }
-
-
-                
-                // Toggles para que la organización decida qué botones mostrar
-                VStack(spacing: 10) {
-                    ForEach(profileButtons.indices, id: \.self) { index in
-                        Toggle(isOn: $profileButtons[index].isVisible) {
-                            Text(profileButtons[index].title)
+                    .alert(isPresented: $showAlert) {
+                        Alert(
+                            title: Text("\(selectedButtonTitle)"),
+                            message: Text("\(selectedButtonDescription)"),
+                            dismissButton: .default(Text("Okay"))
+                        )
+                    }
+                    
+                    
+                    
+                    // Toggles para que la organización decida qué botones mostrar
+                    VStack(spacing: 10) {
+                        ForEach(profileButtons.indices, id: \.self) { index in
+                            Toggle(isOn: $profileButtons[index].isVisible) {
+                                Text(profileButtons[index].title)
+                            }
+                            .toggleStyle(PurpleToggleStyle())
                         }
-                        .toggleStyle(PurpleToggleStyle())
                     }
-                }
-                
-                //Mapa
-                Button(action: {
-                    // Acción del botón
-                    print("presionado")
-                }) {
-                    HStack(spacing: 15){
-                        // Ícono
-                        Image(systemName: "mappin.and.ellipse")
-                        // Título
-                        Text("Configurar mapa")
-
-                    }
+                    
+                    //Mapa
+                    Button(action: {
+                        // Acción del botón
+                        print("presionado")
+                    }) {
+                        HStack(spacing: 15){
+                            // Ícono
+                            Image(systemName: "mappin.and.ellipse")
+                            // Título
+                            Text("Configurar mapa")
+                            
+                        }
                         .frame(minWidth: 0, maxWidth: .infinity)
                         .padding()
                         .background(Color(hex: "3D3D4E"))
@@ -210,35 +231,44 @@ struct OrgHomeView: View {
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                         .frame(width: 30, height: 30)
+                                    }
+                                    .padding()
+                                    .foregroundColor(.white)
                                 }
-                                .padding()
-                                .foregroundColor(.white)
                             }
                         }
                     }
-                }
-                
-                VStack(spacing: 10) {
-                    ForEach(socialButtons.indices, id: \.self) { index in
-                        Toggle(isOn: $socialButtons[index].isVisible) {
-                            Text(socialButtons[index].title)
+                    
+                    VStack(spacing: 10) {
+                        ForEach(socialButtons.indices, id: \.self) { index in
+                            Toggle(isOn: $socialButtons[index].isVisible) {
+                                Text(socialButtons[index].title)
+                            }
+                            .toggleStyle(PurpleToggleStyle())
                         }
-                        .toggleStyle(PurpleToggleStyle())
                     }
+                    
+                    Spacer()
+                        .frame(minHeight: 10)
+                    
+                    
                 }
-                
-                Spacer()
-                    .frame(minHeight: 10)
-                 
-                
+                .padding()
             }
-            .padding()
         }
     }
+//    else {
+//        Text("Sorry a problem occured getting your infomation try again")
+//    }
+    
 }
 
 struct OrgHomeView_Previews: PreviewProvider {
     static var previews: some View {
-        OrgHomeView()
+        let mockOrganization = Organization(id: "", name: "name", location: Location(address: "", city: "", state: "", country: " ", zip: " "), contact: Contact(email: "", phone: ""), serviceHours: "", socialMedia: SocialMedia(facebook: "", twitter: "", instagram: "", linkedIn: ""), missionStatement: "", tags: ["",""])  // Assuming Organization has a default initializer
+        let mockOrgModel = OrganizationModel()  // Assuming OrganizationModel has a default initializer
+                
+    OrgHomeView(orgModel: mockOrgModel, organization: mockOrganization)
+            
     }
 }

@@ -15,15 +15,17 @@ struct Intereses_Tags_Login: View {
     let intereses = ["Deporte", "Tecnología", "Música", "Comida", "Arte", "Ciencia"]
     
     @State var seleccionados = Set<String>()
+    @State private var navigateToContent = false
     
     
     var body: some View {
         VStack(spacing: 20) {
-            // Título "Selecciona tus Intereses:"
+            
             Text("Selecciona tus Intereses:")
                 .font(.title)
                 .fontWeight(.bold)
-                
+            
+            
             Spacer()
             // Lista de tags
             ScrollView {
@@ -48,9 +50,14 @@ struct Intereses_Tags_Login: View {
                 }
             }
             
+            NavigationLink(destination: ContentView(), isActive: $navigateToContent) {
+                EmptyView()
+            }
+            
             // Botón "Comenzar"
             Button(action: {
                 // Acción para comenzar
+                navigateToContent = true
             }, label: {
                 Text("Comenzar")
                     .foregroundColor(.white)
@@ -61,17 +68,30 @@ struct Intereses_Tags_Login: View {
             })
             .padding([.leading, .trailing], 20)
             
+            
+            
+            
+            
             // Botón para saltar este paso
-            Button(action: {
-                // Acción para saltar este paso
-            }, label: {
+            //            Button(action: {
+            //                // Acción para saltar este paso
+            //            }, label: {
+            //                Text("Saltar este paso")
+            //                    .underline()
+            //                    .font(.footnote)
+            //                    .foregroundColor(Color(hex: "625C87"))
+            //            })
+            //        }
+            //        .padding()
+            NavigationLink(destination: ContentView()) {
                 Text("Saltar este paso")
                     .underline()
                     .font(.footnote)
                     .foregroundColor(Color(hex: "625C87"))
-            })
+            }
         }
-        .padding()
+        
+        
     }
 }
 
