@@ -14,6 +14,8 @@ struct Organization_Tags: View {
     
     @State var seleccionados = Set<String>()
     
+    @State private var navigateToOrgContent = false
+    
     
     var body: some View {
         VStack(spacing: 20) {
@@ -46,9 +48,14 @@ struct Organization_Tags: View {
                 }
             }
             
+            NavigationLink(destination: OrgContentView(), isActive: $navigateToOrgContent) {
+                EmptyView()
+            }
+            
             // Botón "Comenzar"
             Button(action: {
                 // Acción para comenzar
+                navigateToOrgContent = true
             }, label: {
                 Text("Comenzar")
                     .foregroundColor(.white)
@@ -62,6 +69,7 @@ struct Organization_Tags: View {
             // Botón para saltar este paso
             Button(action: {
                 // Acción para saltar este paso
+                navigateToOrgContent = true
             }, label: {
                 Text("Saltar este paso")
                     .underline()
