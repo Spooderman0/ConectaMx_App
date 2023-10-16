@@ -47,7 +47,7 @@ struct ContentView: View {
             personsModel.fetchPerson(phoneNumber: "55-3456-7890") { (person, error) in
                 if let person = person {
                     // Handle the retrieved person
-                    print("Retrieved person: \(person.name)")
+                    //print("Retrieved person: \(person.name)")
                 } else if let error = error {
                     // Handle the error
                     print("Error fetching person: \(error.localizedDescription)")
