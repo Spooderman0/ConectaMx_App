@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct FilterSheetView: View {
-    //let tags = ["Deporte", "Tecnología", "Música", "Comida", "Arte", "Ciencia"]
-    @State var selectedTags = Set<String>()
+    @Binding var selectedTags: Set<String>
     var tags: [String]
+   
+    
+    @ObservedObject var personsModel: PersonModel
     
     var body: some View {
         VStack(spacing: 20) {
@@ -18,6 +20,7 @@ struct FilterSheetView: View {
             Text("Filtrar por Intereses:")
                 .font(.title)
                 .fontWeight(.bold)
+                
                 
             Spacer()
             // Lista de tags
@@ -44,9 +47,25 @@ struct FilterSheetView: View {
             }
 
             
+//            // Botón "Aplicar Filtros"
+//            Button(action: {
+//                // Acción para aplicar filtros
+//            }, label: {
+//                Text("Aplicar Filtros")
+            // Botón "Aplicar Filtros"
             // Botón "Aplicar Filtros"
             Button(action: {
-                // Acción para aplicar filtros
+                //personsModel.fetchedPerson?.interestedTags.removeAll()
+                if let person = personsModel.fetchedPerson {
+                    let updatedTags = Array(selectedTags)
+                    personsModel.updatePersonTags(phone: person.phone, newTags: updatedTags) { success in  // Acceso directo a person.phone sin enlace opcional
+                        if success {
+                            print("Tags updated successfully")
+                        } else {
+                            print("Failed to update tags")
+                        }
+                    }
+                }
             }, label: {
                 Text("Aplicar Filtros")
                     .foregroundColor(.white)
@@ -56,14 +75,26 @@ struct FilterSheetView: View {
                     .cornerRadius(10)
             })
             .padding([.leading, .trailing], 20)
+
+            
+            
         }
         .padding()
+        .onAppear {
+            print(selectedTags)
+//            if let person = personsModel.fetchedPerson {
+//                selectedTags = Set(person.interestedTags)
+//            }
+//            print(selectedTags)
+        }
+        
     }
 }
 
 struct FilterSheetView_Previews: PreviewProvider {
     static var previews: some View {
-        FilterSheetView(tags: ["autismo", "cancer"])
+        @State var dummyTags: Set<String> = []
+        FilterSheetView(selectedTags:  $dummyTags,tags: ["autismo", "cancer"], personsModel: PersonModel())
     }
 }
 

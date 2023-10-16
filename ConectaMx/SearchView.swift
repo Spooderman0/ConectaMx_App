@@ -7,13 +7,7 @@
 import SwiftUI
 
 struct SearchView: View {
-    let organizaciones = [
-        "Organización 1",
-        "Organización 2",
-        "Organización 3",
-        "Organización 4",
-        "Organización 5"
-    ]
+
     
     @State private var showDetails = false
     @State private var selectedOrganization = ""
@@ -23,9 +17,10 @@ struct SearchView: View {
     
     var orgModel = OrganizationModel()
     var tags: [String]
-    
+    @State private var selectedTags: Set<String> = []
     var personsModel: PersonModel
     var personas = [PersonModel]()
+    var PersonsModel = PersonModel()
 
     
     var body: some View {
@@ -49,7 +44,7 @@ struct SearchView: View {
                             .foregroundColor(Color(hex: "625C87"))
                     }
                     .sheet(isPresented: $showFilterSheet) {
-                        FilterSheetView(tags: tags)
+                        FilterSheetView(selectedTags: $selectedTags, tags: tags, personsModel: personsModel)
                     }
 
 
@@ -138,6 +133,23 @@ struct SearchView: View {
             }
         }
         .padding(.top, 10)
+        .onAppear {
+            PersonsModel.fetchPerson(phoneNumber: "55-3456-7890") { (person, error) in
+                if let person = person {
+                    // Handle the retrieved person
+                    //print("Retrieved person: \(person.name)")
+                } else if let error = error {
+                    // Handle the error
+                    print("Error fetching person: \(error.localizedDescription)")
+                }
+            }
+
+            print(selectedTags)
+            if let person = personsModel.fetchedPerson {
+                selectedTags = Set(person.interestedTags)
+            }
+            print(selectedTags)
+        }
     }
 }
 

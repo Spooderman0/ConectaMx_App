@@ -10,25 +10,18 @@ import SwiftUI
 
 
 struct HomeView: View {
-    let organizaciones = [
-        "Organización 1",
-        "Organización 2",
-        "Organización 3",
-        "Organización 4",
-        "Organización 5"
-    ]
-   // var organizationModel: OrganizationModel
+    
     
     @State private var showDetails = false
     @State private var selectedOrganization = ""
     @State private var activePage: ActivePage = .home
     
-    //@Binding
+
     var tags: [String]
     var orgModel: OrganizationModel
-    //var organization: Organization
-    //var orgModel = OrganizationModel()
     var organizations = [Organization]()
+    var personsModel: PersonModel
+    var personas = [PersonModel]()
     
     
     var body: some View {
@@ -193,9 +186,6 @@ struct OrganizationView: View {
 }
 
 struct OrganizationDetailView: View {
-    //var organizationName: String
-    //Fetch specific organization
-    //var organization: Organization
     var organization: Organization
     var body: some View {
         ScrollView {
@@ -207,8 +197,6 @@ struct OrganizationDetailView: View {
             Text(organization.missionStatement)
                 .padding(.top, 10)
             
-//            Text("Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
-//                .padding(.bottom, 10)
             
             HStack {
                 Button(action: {}) {
@@ -234,7 +222,11 @@ struct OrganizationDetailView: View {
                 
                 Spacer()
                 
-                Button(action: {}) {
+                Button(action: {
+                    Image(systemName: "heart")
+                        .foregroundColor(Color(hex: "f91100"))
+                    
+                }) {
                     Image(systemName: "heart")
                         .foregroundColor(Color(hex: "625C87"))
                 }
@@ -321,7 +313,7 @@ struct HomeView_Previews: PreviewProvider {
                 
                 //organizationModel.organizations = [mockOrganization]
         
-        HomeView(/*tags: $dummyTags*/ tags: ["austismo", "cancer"], orgModel: OrganizationModel()/*, organization: mockOrganization*/)
+        HomeView(tags: ["austismo", "cancer"], orgModel: OrganizationModel(), personsModel: PersonModel())
     }
 }
 

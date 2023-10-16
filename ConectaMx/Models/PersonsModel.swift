@@ -102,10 +102,24 @@ class PersonModel: ObservableObject {
         }
     }
 
-    func updatePerson(phone: String, client: Person, completion: @escaping (Bool) -> Void) {
+//    func updatePerson(phone: String, client: Person, completion: @escaping (Bool) -> Void) {
+//        let urlString = "\(baseURL)/update_client/\(phone)"
+//        
+//        AF.request(urlString, method: .put,encoding: URLEncoding.default).response { response in
+//            switch response.result {
+//            case .success(_):
+//                completion(true)
+//            case .failure(_):
+//                completion(false)
+//            }
+//        }
+//    }
+    
+    func updatePersonTags(phone: String, newTags: [String], completion: @escaping (Bool) -> Void) {
         let urlString = "\(baseURL)/update_client/\(phone)"
+        let params: [String: Any] = ["interestedTags": newTags]
         
-        AF.request(urlString, method: .put,encoding: URLEncoding.default).response { response in
+        AF.request(urlString, method: .put, parameters: params, encoding: JSONEncoding.default).response { response in
             switch response.result {
             case .success(_):
                 completion(true)

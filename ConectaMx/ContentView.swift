@@ -24,7 +24,7 @@ struct ContentView: View {
                 VStack {
                     switch activePage {
                     case .home:
-                        HomeView(tags: tagsModel.tags, orgModel: orgModel)
+                        HomeView(tags: tagsModel.tags, orgModel: orgModel, personsModel: personsModel)
                     case .search:
                         SearchView(orgModel: orgModel, tags: tagsModel.tags, personsModel: personsModel)
                     case .favorites:

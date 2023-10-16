@@ -17,7 +17,8 @@ struct ConectaMxApp: App {
 
     var body: some Scene {
         WindowGroup {
-            Inicio_Sesion()
+            //Inicio_Sesion()
+            ContentView()
             
             
 //            Organization_Tags(tags: tagsModel.tags)
