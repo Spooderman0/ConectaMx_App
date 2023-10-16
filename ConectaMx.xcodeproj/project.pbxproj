@@ -437,7 +437,7 @@
 				DEVELOPMENT_TEAM = LFG687US47;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need for an organization user to share their location in order to set a map in their profile in which the user can see where are they located, which is already public information.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Utilizamos tu ubicación para hacer uso del mapa para encontrar organizaciones cerca de ti.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -467,7 +467,7 @@
 				DEVELOPMENT_TEAM = LFG687US47;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need for an organization user to share their location in order to set a map in their profile in which the user can see where are they located, which is already public information.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Utilizamos tu ubicación para hacer uso del mapa para encontrar organizaciones cerca de ti.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

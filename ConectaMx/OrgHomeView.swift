@@ -210,29 +210,27 @@ struct OrgHomeView: View {
                         .background(Color(hex: "3D3D4E"))
                         .foregroundColor(.white)
                         .cornerRadius(10)
-                    }
-                    
-                    
-                    MapView(latitude: 40.7128, longitude: -74.0060)
-                        .frame(height: 200)
-                    
-                    //Social Media buttons
-                    HStack(spacing: 1) {
-                        ForEach(socialButtons) { button in
-                            if button.isVisible {
-                                Button(action: {
-                                    // Acción del botón
-                                    print("presionado")
-                                    if let url = URL(string: button.url) {
-                                                        UIApplication.shared.open(url)
-                                                    }
-                                }) {
-                                    HStack {
-                                        // Imagen
-                                        Image(button.image)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 30, height: 30)
+                }
+                
+                
+                OrgMapView()
+                    .frame(height: UIScreen.main.bounds.height / 3)
+                    .padding([.top, .bottom])
+                
+                //Social Media buttons
+                HStack(spacing: 1) {
+                    ForEach(socialButtons) { button in
+                        if button.isVisible {
+                            Button(action: {
+                                // Acción del botón
+                                print("presionado")
+                            }) {
+                                HStack {
+                                    // Imagen
+                                    Image(button.image)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 30, height: 30)
                                     }
                                     .padding()
                                     .foregroundColor(.white)
