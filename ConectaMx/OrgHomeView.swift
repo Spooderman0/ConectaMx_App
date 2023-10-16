@@ -192,8 +192,9 @@ struct OrgHomeView: View {
                 }
                 
                 
-                MapView(latitude: 40.7128, longitude: -74.0060)
-                    .frame(height: 200)
+                OrgMapView()
+                    .frame(height: UIScreen.main.bounds.height / 3)
+                    .padding([.top, .bottom])
                 
                 //Social Media buttons
                 HStack(spacing: 1) {
