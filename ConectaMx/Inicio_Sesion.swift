@@ -9,7 +9,8 @@
 import SwiftUI
 
 struct Inicio_Sesion: View {
-    
+    //@StateObject 
+    var tagsModel = TagsModel()
     var body: some View {
         NavigationView{
             VStack(spacing: 30) {
@@ -39,7 +40,7 @@ struct Inicio_Sesion: View {
                 .padding([.leading, .trailing], 20)
                 
                 // Botón para continuar sin registro
-                NavigationLink(destination: Intereses_Tags_Login()) {
+                NavigationLink(destination: Intereses_Tags_Login(tags: tagsModel.tags)) {
                     Text("Continuar sin Registro")
                         .foregroundColor(Color(hex: "625C87"))
                         .fontWeight(.medium)

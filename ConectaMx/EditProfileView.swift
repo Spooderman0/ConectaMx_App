@@ -8,13 +8,19 @@ import SwiftUI
 
 struct EditProfileView: View {
     @Binding var profileImage: UIImage?
-    @State private var name = ""
-    @State private var phone = ""
-    @State private var email = ""
-    @State private var showImagePicker = false
+        @State private var name: String = ""
+        @State private var phone: String = ""
+        @State private var email: String = ""
+        @State private var showImagePicker = false
+    
+    var personsModel: PersonModel
     
     var body: some View {
         VStack(spacing: 20) {
+            if let person = personsModel.fetchedPerson {
+                                
+                            
+            
             
             // Espacio adicional en la parte superior
             Spacer()
@@ -22,6 +28,9 @@ struct EditProfileView: View {
             
             // Imagen de perfil
             ZStack {
+                
+                
+                
                 Image(uiImage: profileImage ?? UIImage())
                     .resizable()
                     .scaledToFill()
@@ -67,11 +76,21 @@ struct EditProfileView: View {
                     .keyboardType(.emailAddress)
                     .padding()
                     .background(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.5), lineWidth: 1))
+                
+                    .onAppear {
+                        if let person = personsModel.fetchedPerson {
+                            name = person.name
+                            phone = person.phone
+                            email = person.email
+                        }
+                    }
             }
             .padding(.horizontal)
             
             Spacer()
-            
+            }
+                
+
         }
         .padding()
         .background(Color.gray.opacity(0.1))
@@ -79,6 +98,7 @@ struct EditProfileView: View {
         .navigationBarTitle("Editar Perfil", displayMode: .inline)
         .sheet(isPresented: $showImagePicker) {
             ImagePicker(image: self.$profileImage)
+            
         }
     }
 }
