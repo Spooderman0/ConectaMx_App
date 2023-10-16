@@ -23,17 +23,17 @@ func getCoordinate(addressString : String,
     }
 }
 
-struct Organization: Identifiable {
+struct OrganizationMap: Identifiable {
     let id: Int
     let name: String
     var coordinate: CLLocationCoordinate2D
 }
 
 struct OrgMapView: View {
-    @State private var organizations: [Organization] = [
-        Organization(id: 1, name: "Organización 1", coordinate: kCLLocationCoordinate2DInvalid),
-        Organization(id: 2, name: "Organización 2", coordinate: kCLLocationCoordinate2DInvalid),
-        Organization(id: 3, name: "Organización 3", coordinate: kCLLocationCoordinate2DInvalid)
+    @State private var organizations: [OrganizationMap] = [
+        OrganizationMap(id: 1, name: "Organización 1", coordinate: kCLLocationCoordinate2DInvalid),
+        OrganizationMap(id: 2, name: "Organización 2", coordinate: kCLLocationCoordinate2DInvalid),
+        OrganizationMap(id: 3, name: "Organización 3", coordinate: kCLLocationCoordinate2DInvalid)
     ]
 
     let addresses = [
