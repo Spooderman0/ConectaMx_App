@@ -59,10 +59,8 @@ struct Inicio_Sesion: View {
                 NavigationLink(destination: PersonRegistrationView(), isActive: $navigateToPRV) {
                     EmptyView()
                 }
-                // Botón para registrarse con número telefónico
                 Button(action: {
                     navigateToPRV = true
-                    // Acción para registrarse con número telefónico
                 }, label: {
                     HStack {
                         Image("iphone_phone_logo")
@@ -81,20 +79,7 @@ struct Inicio_Sesion: View {
                 
                 Spacer()
                 
-                // Botón para continuar como organización
-//                Button(action: {
-//                // Acción para continuar como organización
-//                }, label: {
-//                    Text("Continuar como Organización")
-//                        .foregroundColor(Color(hex: "625C87"))
-//                        .fontWeight(.medium)
-//                        .underline()
-                
-                
-//                })
-                
-                
-                NavigationLink(destination: OrganizationRegistrationView()) {
+                NavigationLink(destination: InicioOrgs()) {
                     Text("Continuar como Organización")
                         .foregroundColor(Color(hex: "625C87"))
                         .fontWeight(.medium)

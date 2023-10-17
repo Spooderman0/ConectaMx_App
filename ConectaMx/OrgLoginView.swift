@@ -1,12 +1,19 @@
+//
+//  OrgLoginView.swift
+//  ConectaMx
+//
+//  Created by Alumno on 17/10/23.
+//
+
 import SwiftUI
 
-struct PersonLoginView: View {
-    @State private var phone = ""
+struct OrgLoginView: View {
+    @State private var orgID = ""
     @State private var bannerMessage = ""
     @State private var showBanner = false
     @State private var navigateToCV = false
     
-    var personModel = PersonModel()
+    var orgModel = OrganizationModel()
     var tagsModel = TagsModel()
     @State var seleccionadosT = Set<String>()
     
@@ -31,34 +38,34 @@ struct PersonLoginView: View {
                         .scaledToFit()
                         .frame(width: 200, height: 200)
                     
-                    Text("Login")
+                    Text("Organization Login")
                         .font(.largeTitle)
                         .padding()
                     
                     VStack(alignment: .leading, spacing: 10){
                         
-                        Text("Phone*")
-                        TextField("Phone", text: $phone)
+                        Text("Organization ID*")
+                        TextField("Organization ID", text: $orgID)
                             .padding()
                             .background(RoundedRectangle(cornerRadius: 8)
                                 .stroke(Color.gray.opacity(0.5), lineWidth: 1))
                         
                     }
                     
-                    NavigationLink(destination: ContentView(selectedT: seleccionadosT, fetchedPerson: personModel.fetchedPerson), isActive: $navigateToCV) {
+                    NavigationLink(destination: OrgContentView(), isActive: $navigateToCV) {
                         EmptyView()
                     }
                     
                     Button(action: {
-                            personModel.fetchPerson(phoneNumber: self.phone) { person, error in
-                                if let person = person {
-                                    self.bannerMessage = "Welcome \(person.name.isEmpty ? "" : person.name)"
+                            orgModel.fetchOrganization(organizationId: self.orgID) { organization, error in
+                                if let organization = organization {
+                                    self.bannerMessage = "Welcome \(organization.name)"
                                     self.showBanner = true
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                                         self.navigateToCV = true
                                     }
                                 } else {
-                                    self.bannerMessage = "Phone number not found"  // Error message
+                                    self.bannerMessage = "Organization ID not found"  // Error message
                                     self.showBanner = true  // Show the banner with error message
                                 }
                             }
@@ -91,20 +98,8 @@ struct PersonLoginView: View {
         
 }
 
-struct PersonLoginView_Previews: PreviewProvider {
+struct OrgLoginView_Previews: PreviewProvider {
     static var previews: some View {
-        PersonLoginView()
-    }
-}
-
-struct BannerView: View {
-    var message: String
-    
-    var body: some View {
-        Text(message)
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(Color(hex: "625C87"))
-            .foregroundColor(.white)
+        OrgLoginView()
     }
 }
