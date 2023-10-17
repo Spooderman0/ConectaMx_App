@@ -20,6 +20,9 @@ struct OrganizationRegistrationView: View {
     @State private var endTime = Date()
     
     var tagsModel = TagsModel()
+    var organizationModel = OrganizationModel()
+    
+    @State private var navigateToOrgTags = false
     
     
     var body: some View {
@@ -118,24 +121,45 @@ struct OrganizationRegistrationView: View {
                         }
                         .padding()
                         
-//                        Button(action: {
-//                            // Add your registration logic here
-//                            // You can access the entered values using self.name, self.email, etc.
-//                            
-//
-//                        }) {
-//                            Text("Continuar")
-//                                .foregroundColor(.white)
-//                                .padding()
-//                                .frame(maxWidth: .infinity)
-//                                .background(Color(hex: "625C87"))
-//                                .cornerRadius(10)
-//                                .padding(.trailing, 45)
-//                        }
-//                        .padding()
-//                        
-                        NavigationLink(destination: Organization_Tags(tags: tagsModel.tags)) {
-                            Text("Continuar ")
+                        NavigationLink(destination: Organization_Tags(tags: tagsModel.tags), isActive: $navigateToOrgTags) {
+                            EmptyView()
+                        }
+                        
+                        Button(action: {
+                            // Step 2: Construct an Organization instance
+                            let newOrganization = Organization(
+                                id: "",  // You might need to handle this field accordingly
+                                name: self.name,
+                                alias: self.alias,
+                                location: Location(address: self.address, city: "", state: "", country: "", zip: ""),  // You might need to modify this line to handle city, state, country, and zip
+                                contact: Contact(email: self.email, first_phone: self.phone, second_phone: ""),  // You might need to modify this line to handle second_phone
+                                serviceHours: "\(self.startTime) to \(self.endTime)",
+                                website: self.webPage,
+                                socialMedia: SocialMedia(facebook: self.facebookPage, twitter: "", instagram: self.instagramUsername, linkedIn: ""),  // You might need to modify this line to handle twitter and linkedIn
+                                missionStatement: "",
+                                logo: "",
+                                tags: [],  // You might need to handle this field accordingly
+                                RFC: "",
+                                postId: []  // You might need to handle this field accordingly
+                                
+                               
+                            )
+                            
+                            // Step 3: Post the new organization
+                            self.organizationModel.postOrganization(organization: newOrganization) { success in
+                                if success {
+                                    print("Organization posted successfully")
+                                } else {
+                                    print("Failed to post organization")
+                                }
+                            }
+                            
+                            navigateToOrgTags = true
+                            
+                        }) {
+                            Text("Continuar")
+//                        NavigationLink(destination: Organization_Tags(tags: tagsModel.tags)) {
+//                            Text("Continuar ")
                             .foregroundColor(.white)
                              .padding()
                             .frame(maxWidth: .infinity)

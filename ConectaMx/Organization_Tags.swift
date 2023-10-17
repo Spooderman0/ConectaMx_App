@@ -9,8 +9,7 @@ import SwiftUI
 
 struct Organization_Tags: View {
     var tags: [String]
-    
-    let intereses = ["Deporte", "Tecnología", "Música", "Comida", "Arte", "Ciencia"]
+
     
     @State var seleccionados = Set<String>()
     

@@ -10,6 +10,7 @@ import SwiftUI
 struct FilterSheetView: View {
     @Binding var selectedTags: Set<String>
     var tags: [String]
+    var orgModel: OrganizationModel
    
     
     @ObservedObject var personsModel: PersonModel
@@ -25,48 +26,44 @@ struct FilterSheetView: View {
             Spacer()
             // Lista de tags
             ScrollView {
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 100)), count: 3), spacing: 20) {
-                    ForEach(tags, id: \.self) { tag in
-                        Button(action: {
-                            if selectedTags.contains(tag) {
-                                selectedTags.remove(tag)
-                            } else {
-                                selectedTags.insert(tag)
-                            }
-                        }) {
-                            Text(tag)
-                                .lineLimit(1) // Asegura que el texto solo ocupa una línea
-                                .padding(.all, 10)
-                                .frame(minWidth: 100) // Establece un ancho mínimo para cada tag
-                                .background(selectedTags.contains(tag) ? Color(hex: "625C87") : Color.gray.opacity(0.2))
-                                .foregroundColor(selectedTags.contains(tag) ? .white : .black)
-                                .cornerRadius(15)
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 100)), count: 3), spacing: 20) {
+                ForEach(tags, id: \.self) { tag in
+                    Button(action: {
+            if selectedTags.contains(tag) {
+                selectedTags.remove(tag)
+            } else {
+                selectedTags.insert(tag)
+            }
+            }) {
+                Text(tag)
+                    .lineLimit(1)
+                    .padding(.all, 10)
+                    .frame(minWidth: 100) 
+                    .background(selectedTags.contains(tag) ? Color(hex: "625C87") : Color.gray.opacity(0.2))
+                    .foregroundColor(selectedTags.contains(tag) ? .white : .black)
+                    .cornerRadius(15)
                         }
                     }
                 }
             }
 
             
-//            // Botón "Aplicar Filtros"
-//            Button(action: {
-//                // Acción para aplicar filtros
-//            }, label: {
-//                Text("Aplicar Filtros")
             // Botón "Aplicar Filtros"
-            // Botón "Aplicar Filtros"
-            Button(action: {
-                //personsModel.fetchedPerson?.interestedTags.removeAll()
-                if let person = personsModel.fetchedPerson {
-                    let updatedTags = Array(selectedTags)
-                    personsModel.updatePersonTags(phone: person.phone, newTags: updatedTags) { success in  // Acceso directo a person.phone sin enlace opcional
-                        if success {
-                            print("Tags updated successfully")
-                        } else {
-                            print("Failed to update tags")
-                        }
+        Button(action: {
+           //personsModel.fetchedPerson?.interestedTags.removeAll()
+            if let person = personsModel.fetchedPerson {
+                let updatedTags = Array(selectedTags)
+                personsModel.updatePersonTags(phone: person.phone, newTags: updatedTags) { success in
+                    if success {
+                        print("Tags updated successfully")
+                    } else {
+                        print("Failed to update tags")
                     }
                 }
-            }, label: {
+            }
+                let tagsToSearch = selectedTags.joined(separator: ",")
+                    orgModel.fetchOrganizationsByTag(tag: tagsToSearch)
+                }, label: {
                 Text("Aplicar Filtros")
                     .foregroundColor(.white)
                     .padding()
@@ -94,7 +91,7 @@ struct FilterSheetView: View {
 struct FilterSheetView_Previews: PreviewProvider {
     static var previews: some View {
         @State var dummyTags: Set<String> = []
-        FilterSheetView(selectedTags:  $dummyTags,tags: ["autismo", "cancer"], personsModel: PersonModel())
+        FilterSheetView(selectedTags:  $dummyTags,tags: ["autismo", "cancer"], orgModel: OrganizationModel(), personsModel: PersonModel())
     }
 }
 

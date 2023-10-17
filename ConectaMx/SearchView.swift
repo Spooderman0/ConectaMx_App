@@ -15,12 +15,16 @@ struct SearchView: View {
     @State private var showFilterSheet = false
     @State private var activePage: ActivePage = .search
     
+    
     var orgModel = OrganizationModel()
+//    @StateObject var orgModel = OrganizationModel()
     var tags: [String]
     @State private var selectedTags: Set<String> = []
     var personsModel: PersonModel
     var personas = [PersonModel]()
     var PersonsModel = PersonModel()
+    var selectedT: Set<String>
+    
 
     
     var body: some View {
@@ -44,7 +48,7 @@ struct SearchView: View {
                             .foregroundColor(Color(hex: "625C87"))
                     }
                     .sheet(isPresented: $showFilterSheet) {
-                        FilterSheetView(selectedTags: $selectedTags, tags: tags, personsModel: personsModel)
+                        FilterSheetView(selectedTags: $selectedTags, tags: tags, orgModel: orgModel, personsModel: personsModel)
                     }
 
 
@@ -58,30 +62,18 @@ struct SearchView: View {
                 // Scroll horizontal de tags
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
-                        // Aqui van a ser las tags que el usario tiene selecionadas
- /*
-                        ForEach(["tag1", "tag2", "tag3"], id: \.self) { tag in
+                        
+                        ForEach(Array(selectedTags), id: \.self) { tag in
                             Text(tag)
                                 .foregroundStyle(.white)
                                 .padding(.all, 10)
                                 .padding(.horizontal, 30)
                                 .background(Color(hex: "625C87"))
                                 .cornerRadius(10)
+                                .onTapGesture {
+                                orgModel.fetchOrganizationsByTag(tag: tag)
+                                        }
                         }
-  */
-                        ForEach(personsModel.fetchedPerson?.interestedTags ?? [], id: \.self) { tag in
-                            Text(tag)
-                                .foregroundStyle(.white)
-                                .padding(.all, 10)
-                                .padding(.horizontal, 30)
-                                .background(Color(hex: "625C87"))
-                                .cornerRadius(10)
-                        }
-
-                        
-                        
-                        
-                        
                         
                     }
                     .padding(.horizontal)
@@ -107,21 +99,52 @@ struct SearchView: View {
 //                            OrganizationDetailView(/*organizationName: selectedOrganization*/)
 //                        }
                         
+//                        
+//                        ForEach(orgModel.organizations) { organization in
+//                            
+//                            NavigationLink {
+//                                OrganizationDetailView(organization: organization)
+//                            } label: {
+//                                OrganizationView(organization: organization)
+//                            }
+//
+//                            
+//                            .cornerRadius(10)
+//                            .shadow(radius: 5)
+//                            .padding(.bottom, 10)
+//                            .padding(.horizontal, 20)
+//                        }
+        
                         
-                        ForEach(orgModel.organizations) { organization in
-                            
+        // if searcg by tags no work uncoment
+//                        ForEach(orgModel.organizations) { organization in
+//                            NavigationLink {
+//                                OrganizationDetailView(organization: organization)
+//                            } label: {
+//                                OrganizationView(organization: organization)
+//                            }
+//                            .cornerRadius(10)
+//                            .shadow(radius: 5)
+//                            .padding(.bottom, 10)
+//                            .padding(.horizontal, 20)
+//                        }
+                        ForEach(orgModel.tagOrgs) { organization in
                             NavigationLink {
                                 OrganizationDetailView(organization: organization)
                             } label: {
                                 OrganizationView(organization: organization)
                             }
-
-                            
                             .cornerRadius(10)
                             .shadow(radius: 5)
                             .padding(.bottom, 10)
                             .padding(.horizontal, 20)
                         }
+
+                        
+                        
+                        
+                        
+                        
                     }
                 }
             }
@@ -134,22 +157,42 @@ struct SearchView: View {
         }
         .padding(.top, 10)
         .onAppear {
+            print("*******************")
+            print(orgModel.tagOrgs.count)
+            print("*******************")
+            
             PersonsModel.fetchPerson(phoneNumber: "55-3456-7890") { (person, error) in
                 if let person = person {
-                    // Handle the retrieved person
-                    //print("Retrieved person: \(person.name)")
                 } else if let error = error {
-                    // Handle the error
                     print("Error fetching person: \(error.localizedDescription)")
                 }
             }
-
+            if let person = personsModel.fetchedPerson {
+                    print("Printing person interested tags")
+                    print(person.interestedTags)
+                            
+                    for tag in person.interestedTags {
+                        orgModel.fetchOrganizationsByTag(tag: tag)
+                    }
+                }
+            
+            print("Printing Selected tags before setting")
             print(selectedTags)
             if let person = personsModel.fetchedPerson {
                 selectedTags = Set(person.interestedTags)
             }
+            print("Printing Selected tags after setting")
             print(selectedTags)
+            
+            
+            
+//            ForEach(Array(selectedTags), id: \.self) { tag in
+//                orgModel.fetchOrganizationsByTag(tag: tag)
+//                }
+            
+            
         }
+        
     }
 }
 
@@ -157,7 +200,7 @@ struct SearchView_Previews: PreviewProvider {
     @State static var dummyTags: [String] = []
 
     static var previews: some View {
-        SearchView(orgModel: OrganizationModel(), tags: ["autismo", "Cancer"], personsModel: PersonModel())
+        SearchView(orgModel: OrganizationModel(), tags: ["autismo", "Cancer"], personsModel: PersonModel(), selectedT: [""])
     }
 }
 

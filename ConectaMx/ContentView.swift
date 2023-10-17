@@ -10,11 +10,12 @@ import SwiftData
 
 struct ContentView: View {
     @State private var activePage: ActivePage = .home
-   // @StateObject
+    var selectedT: Set<String>
     var tagsModel = TagsModel()
     var orgModel = OrganizationModel()
     var postsModel = PostModel()
     var personsModel = PersonModel()
+    
     
     
 
@@ -26,7 +27,7 @@ struct ContentView: View {
                     case .home:
                         HomeView(tags: tagsModel.tags, orgModel: orgModel, personsModel: personsModel)
                     case .search:
-                        SearchView(orgModel: orgModel, tags: tagsModel.tags, personsModel: personsModel)
+                        SearchView(orgModel: orgModel, tags: tagsModel.tags, personsModel: personsModel, selectedT: selectedT)
                     case .favorites:
                         FavoritesView(orgModel: orgModel, tags: tagsModel.tags)
                     case .profile:
@@ -43,13 +44,13 @@ struct ContentView: View {
             tagsModel.fetchTags()
             orgModel.fetchOrganizations()
             postsModel.fetchPosts()
-           // personsModel.fetchPersons()
+            
+            
             personsModel.fetchPerson(phoneNumber: "55-3456-7890") { (person, error) in
                 if let person = person {
-                    // Handle the retrieved person
-                    //print("Retrieved person: \(person.name)")
+                    
                 } else if let error = error {
-                    // Handle the error
+                    
                     print("Error fetching person: \(error.localizedDescription)")
                 }
             }
@@ -60,7 +61,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(selectedT: [""])
     }
 }
 

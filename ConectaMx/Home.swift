@@ -296,27 +296,9 @@ struct HomeView_Previews: PreviewProvider {
     
     static var previews: some View {
         
-        
-        //let organizationModel = OrganizationModel()
-                
-                // Mocking an organization
-                var mockOrganization = Organization(
-                    id: "1",
-                    name: "Mock Organization",
-                    location: Location(address: "123 Main St", city: "Anytown", state: "AN", country: "Country", zip: "12345"),
-                    contact: Contact(email: "email@example.com", phone: "123-456-7890"),
-                    serviceHours: "9-5",
-                    socialMedia: SocialMedia(facebook: "", twitter: "", instagram: "", linkedIn: ""),
-                    missionStatement: "Making the world a better place.",
-                    tags: ["tag1", "tag2"]
-                )
-                
-                //organizationModel.organizations = [mockOrganization]
-        
         HomeView(tags: ["austismo", "cancer"], orgModel: OrganizationModel(), personsModel: PersonModel())
     }
 }
-
 
 struct ScrollableTextView: UIViewRepresentable {
     var text: String

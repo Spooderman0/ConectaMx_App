@@ -265,7 +265,7 @@ struct OrgHomeView: View {
 
 struct OrgHomeView_Previews: PreviewProvider {
     static var previews: some View {
-        let mockOrganization = Organization(id: "", name: "name", location: Location(address: "", city: "", state: "", country: " ", zip: " "), contact: Contact(email: "", phone: ""), serviceHours: "", socialMedia: SocialMedia(facebook: "", twitter: "", instagram: "", linkedIn: ""), missionStatement: "", tags: ["",""])  // Assuming Organization has a default initializer
+        let mockOrganization = Organization(id: "", name: "name",alias: "", location: Location(address: "", city: "", state: "", country: " ", zip: " "), contact: Contact(email: "", first_phone: "", second_phone: ""), serviceHours: "",website: "", socialMedia: SocialMedia(facebook: "", twitter: "", instagram: "", linkedIn: ""), missionStatement: "",logo: "", tags: ["",""], RFC: "",postId: [""])  // Assuming Organization has a default initializer
         let mockOrgModel = OrganizationModel()  // Assuming OrganizationModel has a default initializer
                 
     OrgHomeView(orgModel: mockOrgModel, organization: mockOrganization)

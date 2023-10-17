@@ -32,7 +32,7 @@ class PersonModel {
                     phone: person["phone"].stringValue,
                     email: person["email"].stringValue,
                     interestedTags: (person["interestedTags"].arrayObject as? [String])!,
-                    followedOrgs: (person["followedOrgs"].arrayObject as? [String])!
+                    favorites: (person["favorites"].arrayObject as? [String])!
                 )
                 
                 persons.append(newPerson)
@@ -74,10 +74,10 @@ class PersonModel: ObservableObject {
                     name: person.1["name"].stringValue,
                     phone: person.1["phone"].stringValue,
                     email: person.1["email"].stringValue,
-                    interestedTags: (person.1["interestedTags"].arrayObject as? [String])!
-                   // followedOrgs: (person.1["followedOrgs"].arrayObject as? [String])!
+                    interestedTags: (person.1["interestedTags"].arrayObject as? [String])!,
+                    favorites: (person.1["favorites"].arrayObject as? [String])!
                 )
-                //print(newPerson)
+                print(newPerson)
                 persons.append(newPerson)
                 }
               
@@ -142,10 +142,33 @@ class PersonModel: ObservableObject {
                         name: json["name"].stringValue,
                         phone: json["phone"].stringValue,
                         email: json["email"].stringValue,
-                        interestedTags: (json["interestedTags"].arrayObject as? [String])!
+                        interestedTags: (json["interestedTags"].arrayObject as? [String])!,
+                        favorites: (json["favorites"].arrayObject as? [String])!
                     )
                     self.fetchedPerson = personTarget  // Set the fetched person property
                     completion(personTarget, nil)
+                } catch {
+                    completion(nil, error)
+                }
+            case .failure(let error):
+                completion(nil, error)
+            }
+        }
+    }
+    
+    func getFavoritesByPhone(phone: String, completion: @escaping ([String]?, Error?) -> Void) {
+        let urlString = "\(baseURL)/get_favorites_by_phone/\(phone)"
+        
+        AF.request(urlString, method: .get, encoding: URLEncoding.default).responseData { response in
+            switch response.result {
+            case .success(let data):
+                do {
+                    let json = try JSON(data: data)
+                    if let favoritesArray = json.arrayObject as? [String] {
+                        completion(favoritesArray, nil)
+                    } else {
+                        completion(nil, NSError(domain: "", code: -1, userInfo: ["message": "Invalid data format"]))
+                    }
                 } catch {
                     completion(nil, error)
                 }
