@@ -15,7 +15,6 @@ struct HomeView: View {
     @State private var showDetails = false
     @State private var selectedOrganization = ""
     @State private var activePage: ActivePage = .home
-    
 
     var tags: [String]
     var orgModel: OrganizationModel
@@ -32,46 +31,10 @@ struct HomeView: View {
                     .fontWeight(.bold)
                     .padding(.top)
                     .padding(.bottom, 20)
-//                    .onAppear {
-//                          
-//                        print(organizations.count)
-//                        print(orgModel.organizations.count)
-//                       }
+
                
                 ScrollView {
                     VStack {
-//                        ForEach(organizations) { organization in
-//                        Button(action: {
-//                            //self.selectedOrganization = organization
-//                            self.showDetails = true
-//                    })  {
-//                                OrganizationView(organization: organization)
-//                            }
-//                            .cornerRadius(10)
-//                            .shadow(radius: 5)
-//                            .padding(.bottom, 10)
-//                            .padding(.horizontal, 20)
-//                        }
-//                        .sheet(isPresented: $showDetails) {
-//                            OrganizationDetailView()
-//                        }
-                      
-                        
-//Working view for orgs, not for detailed view
-//                ForEach(orgModel.organizations) { organization in
-//                    OrganizationView(organization: organization)
-//                    //print("helo")
-//                        .cornerRadius(10)
-//                        .shadow(radius: 5)
-//                        .padding(.bottom, 10)
-//                        .padding(.horizontal, 20)
-//                        
-//                        }
-//                    
-//                .sheet(isPresented: $showDetails) {
-//                    OrganizationDetailView()
-//                        }
-                        
                         ForEach(orgModel.organizations) { organization in
                             
                             NavigationLink {
@@ -125,45 +88,7 @@ struct OrganizationView: View {
                     .lineLimit(3)
                     .foregroundColor(.white)
                     .padding([.top, .bottom], 5)
-                
-//                ScrollView{
-//                    HStack(spacing: 30) {
-//                        Text(organization.tags[1])
-//                            .padding(.horizontal, 16)
-//                            .padding(.vertical, 8)
-//                            .background(Color(hex: "625C87"))
-//                            .foregroundColor(.white)
-//                            .cornerRadius(5)
-//                            .lineLimit(1) // Asegura que el texto solo ocupa una línea
-////                            .padding(.all, 10)
-//                            .frame(minWidth: 100) // Establece un ancho mínimo para cada tag
-//                        
-//                        
-//                        
-//                        Text(organization.tags[2])
-//                            .padding(.horizontal, 16)
-//                            .padding(.vertical, 8)
-//                            .background(Color(hex: "625C87"))
-//                            .foregroundColor(.white)
-//                            .cornerRadius(5)
-//                            .lineLimit(1) // Asegura que el texto solo ocupa una línea
-////                            .padding(.all, 10)
-//                            .frame(minWidth: 100) // Establece un ancho mínimo para cada tag
-//                            
-//                        Text(organization.tags[3])
-//                            .padding(.horizontal, 16)
-//                            .padding(.vertical, 8)
-//                            .background(Color(hex: "625C87"))
-//                            .foregroundColor(.white)
-//                            .cornerRadius(5)
-//                            .lineLimit(1) // Asegura que el texto solo ocupa una línea
-////                            .padding(.all, 10)
-//                            .frame(minWidth: 100) // Establece un ancho mínimo para cada tag
-//                    }
-//                    .padding([.top, .bottom], 5)
-//                }
-                
-                
+                                
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         ForEach(organization.tags.indices, id: \.self) { index in
@@ -258,16 +183,7 @@ struct OrganizationDetailView: View {
             MapView(latitude: 40.7128, longitude: -74.0060)
                 .frame(height: 200)
             
-//            HStack {
-//                Image(systemName: "globe")
-//                    .foregroundColor(Color(hex: "625C87"))
-//                Image(systemName: "link")
-//                    .foregroundColor(Color(hex: "625C87"))
-//                Image(systemName: "mail")
-//                    .foregroundColor(Color(hex: "625C87"))
-//                Image(systemName: "square.and.arrow.up")
-//                    .foregroundColor(Color(hex: "625C87"))
-            
+         
             HStack {
                 Link(destination: URL(string: "https://example.com")!) {
                     Image(systemName: "globe")

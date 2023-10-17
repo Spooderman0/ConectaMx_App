@@ -15,7 +15,7 @@ struct ContentView: View {
     var orgModel = OrganizationModel()
     var postsModel = PostModel()
     var personsModel = PersonModel()
-    
+    var fetchedPerson: Person?
     
     
 
@@ -42,22 +42,25 @@ struct ContentView: View {
         }
         .onAppear(){
             tagsModel.fetchTags()
-            orgModel.fetchOrganizations()
             postsModel.fetchPosts()
+            orgModel.fetchOrganizations()
             
             
-            personsModel.fetchPerson(phoneNumber: "55-3456-7890") { (person, error) in
-                if let person = person {
-                    
-                } else if let error = error {
-                    
-                    print("Error fetching person: \(error.localizedDescription)")
-                }
+            
+            if fetchedPerson == nil {  // Conditionally fetch a new Person only if no Person was passed
+                            personsModel.fetchPerson(phoneNumber: "55-3456-7890") { (person, error) in
+                                if let person = person {
+                                    
+                                } else if let error = error {
+                                    print("Error fetching person: \(error.localizedDescription)")
+                                }
+                            }
+                        }
             }
             //orgModel.printOrgs()
         }
     }
-}
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

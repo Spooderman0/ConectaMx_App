@@ -158,8 +158,6 @@ struct OrganizationRegistrationView: View {
                             
                         }) {
                             Text("Continuar")
-//                        NavigationLink(destination: Organization_Tags(tags: tagsModel.tags)) {
-//                            Text("Continuar ")
                             .foregroundColor(.white)
                              .padding()
                             .frame(maxWidth: .infinity)

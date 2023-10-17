@@ -1,47 +1,3 @@
-// PersonModel.swift
-/*
-import SwiftUI
-import SwiftyJSON
-import Alamofire
-
-@Observable
-class PersonModel {
-    var persons = [Person]()
-    
-    init() {
-        
-    }
-    
-    func fetchPersons() {
-        persons.removeAll()
-        
-        let url = "http://10.14.255.172:5000/get_clients"
-        
-        AF.request(url, method: .get, encoding: URLEncoding.default).responseData { [self] data in
-            if let error = data.error{
-                print("Error de conexion")
-            }else{
-                
-                let json = try! JSON(data: data.data!)
-            
-            if json.count > 0 {
-                let person = json[0]
-                let newPerson = Person(
-                    id: person["_id"].stringValue,
-                    name: person["name"].stringValue,
-                    phone: person["phone"].stringValue,
-                    email: person["email"].stringValue,
-                    interestedTags: (person["interestedTags"].arrayObject as? [String])!,
-                    favorites: (person["favorites"].arrayObject as? [String])!
-                )
-                
-                persons.append(newPerson)
-                }
-            }
-        }
-    }
-}
-*/
 
 import SwiftUI
 import SwiftyJSON
@@ -89,10 +45,31 @@ class PersonModel: ObservableObject {
 
 
     
+//    func postPerson(person: Person, completion: @escaping (Bool) -> Void) {
+//        let urlString = "\(baseURL)/add_client"
+//        
+//        AF.request(urlString, method: .post,encoding: URLEncoding.default).response { response in
+//            switch response.result {
+//            case .success(_):
+//                completion(true)
+//            case .failure(_):
+//                completion(false)
+//            }
+//        }
+//    }
     func postPerson(person: Person, completion: @escaping (Bool) -> Void) {
         let urlString = "\(baseURL)/add_client"
         
-        AF.request(urlString, method: .post,encoding: URLEncoding.default).response { response in
+        // Convert Person instance to a dictionary
+        let parameters: [String: Any] = [
+            "name": person.name,
+            "phone": person.phone,
+            "email": person.email,
+            "interestedTags": person.interestedTags,
+            "favorites": person.favorites
+        ]
+        
+        AF.request(urlString, method: .post, parameters: parameters, encoding: JSONEncoding.default).response { response in
             switch response.result {
             case .success(_):
                 completion(true)
@@ -101,6 +78,7 @@ class PersonModel: ObservableObject {
             }
         }
     }
+
 
 //    func updatePerson(phone: String, client: Person, completion: @escaping (Bool) -> Void) {
 //        let urlString = "\(baseURL)/update_client/\(phone)"
@@ -142,8 +120,8 @@ class PersonModel: ObservableObject {
                         name: json["name"].stringValue,
                         phone: json["phone"].stringValue,
                         email: json["email"].stringValue,
-                        interestedTags: (json["interestedTags"].arrayObject as? [String])!,
-                        favorites: (json["favorites"].arrayObject as? [String])!
+                        interestedTags: (json["interestedTags"].arrayObject as? [String]) ?? [],
+                        favorites: (json["favorites"].arrayObject as? [String]) ?? []
                     )
                     self.fetchedPerson = personTarget  // Set the fetched person property
                     completion(personTarget, nil)

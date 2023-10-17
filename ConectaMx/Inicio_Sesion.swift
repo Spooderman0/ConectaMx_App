@@ -11,6 +11,8 @@ import SwiftUI
 struct Inicio_Sesion: View {
     //@StateObject 
     var tagsModel = TagsModel()
+    @State private var navigateToPRV = false
+    @State private var navigateToPLV = false
     var body: some View {
         NavigationView{
             VStack(spacing: 30) {
@@ -25,9 +27,13 @@ struct Inicio_Sesion: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
                 
-                // Botón de inicio de sesión
+                
+                NavigationLink(destination: PersonLoginView(), isActive: $navigateToPLV) {
+                    EmptyView()
+                }
+
                 Button(action: {
-                    // Acción para el inicio de sesión
+                    navigateToPLV = true
                 }, label: {
                     Text("Iniciar Sesión")
                         .foregroundColor(.white)
@@ -50,9 +56,12 @@ struct Inicio_Sesion: View {
                         }
                 }
 
-                
+                NavigationLink(destination: PersonRegistrationView(), isActive: $navigateToPRV) {
+                    EmptyView()
+                }
                 // Botón para registrarse con número telefónico
                 Button(action: {
+                    navigateToPRV = true
                     // Acción para registrarse con número telefónico
                 }, label: {
                     HStack {
