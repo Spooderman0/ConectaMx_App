@@ -30,39 +30,32 @@ struct OrganizationMap: Identifiable {
 }
 
 struct OrgMapView: View {
-    @State private var organizations: [OrganizationMap] = [
-        OrganizationMap(id: 1, name: "Organización 1", coordinate: kCLLocationCoordinate2DInvalid),
-        OrganizationMap(id: 2, name: "Organización 2", coordinate: kCLLocationCoordinate2DInvalid),
-        OrganizationMap(id: 3, name: "Organización 3", coordinate: kCLLocationCoordinate2DInvalid)
-    ]
+    @State private var organization: OrganizationMap = OrganizationMap(id: 1, name: "Organización", coordinate: kCLLocationCoordinate2DInvalid)
+    
+    let address: String
 
-    let addresses = [
-        "Avenida Eugenio Garza Sada 2411, Tecnologico, 64700 Monterrey, N.L., México",
-        "Eugenio Garza Sada 2501, Tecnologico, 64840 Monterrey, NL, México",
-        "Técnicos 202, Tecnologico, 64700 Monterrey, N.L., México"
-    ]
+    // El inicializador ahora simplemente acepta la dirección completa
+    init(address: String) {
+        self.address = address
+    }
     
     var body: some View {
         Map {
-            ForEach(organizations) { organization in
-                if CLLocationCoordinate2DIsValid(organization.coordinate) {
-                    Marker(organization.name, coordinate: organization.coordinate)
-                }
+            if CLLocationCoordinate2DIsValid(organization.coordinate) {
+                Marker(organization.name, coordinate: organization.coordinate)
             }
         }
         .onAppear {
-            loadCoordinates()
+            loadCoordinate()
         }
     }
 
-    func loadCoordinates() {
-        for (index, address) in addresses.enumerated() {
-            getCoordinate(addressString: address) { (coordinate, error) in
-                if let error = error {
-                    print("Error geocoding address: \(error)")
-                } else {
-                    organizations[index].coordinate = coordinate
-                }
+    func loadCoordinate() {
+        getCoordinate(addressString: address) { (coordinate, error) in
+            if let error = error {
+                print("Error geocoding address: \(error)")
+            } else {
+                organization.coordinate = coordinate
             }
         }
     }
@@ -70,6 +63,6 @@ struct OrgMapView: View {
 
 struct OrgMapView_Previews: PreviewProvider {
     static var previews: some View {
-        OrgMapView()
+        OrgMapView(address: "Avenida Eugenio Garza Sada 2411, Tecnologico, 64700 Monterrey, N.L., México")
     }
 }

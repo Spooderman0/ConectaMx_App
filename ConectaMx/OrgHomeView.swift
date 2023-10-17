@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct PurpleToggleStyle: ToggleStyle {
     func makeBody(configuration: Configuration) -> some View {
@@ -54,6 +55,20 @@ struct OrgHomeView: View {
     var organization: Organization?
     
     @State private var description = ""
+   
+    // Mapa direción       
+    @State var calle = "Avenida Eugenio Garza Sada"
+    @State var numero = "2411"
+    @State var colonia = "Tecnologico"
+    @State var cp = "64700"
+    @State var ciudad = "Monterrey"
+    @State var estado = "N.L."
+    @State var pais = "Mexico"
+    
+    var fullAddress: String {
+        "\(calle) \(numero), \(colonia), \(cp), \(ciudad), \(estado), \(pais)"
+    }
+
     
     // Alertas
     @State private var showAlert = false
@@ -82,6 +97,8 @@ struct OrgHomeView: View {
     ]
     
     @State private var isNotificationViewPresented = false
+    @State private var isMapSheetPresented = false
+
     
     private func updateSocialButtons() {
             guard let organization = organization else { return }
@@ -138,8 +155,13 @@ struct OrgHomeView: View {
                         
                     }
                     
-                    
-                    Text("Descripción")
+                    HStack{
+                        Image(systemName: "pencil.line")
+                        Text("Descripción")
+                            .font(.title2)
+                            .bold()
+                            .foregroundColor(Color(hex: "3D3D4E"))
+                    }
                     TextEditor(text: $description)
                         .frame(height: 150)
                         .padding()
@@ -193,30 +215,35 @@ struct OrgHomeView: View {
                         }
                     }
                     
-                    //Mapa
                     Button(action: {
-                        // Acción del botón
-                        print("presionado")
+                        isMapSheetPresented.toggle() // Cambia el valor de isSheetPresented
                     }) {
-                        HStack(spacing: 15){
+                        HStack {
                             // Ícono
                             Image(systemName: "mappin.and.ellipse")
+                                .foregroundColor(.white)
                             // Título
-                            Text("Configurar mapa")
-                            
+                            Text("Configurar Mapa")
                         }
                         .frame(minWidth: 0, maxWidth: .infinity)
                         .padding()
                         .background(Color(hex: "3D3D4E"))
                         .foregroundColor(.white)
                         .cornerRadius(10)
-                }
-                
-                
-                OrgMapView()
+                    }
+                    .sheet(isPresented: $isMapSheetPresented, content: {
+                        OrganizationMapView(calle: $calle, numero: $numero, colonia: $colonia, cp: $cp, ciudad: $ciudad, estado: $estado, pais: $pais)
+                            .presentationDetents([.large, .large])
+                    })
+
+
+                    
+                // Mapa
+                OrgMapView(address: fullAddress)
                     .frame(height: UIScreen.main.bounds.height / 3)
                     .padding([.top, .bottom])
                 
+                    
                 //Social Media buttons
                 HStack(spacing: 1) {
                     ForEach(socialButtons) { button in
