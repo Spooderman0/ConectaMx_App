@@ -11,8 +11,9 @@ import CoreLocation
 
 struct MapView: UIViewRepresentable {
    
-    var latitude: Double = 37.7749
-    var longitude: Double = -122.4194
+    var latitude: Double = 25.649837
+    var longitude: Double = -100.289034
+    var organizations: [OrganizationMap]
 
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
@@ -28,6 +29,12 @@ struct MapView: UIViewRepresentable {
         
         // Muestra la ubicación del usuario
         uiView.showsUserLocation = true
+
+        // Agregar la anotación (pin) al mapa para cada organización
+        for org in organizations {
+            let annotation = SimpleAnnotation(coordinate: org.coordinate, title: org.name, subtitle: nil)
+            uiView.addAnnotation(annotation)
+        }
     }
 
     func makeCoordinator() -> Coordinator {
@@ -46,9 +53,9 @@ struct MapView: UIViewRepresentable {
 
         func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
             if manager.authorizationStatus == .authorizedWhenInUse {
-                locationManager.requestLocation() // Solicita la ubicación una vez
+                locationManager.requestLocation()
             } else if manager.authorizationStatus == .notDetermined {
-                locationManager.requestWhenInUseAuthorization() // Solicita permiso
+                locationManager.requestWhenInUseAuthorization()
             }
         }
         
@@ -59,6 +66,38 @@ struct MapView: UIViewRepresentable {
         func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
             // Maneja errores
         }
+
+        // Personalizar la apariencia del pin (opcional)
+        func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+            guard !(annotation is MKUserLocation) else { return nil } // Excluye la anotación del usuario
+            
+            let reuseId = "pin"
+            var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKMarkerAnnotationView
+
+            if pinView == nil {
+                pinView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+                pinView?.canShowCallout = true
+            } else {
+                pinView?.annotation = annotation
+            }
+            
+            return pinView
+        }
     }
 }
+
+class SimpleAnnotation: NSObject, MKAnnotation {
+    var coordinate: CLLocationCoordinate2D
+    var title: String?
+    var subtitle: String?
+
+    init(coordinate: CLLocationCoordinate2D, title: String?, subtitle: String?) {
+        self.coordinate = coordinate
+        self.title = title
+        self.subtitle = subtitle
+    }
+}
+
+
+
 

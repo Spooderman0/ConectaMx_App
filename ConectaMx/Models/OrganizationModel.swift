@@ -55,7 +55,7 @@ class OrganizationModel {
                     serviceHours: organization.1["serviceHours"].stringValue,
                     socialMedia: socialMedia,
                     missionStatement: organization.1["missionStatement"].stringValue,
-                    tags: (organization.1["tags"].arrayObject as? [String])!
+                    tags: (organization.1["tags"].arrayObject as? [String]) ?? []
                     //followers: (organization["followers"].arrayObject as? [String])!
                 )
                 //print(newOrganization)

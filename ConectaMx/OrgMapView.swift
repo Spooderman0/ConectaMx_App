@@ -23,11 +23,7 @@ func getCoordinate(addressString : String,
     }
 }
 
-struct OrganizationMap: Identifiable {
-    let id: Int
-    let name: String
-    var coordinate: CLLocationCoordinate2D
-}
+
 
 struct OrgMapView: View {
     
