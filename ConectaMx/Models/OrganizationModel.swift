@@ -128,8 +128,10 @@ class OrganizationModel {
             }
         }
     }
-    func updateOrganizationTags(organizationId: String, newTags: [String], completion: @escaping (Bool) -> Void) {
-        let urlString = "\(baseURL)/update_organization/\(organizationId)"
+    func updateOrganizationTags(rfc: String, newTags: [String], completion: @escaping (Bool) -> Void) {
+        print("Updating tags for RFC: \(rfc)") // log RFC here
+        
+        let urlString = "\(baseURL)/update_organization/\(rfc)"
         
         let parameters: [String: Any] = ["tags": newTags]
         
@@ -137,8 +139,13 @@ class OrganizationModel {
             switch response.result {
             case .success(_):
                 completion(true)
-            case .failure(_):
+                print("Success: \(String(describing: response.response?.statusCode))")
+            case .failure(let error):
                 completion(false)
+                print("Failure: \(error)")
+                if let data = response.data, let string = String(data: data, encoding: .utf8) {
+                    print("Response Data: \(string)")
+                }
             }
         }
     }
