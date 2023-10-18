@@ -10,6 +10,7 @@ import SwiftUI
 
 struct Inicio_Sesion: View {
     //@StateObject 
+    @EnvironmentObject var session: SessionModel
     var tagsModel = TagsModel()
     @State private var navigateToPRV = false
     @State private var navigateToPLV = false

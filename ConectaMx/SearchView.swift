@@ -83,51 +83,8 @@ struct SearchView: View {
                 // Lista de organizaciones
                 ScrollView {
                     VStack {
-//                        ForEach(organizaciones, id: \.self) { organizacion in
-//                            Button(action: {
-//                                self.selectedOrganization = organizacion
-//                                self.showDetails = true
-//                            }) {
-//                                OrganizationView(/*organizationName: organizacion*/)
-//                            }
-//                            .cornerRadius(10)
-//                            .shadow(radius: 5)
-//                            .padding(.bottom, 10)
-//                            .padding(.horizontal, 20)
-//                        }
-//                        .sheet(isPresented: $showDetails) {
-//                            OrganizationDetailView(/*organizationName: selectedOrganization*/)
-//                        }
-                        
-//                        
-//                        ForEach(orgModel.organizations) { organization in
-//                            
-//                            NavigationLink {
-//                                OrganizationDetailView(organization: organization)
-//                            } label: {
-//                                OrganizationView(organization: organization)
-//                            }
-//
-//                            
-//                            .cornerRadius(10)
-//                            .shadow(radius: 5)
-//                            .padding(.bottom, 10)
-//                            .padding(.horizontal, 20)
-//                        }
-        
-                        
-        // if searcg by tags no work uncoment
-//                        ForEach(orgModel.organizations) { organization in
-//                            NavigationLink {
-//                                OrganizationDetailView(organization: organization)
-//                            } label: {
-//                                OrganizationView(organization: organization)
-//                            }
-//                            .cornerRadius(10)
-//                            .shadow(radius: 5)
-//                            .padding(.bottom, 10)
-//                            .padding(.horizontal, 20)
-//                        }
+ 
+
                         ForEach(orgModel.tagOrgs) { organization in
                             NavigationLink {
                                 OrganizationDetailView(organization: organization)
@@ -139,12 +96,7 @@ struct SearchView: View {
                             .padding(.bottom, 10)
                             .padding(.horizontal, 20)
                         }
-
-                        
-                        
-                        
-                        
-                        
+                   
                     }
                 }
             }
@@ -157,40 +109,73 @@ struct SearchView: View {
         }
         .padding(.top, 10)
         .onAppear {
+            
+        
+            if let person = personsModel.fetchedPerson {
+                    if !person.interestedTags.isEmpty && selectedTags.isEmpty {
+                        // Update selectedTags if they are empty
+                        selectedTags = Set(person.interestedTags)
+                    } else if selectedTags.isEmpty == false {
+                        // Update person's interested tags if selectedTags is not empty
+                        personsModel.updatePersonTags(phone: person.phone, newTags: Array(selectedTags)) { success in
+                            if success {
+                                print("Person’s tags updated successfully")
+                            } else {
+                                print("Failed to update person’s tags")
+                            }
+                        }
+                    }
+                }
+                
             print("*******************")
+            print("printing org model tags")
             print(orgModel.tagOrgs.count)
             print("*******************")
             
-            PersonsModel.fetchPerson(phoneNumber: "55-3456-7890") { (person, error) in
-                if let person = person {
-                } else if let error = error {
-                    print("Error fetching person: \(error.localizedDescription)")
-                }
-            }
-            if let person = personsModel.fetchedPerson {
-                    print("Printing person interested tags")
-                    print(person.interestedTags)
-                            
-                    for tag in person.interestedTags {
-                        orgModel.fetchOrganizationsByTag(tag: tag)
-                    }
-                }
-            
-            print("Printing Selected tags before setting")
+            print("*******************")
+            print("printing selected tags")
             print(selectedTags)
-            if let person = personsModel.fetchedPerson {
-                selectedTags = Set(person.interestedTags)
-            }
-            print("Printing Selected tags after setting")
-            print(selectedTags)
+            print("*******************")
+            
+//            print("*******************")
+//            print("printing person tags")
+//            print(PersonModel.fetchPerson(T##self: PersonModel##PersonModel))
+//            print("*******************")
             
             
-            
-//            ForEach(Array(selectedTags), id: \.self) { tag in
-//                orgModel.fetchOrganizationsByTag(tag: tag)
+//                print()
+//            PersonsModel.fetchPerson(phoneNumber: "55-3456-7890") { (person, error) in
+//                if let person = person {
+//                } else if let error = error {
+//                    print("Error fetching person: \(error.localizedDescription)")
+//                }
+//            }
+//            if let person = personsModel.fetchedPerson {
+//                    print("Printing person interested tags")
+//                    print(person.interestedTags)
+//                            
+//                    for tag in person.interestedTags {
+//                        orgModel.fetchOrganizationsByTag(tag: tag)
+//                    }
 //                }
             
             
+                            
+                    for tag in selectedTags {
+                        orgModel.fetchOrganizationsByTag(tag: tag)
+                    }
+                
+            
+//            print("Printing Selected tags before setting")
+//            print(selectedTags)
+//            if let person = personsModel.fetchedPerson {
+//                selectedTags = Set(person.interestedTags)
+//            }
+//            print("Printing Selected tags after setting")
+//            print(selectedTags)
+            
+            
+
         }
         
     }

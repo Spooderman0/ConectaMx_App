@@ -11,7 +11,7 @@ struct InicioOrgs: View {
         @State private var navigateToORV = false
         @State private var navigateToOLV = false
         var body: some View {
-            NavigationView{
+            
                 VStack(spacing: 30) {
                     
                     Image("logoApp")
@@ -20,7 +20,7 @@ struct InicioOrgs: View {
                         .frame(width: 200, height: 200)
                     
                     
-                    Text("Organicaciónes")
+                    Text("Organizaciones")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                     
@@ -68,7 +68,7 @@ struct InicioOrgs: View {
                 }
                 .padding()
             }
-        }
+        
     }
 
     struct InicioOrgsPreviews: PreviewProvider {

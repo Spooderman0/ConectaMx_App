@@ -77,13 +77,19 @@ struct FilterSheetView: View {
             
         }
         .padding()
-        .onAppear {
-            print(selectedTags)
-//            if let person = personsModel.fetchedPerson {
-//                selectedTags = Set(person.interestedTags)
-//            }
+//        .onAppear {
 //            print(selectedTags)
+//
+//        }
+        .onAppear {
+            if let person = personsModel.fetchedPerson, !person.interestedTags.isEmpty {
+                if selectedTags.isEmpty {
+                    selectedTags = Set(person.interestedTags)
+                }
+            }
         }
+        
+        
         
     }
 }

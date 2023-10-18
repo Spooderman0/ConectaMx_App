@@ -40,12 +40,15 @@ class OrganizationModel {
                     second_phone: organization.1["contact"]["second_phone"].stringValue
                 )
                 
-                let socialMedia = SocialMedia(
-                    facebook: organization.1["socialMedia"]["facebook"].stringValue,
-                    twitter: organization.1["socialMedia"]["twitter"].stringValue,
-                    instagram: organization.1["socialMedia"]["instagram"].stringValue,
-                    linkedIn: organization.1["socialMedia"]["linkedIn"].stringValue
-                )
+                    let socialMedia = SocialMedia(
+                        facebook: organization.1["socialMedia"]["facebook"].stringValue,
+                        twitter: organization.1["socialMedia"]["twitter"].stringValue,
+                        instagram: organization.1["socialMedia"]["instagram"].stringValue,
+                        linkedIn: organization.1["socialMedia"]["linkedIn"].stringValue,
+                        youtube: organization.1["socialMedia"]["youtube"].stringValue, // Added youtube
+                        tiktok: organization.1["socialMedia"]["tiktok"].stringValue, // Added tiktok
+                        whatsapp: organization.1["socialMedia"]["whatsapp"].stringValue // Added whatsapp
+                    )
                 
                     let newOrganization = Organization(
                     id: organization.1["_id"]["$oid"].stringValue,
@@ -60,7 +63,9 @@ class OrganizationModel {
                     logo: organization.1["logo"].stringValue,
                     tags: (organization.1["tags"].arrayObject as? [String])!,
                     RFC: organization.1["RFC"].stringValue,
-                    postId: (organization.1["postId"].arrayObject as? [String])!
+                    postId: (organization.1["postId"].arrayObject as? [String])!,
+                    followers: (organization.1["followers"].arrayObject as? [String])!,
+                    password: organization.1["password"].stringValue
                 )
                 //print(newOrganization)
                 organizations.append(newOrganization)
@@ -88,30 +93,7 @@ class OrganizationModel {
 //            print(org)
 //        }
     }
-    /*
-    func postOrganization(organization: Organization, completion: @escaping (Bool) -> Void) {
-        let urlString = "\(baseURL)/add_organization"
-        
-        AF.request(urlString, method: .post, encoding: URLEncoding.default).response { response in
-            switch response.result {
-            case .success(_):
-                completion(true)
-            case .failure(_):
-                completion(false)
-            }
-        }
-    }
-
-    func updateOrganization(organizationId: String,  completion: @escaping (Organization?, Error?) -> Void) {
-        let urlString = "\(baseURL)/update_organization/\(organizationId)"
-        
-        //AF.request(urlString!, method: .put, parameters: organization, encoder: JSONParameterEncoder.default).responseDecodable(of: Organization.self) { response in
-                   
-//                   if let error = response.error {
-//                       print(error)
-//                   }
-    }
-     */
+    
     
     func postOrganization(organization: Organization, completion: @escaping (Bool) -> Void) {
         let urlString = "\(baseURL)/add_organization"
@@ -144,9 +126,24 @@ class OrganizationModel {
             }
         }
     }
+    func updateOrganizationTags(organizationId: String, newTags: [String], completion: @escaping (Bool) -> Void) {
+        let urlString = "\(baseURL)/update_organization/\(organizationId)"
+        
+        let parameters: [String: Any] = ["tags": newTags]
+        
+        AF.request(urlString, method: .put, parameters: parameters, encoding: JSONEncoding.default).response { response in
+            switch response.result {
+            case .success(_):
+                completion(true)
+            case .failure(_):
+                completion(false)
+            }
+        }
+    }
+
     
-    func fetchOrganization(organizationId: String, completion: @escaping (Organization?, Error?) -> Void) {
-        let urlString = "\(baseURL)/get_organization/\(organizationId)"
+    func fetchOrganization(rfc: String, password: String, completion: @escaping (Organization?, Error?) -> Void) {
+        let urlString = "\(baseURL)/get_organization?rfc=\(rfc)&password=\(password)"
         
         AF.request(urlString, method: .get, encoding: URLEncoding.default).responseData { response in
             switch response.result {
@@ -171,7 +168,10 @@ class OrganizationModel {
                         facebook: json["socialMedia"]["facebook"].stringValue,
                         twitter: json["socialMedia"]["twitter"].stringValue,
                         instagram: json["socialMedia"]["instagram"].stringValue,
-                        linkedIn: json["socialMedia"]["linkedIn"].stringValue
+                        linkedIn: json["socialMedia"]["linkedIn"].stringValue,
+                        youtube: json["socialMedia"]["youtube"].stringValue, // Added youtube
+                        tiktok: json["socialMedia"]["tiktok"].stringValue, // Added tiktok
+                        whatsapp: json["socialMedia"]["whatsapp"].stringValue // Added whatsapp
                     )
                     
                     let fetchedOrganization = Organization(
@@ -187,7 +187,9 @@ class OrganizationModel {
                         logo: json["logo"].stringValue,
                         tags: (json["tags"].arrayObject as? [String])!,
                         RFC: json["RFC"].stringValue,
-                        postId: (json["postId"].arrayObject as? [String])!
+                        postId: (json["postId"].arrayObject as? [String])!,
+                        followers: (json["followers"].arrayObject as? [String])!,
+                        password: json["password"].stringValue
                     )
                     completion(fetchedOrganization, nil)
                 } catch {
@@ -227,26 +229,31 @@ class OrganizationModel {
                     )
                     
                     let socialMedia = SocialMedia(
-                        facebook: organization["socialMedia"]["facebook"].stringValue,
-                        twitter: organization["socialMedia"]["twitter"].stringValue,
-                        instagram: organization["socialMedia"]["instagram"].stringValue,
-                        linkedIn: organization["socialMedia"]["linkedIn"].stringValue
+                        facebook: json["socialMedia"]["facebook"].stringValue,
+                        twitter: json["socialMedia"]["twitter"].stringValue,
+                        instagram: json["socialMedia"]["instagram"].stringValue,
+                        linkedIn: json["socialMedia"]["linkedIn"].stringValue,
+                        youtube: json["socialMedia"]["youtube"].stringValue, // Added youtube
+                        tiktok: json["socialMedia"]["tiktok"].stringValue, // Added tiktok
+                        whatsapp: json["socialMedia"]["whatsapp"].stringValue // Added whatsapp
                     )
                     
                     let newOrganization = Organization(
-                        id: organization["_id"]["$oid"].stringValue,
-                        name: organization["name"].stringValue,
-                        alias: organization["alias"].stringValue,
+                        id: json["_id"]["$oid"].stringValue,
+                        name: json["name"].stringValue,
+                        alias: json["alias"].stringValue,
                         location: location,
                         contact: contact,
-                        serviceHours: organization["serviceHours"].stringValue,
-                        website: organization["website"].stringValue,
+                        serviceHours: json["serviceHours"].stringValue,
+                        website: json["website"].stringValue,
                         socialMedia: socialMedia,
-                        missionStatement: organization["missionStatement"].stringValue,
-                        logo: organization["logo"].stringValue,
-                        tags: (organization["tags"].arrayObject as? [String]) ?? [],
-                        RFC: organization["RFC"].stringValue,
-                        postId: (organization["postId"].arrayObject as? [String]) ?? []
+                        missionStatement: json["missionStatement"].stringValue,
+                        logo: json["logo"].stringValue,
+                        tags: (json["tags"].arrayObject as? [String])!,
+                        RFC: json["RFC"].stringValue,
+                        postId: (json["postId"].arrayObject as? [String])!,
+                        followers: (json["followers"].arrayObject as? [String])!,
+                        password: json["password"].stringValue
                     )
                     print(newOrganization)
                     tagOrgs.append(newOrganization)
@@ -280,8 +287,13 @@ extension Organization {
                 "facebook": self.socialMedia.facebook,
                 "twitter": self.socialMedia.twitter,
                 "instagram": self.socialMedia.instagram,
-                "linkedIn": self.socialMedia.linkedIn
+                "linkedIn": self.socialMedia.linkedIn,
+                "youtube": self.socialMedia.youtube, // Added youtube
+                "tiktok": self.socialMedia.tiktok, // Added tiktok
+                "whatsapp": self.socialMedia.whatsapp // Added whatsapp
             ],
+            "followers": self.followers,
+            "password": self.password,
             "missionStatement": self.missionStatement,
             "logo": self.logo,
             "tags": self.tags,

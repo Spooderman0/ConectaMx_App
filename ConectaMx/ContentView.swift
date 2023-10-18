@@ -20,7 +20,7 @@ struct ContentView: View {
     
 
     var body: some View {
-        NavigationView {
+//        NavigationView {
             ZStack {
                 VStack {
                     switch activePage {
@@ -39,26 +39,27 @@ struct ContentView: View {
                     BottomBarView(activePage: $activePage)
                 }
             }
+            .onAppear(){
+                tagsModel.fetchTags()
+                postsModel.fetchPosts()
+                orgModel.fetchOrganizations()
         }
-        .onAppear(){
-            tagsModel.fetchTags()
-            postsModel.fetchPosts()
-            orgModel.fetchOrganizations()
+        
             
             
             
-            if fetchedPerson == nil {  // Conditionally fetch a new Person only if no Person was passed
-                            personsModel.fetchPerson(phoneNumber: "55-3456-7890") { (person, error) in
-                                if let person = person {
-                                    
-                                } else if let error = error {
-                                    print("Error fetching person: \(error.localizedDescription)")
-                                }
-                            }
-                        }
+//            if fetchedPerson == nil {  // Conditionally fetch a new Person only if no Person was passed
+//                            personsModel.fetchPerson(phoneNumber: "55-3456-7890") { (person, error) in
+//                                if let person = person {
+//                                    
+//                                } else if let error = error {
+//                                    print("Error fetching person: \(error.localizedDescription)")
+//                                }
+//                            }
+//                        }
             }
             //orgModel.printOrgs()
-        }
+//        }
     }
 
 

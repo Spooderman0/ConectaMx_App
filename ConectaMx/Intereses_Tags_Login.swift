@@ -11,7 +11,9 @@ import SwiftUI
 
 struct Intereses_Tags_Login: View {
     var tags: [String]
-        
+    var personModel: PersonModel? // Make this an optional
+    var phoneNumber: String? // Add a phone number to identify the user
+    
     @State var seleccionadosT = Set<String>()
     @State private var navigateToContent = false
     
@@ -55,10 +57,18 @@ struct Intereses_Tags_Login: View {
             
             // Botón "Comenzar"
             Button(action: {
-                // Acción para comenzar
-                navigateToContent = true
-            }, label: {
-                Text("Comenzar")
+                            if let phone = phoneNumber, let model = personModel {
+                                model.updatePersonTags(phone: phone, newTags: Array(seleccionadosT)) { success in
+                                    if success {
+                                        print("Person tags updated successfully")
+                                    } else {
+                                        print("Failed to update person tags")
+                                    }
+                                }
+                            }
+                            navigateToContent = true
+                        }, label: {
+                            Text("Comenzar")
                     .foregroundColor(.white)
                     .padding()
                     .frame(maxWidth: .infinity)
@@ -68,20 +78,6 @@ struct Intereses_Tags_Login: View {
             .padding([.leading, .trailing], 20)
             
             
-            
-            
-            
-            // Botón para saltar este paso
-            //            Button(action: {
-            //                // Acción para saltar este paso
-            //            }, label: {
-            //                Text("Saltar este paso")
-            //                    .underline()
-            //                    .font(.footnote)
-            //                    .foregroundColor(Color(hex: "625C87"))
-            //            })
-            //        }
-            //        .padding()
             NavigationLink(destination: ContentView(selectedT: seleccionadosT)) {
                 Text("Saltar este paso")
                     .underline()

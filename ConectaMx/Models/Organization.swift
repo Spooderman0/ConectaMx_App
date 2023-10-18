@@ -2,6 +2,7 @@
 import Foundation
 import SwiftData
 
+
 struct Organization: Identifiable {
     var id: String
     var name: String
@@ -16,6 +17,8 @@ struct Organization: Identifiable {
     var tags: [String]
     var RFC: String
     var postId: [String]
+    var followers: [String] // Added followers array
+    var password: String // Added password
     
     init(
         id: String,
@@ -30,7 +33,9 @@ struct Organization: Identifiable {
         logo: String,
         tags: [String],
         RFC: String,
-        postId: [String]
+        postId: [String],
+        followers: [String],
+        password: String
     ) {
         self.id = id
         self.name = name
@@ -45,8 +50,32 @@ struct Organization: Identifiable {
         self.tags = tags
         self.RFC = RFC
         self.postId = postId
+        self.followers = followers
+        self.password = password
     }
 }
+
+struct SocialMedia {
+    var facebook: String
+    var twitter: String
+    var instagram: String
+    var linkedIn: String
+    var youtube: String // Added youtube
+    var tiktok: String // Added tiktok
+    var whatsapp: String // Added whatsapp
+    
+    init(facebook: String, twitter: String, instagram: String, linkedIn: String, youtube: String, tiktok: String, whatsapp: String) {
+        self.facebook = facebook
+        self.twitter = twitter
+        self.instagram = instagram
+        self.linkedIn = linkedIn
+        self.youtube = youtube
+        self.tiktok = tiktok
+        self.whatsapp = whatsapp
+    }
+}
+
+// Remaining structs (Location, Contact) can stay as they are.
 
 
 struct Location {
@@ -85,16 +114,3 @@ struct Contact {
     }
 }
 
-struct SocialMedia {
-    var facebook: String
-    var twitter: String
-    var instagram: String
-    var linkedIn: String
-    
-    init(facebook: String, twitter: String, instagram: String, linkedIn: String) {
-        self.facebook = facebook
-        self.twitter = twitter
-        self.instagram = instagram
-        self.linkedIn = linkedIn
-    }
-}

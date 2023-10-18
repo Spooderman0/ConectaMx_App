@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct OrgLoginView: View {
-    @State private var orgID = ""
+    @State private var rfc = ""
+    @State private var password = ""
     @State private var bannerMessage = ""
     @State private var showBanner = false
     @State private var navigateToCV = false
@@ -22,16 +23,7 @@ struct OrgLoginView: View {
             ScrollView {
                 VStack {
                     
-                    if showBanner {
-                        BannerView(message: bannerMessage)
-                            .opacity(showBanner ? 1 : 0)
-                            .animation(.easeInOut(duration: 2))
-                            .onAppear {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                                    self.showBanner = false
-                                }
-                            }
-                    }
+                    // (Banner logic can be uncommented if needed)
                     
                     Image("logoApp")
                         .resizable()
@@ -44,33 +36,38 @@ struct OrgLoginView: View {
                     
                     VStack(alignment: .leading, spacing: 10){
                         
-                        Text("Organization ID*")
-                        TextField("Organization ID", text: $orgID)
+                        Text("RFC*")
+                        TextField("Enter RFC", text: $rfc)
+                            .padding()
+                            .background(RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.5), lineWidth: 1))
+                        
+                        Text("Password*")
+                        SecureField("Enter Password", text: $password)
                             .padding()
                             .background(RoundedRectangle(cornerRadius: 8)
                                 .stroke(Color.gray.opacity(0.5), lineWidth: 1))
                         
                     }
                     
-                    NavigationLink(destination: OrgContentView(), isActive: $navigateToCV) {
+                    NavigationLink(destination: OrgContentView(orgModel: self.orgModel), isActive: $navigateToCV) {
                         EmptyView()
                     }
+
                     
                     Button(action: {
-                            orgModel.fetchOrganization(organizationId: self.orgID) { organization, error in
-                                if let organization = organization {
-                                    self.bannerMessage = "Welcome \(organization.name)"
-                                    self.showBanner = true
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                        self.navigateToCV = true
-                                    }
-                                } else {
-                                    self.bannerMessage = "Organization ID not found"  // Error message
-                                    self.showBanner = true  // Show the banner with error message
+                        orgModel.fetchOrganization(rfc: self.rfc, password: self.password) { organization, error in
+                            if let organization = organization {
+                                // (Banner logic can be uncommented if needed)
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    self.navigateToCV = true
                                 }
+                            } else {
+                                // (Banner logic can be uncommented if needed)
                             }
-                        }) {
-                            Text("Login")
+                        }
+                    }) {
+                        Text("Login")
                             .foregroundColor(.white)
                             .padding()
                             .frame(maxWidth: .infinity)
@@ -82,10 +79,10 @@ struct OrgLoginView: View {
                             }
                             
                     }
-                    
                     .padding(.top)
                     
                     Spacer()
+
                     
                 }
                 .padding()

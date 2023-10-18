@@ -13,11 +13,17 @@ struct OrgContentView: View {
     
     @State private var organization: Organization?
     
-    var orgModel = OrganizationModel()
+    var orgModel: OrganizationModel  // Updated this line
+        
+        // Added initializer to accept an OrganizationModel parameter
+        init(orgModel: OrganizationModel) {
+            self.orgModel = orgModel
+        }
+    
     
     var body: some View {
         
-            NavigationView {
+           
                 ZStack {
                     VStack {
                         switch activePage {
@@ -35,24 +41,25 @@ struct OrgContentView: View {
                     }
                 }
             }
-            .onAppear {
-                let organizationId = "652573ca0130690d2581318f"
-                
-                orgModel.fetchOrganization(organizationId: organizationId) { fetchedOrganization, error in
-                    if let fetchedOrganization = fetchedOrganization {
-                        self.organization = fetchedOrganization
-                    } else if let error = error {
-                        print("Error fetching organization: \(error)")
-                    }
-                }
-            }
-        }
+//            .onAppear {
+//                let organizationId = "652573ca0130690d2581318f"
+//                
+//                orgModel.fetchOrganization(organizationId: organizationId) { fetchedOrganization, error in
+//                    if let fetchedOrganization = fetchedOrganization {
+//                        self.organization = fetchedOrganization
+//                    } else if let error = error {
+//                        print("Error fetching organization: \(error)")
+//                    }
+//                }
+//            }
+        
         
     }
 
 
 struct OrgContentView_Previews: PreviewProvider {
     static var previews: some View {
-        OrgContentView()
+
+        OrgContentView(orgModel: OrganizationModel())
     }
 }

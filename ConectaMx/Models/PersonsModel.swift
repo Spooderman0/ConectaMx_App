@@ -30,6 +30,7 @@ class PersonModel: ObservableObject {
                     name: person.1["name"].stringValue,
                     phone: person.1["phone"].stringValue,
                     email: person.1["email"].stringValue,
+                    password: person.1["password"].stringValue,
                     interestedTags: (person.1["interestedTags"].arrayObject as? [String])!,
                     favorites: (person.1["favorites"].arrayObject as? [String])!
                 )
@@ -40,31 +41,16 @@ class PersonModel: ObservableObject {
                 }
             }
         }
-  
 
-
-
-    
-//    func postPerson(person: Person, completion: @escaping (Bool) -> Void) {
-//        let urlString = "\(baseURL)/add_client"
-//        
-//        AF.request(urlString, method: .post,encoding: URLEncoding.default).response { response in
-//            switch response.result {
-//            case .success(_):
-//                completion(true)
-//            case .failure(_):
-//                completion(false)
-//            }
-//        }
-//    }
     func postPerson(person: Person, completion: @escaping (Bool) -> Void) {
-        let urlString = "\(baseURL)/add_client"
+        let urlString = "\(baseURL)/register_client"
         
         // Convert Person instance to a dictionary
         let parameters: [String: Any] = [
             "name": person.name,
             "phone": person.phone,
             "email": person.email,
+            "password": person.password,
             "interestedTags": person.interestedTags,
             "favorites": person.favorites
         ]
@@ -78,20 +64,36 @@ class PersonModel: ObservableObject {
             }
         }
     }
+    
+    func login(phone: String, password: String, completion: @escaping (Bool, String?) -> Void) {
+        let urlString = "http://10.14.255.172:5000/login_client"
 
+        // Parameters based on the API expectations
+        let parameters: [String: Any] = [
+            "phone": phone,
+            "password": password
+        ]
 
-//    func updatePerson(phone: String, client: Person, completion: @escaping (Bool) -> Void) {
-//        let urlString = "\(baseURL)/update_client/\(phone)"
-//        
-//        AF.request(urlString, method: .put,encoding: URLEncoding.default).response { response in
-//            switch response.result {
-//            case .success(_):
-//                completion(true)
-//            case .failure(_):
-//                completion(false)
-//            }
-//        }
-//    }
+        // Alamofire POST request
+        AF.request(urlString, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON { response in
+            switch response.result {
+            case .success(let value):
+                let json = JSON(value)
+
+                if let message = json["message"].string {
+                    completion(true, message)  // Login successful
+                } else if let error = json["error"].string {
+                    completion(false, error)  // Login failed with an error message
+                } else {
+                    completion(false, "Unknown error")  // An unknown error occurred
+                }
+
+            case .failure(let error):
+                completion(false, error.localizedDescription)  // Handling failure in network request
+            }
+        }
+    }
+
     
     func updatePersonTags(phone: String, newTags: [String], completion: @escaping (Bool) -> Void) {
         let urlString = "\(baseURL)/update_client/\(phone)"
@@ -120,6 +122,7 @@ class PersonModel: ObservableObject {
                         name: json["name"].stringValue,
                         phone: json["phone"].stringValue,
                         email: json["email"].stringValue,
+                        password: json["password"].stringValue,
                         interestedTags: (json["interestedTags"].arrayObject as? [String]) ?? [],
                         favorites: (json["favorites"].arrayObject as? [String]) ?? []
                     )
