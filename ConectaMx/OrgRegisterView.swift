@@ -34,10 +34,12 @@ struct OrganizationRegistrationView: View {
     var tagsModel = TagsModel()
     var organizationModel = OrganizationModel()
     
+    @State /*private*/ var fetchedOrganization: Organization?
+    
     @State private var navigateToOrgTags = false
     
     var body: some View {
-        NavigationView{
+        
             ScrollView{
                 VStack {
                     
@@ -209,43 +211,11 @@ struct OrganizationRegistrationView: View {
                         }
                         .padding()
                         
-                        NavigationLink(destination: Organization_Tags(tags: tagsModel.tags), isActive: $navigateToOrgTags) {
+                        NavigationLink(destination: Organization_Tags(tags: tagsModel.tags, fetchedOrganization: $fetchedOrganization), isActive: $navigateToOrgTags) {
                             EmptyView()
                         }
                         
-//                        Button(action: {
-//                            // Step 2: Construct an Organization instance
-//                            let newOrganization = Organization(
-//                                id: "",  // You might need to handle this field accordingly
-//                                name: self.name,
-//                                alias: self.alias,
-//                                location: Location(address: self.address, city: "", state: "", country: "", zip: ""),  // You might need to modify this line to handle city, state, country, and zip
-//                                contact: Contact(email: self.email, first_phone: self.phone, second_phone: ""),  // You might need to modify this line to handle second_phone
-//                                serviceHours: "\(self.startTime) to \(self.endTime)",
-//                                website: self.webPage,
-//                                socialMedia: SocialMedia(facebook: self.facebookPage, twitter: "", instagram: self.instagramUsername, linkedIn: ""),  // You might need to modify this line to handle twitter and linkedIn
-//                                missionStatement: "",
-//                                logo: "",
-//                                tags: [],  // You might need to handle this field accordingly
-//                                RFC: "",
-//                                postId: []  // You might need to handle this field accordingly
-//                                
-//                               
-//                            )
-//                            
-//                            // Step 3: Post the new organization
-//                            self.organizationModel.postOrganization(organization: newOrganization) { success in
-//                                if success {
-//                                    print("Organization posted successfully")
-//                                } else {
-//                                    print("Failed to post organization")
-//                                }
-//                            }
-//                            
-//                            navigateToOrgTags = true
-//                            
-//                        }) {
-//                            Text("Continuar")
+
 
                         Button(action: {
                             // Step 2: Construct an Organization instance
@@ -278,17 +248,28 @@ struct OrganizationRegistrationView: View {
                             
                             // Step 3: Post the new organization
                             self.organizationModel.postOrganization(organization: newOrganization) { success in
-                                if success {
-                                    print("Organization posted successfully")
-                                } else {
-                                    print("Failed to post organization")
+                                    if success {
+                                        print("Organization posted successfully")
+                                        
+                                        // Fetch and save the organization details after successfully posting it
+                                        self.organizationModel.fetchOrganization(rfc: self.rfc, password: self.password) { (organization, error) in
+                                            if let organization = organization {
+                                                self.fetchedOrganization = organization
+                                                navigateToOrgTags = true
+                                            } else {
+                                                print("Failed to fetch organization")
+                                            }
+                                        }
+                                        
+                                    } else {
+                                        print("Failed to post organization")
+                                    }
                                 }
-                            }
-                            
-                            navigateToOrgTags = true
-                            
-                        }) {
-                            Text("Continuar")
+                                
+                                navigateToOrgTags = true
+                                
+                            }) {
+                                Text("Continuar")
                             .foregroundColor(.white)
                             .padding(.top, 5)
                             .frame(maxWidth: .infinity)
@@ -305,11 +286,12 @@ struct OrganizationRegistrationView: View {
                     
                 }
                 .padding()
-            }.onAppear(){
-                tagsModel.fetchTags()
+                .onAppear(){
+                    tagsModel.fetchTags()
+                }
             }
     }
-    }
+    
 
 struct OrganizationRegistrationView_Previews: PreviewProvider {
     static var previews: some View {

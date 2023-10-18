@@ -17,6 +17,7 @@ struct OrgLoginView: View {
     var orgModel = OrganizationModel()
     var tagsModel = TagsModel()
     @State var seleccionadosT = Set<String>()
+    @State /*private*/ var fetchedOrganization: Organization?
     
     var body: some View {
         
@@ -50,19 +51,19 @@ struct OrgLoginView: View {
                         
                     }
                     
-                    NavigationLink(destination: OrgContentView(orgModel: self.orgModel), isActive: $navigateToCV) {
+                    NavigationLink(destination: OrgContentView(organization: $fetchedOrganization), isActive: $navigateToCV) {
                         EmptyView()
                     }
 
                     
-                    Button(action: {
-                        orgModel.fetchOrganization(rfc: self.rfc, password: self.password) { organization, error in
-                            if let organization = organization {
-                                // (Banner logic can be uncommented if needed)
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                    self.navigateToCV = true
-                                }
-                            } else {
+                Button(action: {
+                orgModel.fetchOrganization(rfc: self.rfc, password: self.password) { organization, error in
+                    if let organization = organization {
+                        self.fetchedOrganization = organization // Saving fetched organization
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            self.navigateToCV = true
+                        }
+                    } else {
                                 // (Banner logic can be uncommented if needed)
                             }
                         }

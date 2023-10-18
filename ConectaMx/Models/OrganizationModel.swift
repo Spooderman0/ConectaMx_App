@@ -8,6 +8,7 @@ import Alamofire
 class OrganizationModel {
     var organizations = [Organization]()
     var tagOrgs = [Organization]()
+    //@Published var currentOrganization: Organization?
     
     init() {
         
@@ -96,7 +97,7 @@ class OrganizationModel {
     
     
     func postOrganization(organization: Organization, completion: @escaping (Bool) -> Void) {
-        let urlString = "\(baseURL)/add_organization"
+        let urlString = "\(baseURL)/register_organization"
         
         // Convert Organization instance to a dictionary
         let parameters = organization.toDictionary()
@@ -185,10 +186,10 @@ class OrganizationModel {
                         socialMedia: socialMedia,
                         missionStatement: json["missionStatement"].stringValue,
                         logo: json["logo"].stringValue,
-                        tags: (json["tags"].arrayObject as? [String])!,
+                        tags: (json["tags"].arrayObject as? [String]) ?? [],
                         RFC: json["RFC"].stringValue,
-                        postId: (json["postId"].arrayObject as? [String])!,
-                        followers: (json["followers"].arrayObject as? [String])!,
+                        postId: (json["postId"].arrayObject as? [String]) ?? [],
+                        followers: (json["followers"].arrayObject as? [String]) ?? [],
                         password: json["password"].stringValue
                     )
                     completion(fetchedOrganization, nil)

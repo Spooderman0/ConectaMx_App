@@ -14,6 +14,7 @@ struct Organization_Tags: View {
     @State var seleccionados = Set<String>()
     
     @State private var navigateToOrgContent = false
+    @Binding var fetchedOrganization: Organization?
     
     
     var body: some View {
@@ -47,7 +48,7 @@ struct Organization_Tags: View {
                 }
             }
             
-            NavigationLink(destination: OrgContentView(), isActive: $navigateToOrgContent) {
+            NavigationLink(destination: OrgContentView(organization: $fetchedOrganization), isActive: $navigateToOrgContent) {
                 EmptyView()
             }
             
@@ -82,6 +83,6 @@ struct Organization_Tags: View {
 
 struct Organization_Tags_Previews: PreviewProvider {
     static var previews: some View {
-        Organization_Tags(tags: ["autismo", "cancer"])
+        Organization_Tags(tags: ["autismo", "cancer"],fetchedOrganization: .constant(nil))
     }
 }
