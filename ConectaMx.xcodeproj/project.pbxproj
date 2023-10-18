@@ -19,6 +19,10 @@
 		6A76F9BC2ACB96B90064CA16 /* OrganizationMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A76F9BB2ACB96B90064CA16 /* OrganizationMapView.swift */; };
 		6A76F9DE2AD47A700064CA16 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A76F9DD2AD47A700064CA16 /* UIColor.swift */; };
 		6A76F9E02AD47FF70064CA16 /* OrgProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A76F9DF2AD47FF70064CA16 /* OrgProfileView.swift */; };
+		6ACACA9C2ADF750B002BF39D /* UserOrganizationMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACACA9B2ADF750B002BF39D /* UserOrganizationMap.swift */; };
+		6ACACA9E2ADFA633002BF39D /* OrganizationMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACACA9D2ADFA633002BF39D /* OrganizationMap.swift */; };
+		6ACACAA22ADFCCF8002BF39D /* ImageSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACACAA12ADFCCF8002BF39D /* ImageSlider.swift */; };
+		6ACACAA42ADFD443002BF39D /* FullImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACACAA32ADFD443002BF39D /* FullImageView.swift */; };
 		C919DE932AB8F9620054B7A4 /* ConectaMxApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C919DE922AB8F9620054B7A4 /* ConectaMxApp.swift */; };
 		C919DE952AB8F9620054B7A4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C919DE942AB8F9620054B7A4 /* ContentView.swift */; };
 		C919DE972AB8F9620054B7A4 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = C919DE962AB8F9620054B7A4 /* Item.swift */; };
@@ -67,6 +71,10 @@
 		6A76F9BB2ACB96B90064CA16 /* OrganizationMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationMapView.swift; sourceTree = "<group>"; };
 		6A76F9DD2AD47A700064CA16 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		6A76F9DF2AD47FF70064CA16 /* OrgProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrgProfileView.swift; sourceTree = "<group>"; };
+		6ACACA9B2ADF750B002BF39D /* UserOrganizationMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOrganizationMap.swift; sourceTree = "<group>"; };
+		6ACACA9D2ADFA633002BF39D /* OrganizationMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationMap.swift; sourceTree = "<group>"; };
+		6ACACAA12ADFCCF8002BF39D /* ImageSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSlider.swift; sourceTree = "<group>"; };
+		6ACACAA32ADFD443002BF39D /* FullImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullImageView.swift; sourceTree = "<group>"; };
 		C919DE8F2AB8F9620054B7A4 /* ConectaMx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ConectaMx.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C919DE922AB8F9620054B7A4 /* ConectaMxApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConectaMxApp.swift; sourceTree = "<group>"; };
 		C919DE942AB8F9620054B7A4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -143,6 +151,7 @@
 				C919DE942AB8F9620054B7A4 /* ContentView.swift */,
 				C919DEA82AB90D510054B7A4 /* Home.swift */,
 				C9CA65F62ABB7468006E762D /* FavoritesView.swift */,
+				6ACACA9B2ADF750B002BF39D /* UserOrganizationMap.swift */,
 				C9CA65F82ABB7843006E762D /* ProfileView.swift */,
 				C9B33C8D2AC235650044BA2D /* EditProfileView.swift */,
 				C9CA65FA2ABB7CF7006E762D /* ImagePicker.swift */,
@@ -154,12 +163,15 @@
 				6A65141A2AC4EBC900E0CC41 /* Organization_Tags.swift */,
 				6A1B963E2AD7752400F9CB6B /* OrgContentView.swift */,
 				6A76F9B92AC63BA60064CA16 /* OrgHomeView.swift */,
+				6ACACAA32ADFD443002BF39D /* FullImageView.swift */,
+				6ACACAA12ADFCCF8002BF39D /* ImageSlider.swift */,
 				6A1B963C2AD69F7100F9CB6B /* OrgNotificationView.swift */,
 				6A76F9B32AC6330D0064CA16 /* OrgInboxView.swift */,
 				6A76F9DF2AD47FF70064CA16 /* OrgProfileView.swift */,
 				6A76F9B52AC635610064CA16 /* OrgBottomBarView.swift */,
 				6A76F9BB2ACB96B90064CA16 /* OrganizationMapView.swift */,
 				6A1B96372AD63C1B00F9CB6B /* OrgMapView.swift */,
+				6ACACA9D2ADFA633002BF39D /* OrganizationMap.swift */,
 				C934BF7C2ABA6D4C00154AB4 /* MapView.swift */,
 				6A6514182AC2507000E0CC41 /* Color.swift */,
 				C919DEA62AB906450054B7A4 /* ColorExtensions.swift */,
@@ -277,12 +289,14 @@
 			files = (
 				C9B33C8E2AC235650044BA2D /* EditProfileView.swift in Sources */,
 				C919DE952AB8F9620054B7A4 /* ContentView.swift in Sources */,
+				6ACACA9C2ADF750B002BF39D /* UserOrganizationMap.swift in Sources */,
 				FBD5FCDA2AD88FF700E513ED /* Persons.swift in Sources */,
 				FB3500262ADE51AE00CA7247 /* PersonLoginView.swift in Sources */,
 				C9CA65F92ABB7843006E762D /* ProfileView.swift in Sources */,
 				FB3500282ADE656A00CA7247 /* InicioOrgs.swift in Sources */,
 				6A76F9E02AD47FF70064CA16 /* OrgProfileView.swift in Sources */,
 				C934BF7F2ABA72E900154AB4 /* SearchView.swift in Sources */,
+				6ACACA9E2ADFA633002BF39D /* OrganizationMap.swift in Sources */,
 				FBD5FCD02AD88FCA00E513ED /* Organization.swift in Sources */,
 				FBD5FCD42AD88FD800E513ED /* Posts.swift in Sources */,
 				C9CA65FB2ABB7CF7006E762D /* ImagePicker.swift in Sources */,
@@ -294,6 +308,7 @@
 				6A76F9B62AC635610064CA16 /* OrgBottomBarView.swift in Sources */,
 				C919DEA32AB8FAA10054B7A4 /* Inicio_Sesion.swift in Sources */,
 				6A76F9DE2AD47A700064CA16 /* UIColor.swift in Sources */,
+				6ACACAA42ADFD443002BF39D /* FullImageView.swift in Sources */,
 				6A6514172AC232BC00E0CC41 /* OrgRegisterView.swift in Sources */,
 				C919DE972AB8F9620054B7A4 /* Item.swift in Sources */,
 				FB35002A2ADE658700CA7247 /* OrgLoginView.swift in Sources */,
@@ -314,6 +329,10 @@
 				C919DEA92AB90D510054B7A4 /* Home.swift in Sources */,
 				6A1B963D2AD69F7100F9CB6B /* OrgNotificationView.swift in Sources */,
 				FBD5FCCE2AD88FC400E513ED /* TagsModel.swift in Sources */,
+<<<<<<< Updated upstream
+=======
+				6ACACAA22ADFCCF8002BF39D /* ImageSlider.swift in Sources */,
+>>>>>>> Stashed changes
 				6A65141B2AC4EBC900E0CC41 /* Organization_Tags.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -448,10 +467,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ConectaMx/Preview Content\"";
-				DEVELOPMENT_TEAM = LFG687US47;
+				DEVELOPMENT_TEAM = 9DR9AR76VW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Utilizamos tu ubicación para hacer uso del mapa para encontrar organizaciones cerca de ti.";
+				INFOPLIST_KEY_NSLocationTemporaryUsageDescriptionDictionary = "Utilizamos tu ubicación para hacer uso del mapa para encontrar organizaciones cerca de ti.";
+				INFOPLIST_KEY_NSLocationUsageDescription = "Utilizamos tu ubicación para hacer uso del mapa para encontrar organizaciones cerca de ti.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Utilizamos tu ubicación para hacer uso del mapa para encontrar organizaciones cerca de ti.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -462,7 +484,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = guillermoGarciaA.ConectaMx;
+				PRODUCT_BUNDLE_IDENTIFIER = Danna.ConectaMx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -478,10 +500,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ConectaMx/Preview Content\"";
-				DEVELOPMENT_TEAM = LFG687US47;
+				DEVELOPMENT_TEAM = 9DR9AR76VW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Utilizamos tu ubicación para hacer uso del mapa para encontrar organizaciones cerca de ti.";
+				INFOPLIST_KEY_NSLocationTemporaryUsageDescriptionDictionary = "Utilizamos tu ubicación para hacer uso del mapa para encontrar organizaciones cerca de ti.";
+				INFOPLIST_KEY_NSLocationUsageDescription = "Utilizamos tu ubicación para hacer uso del mapa para encontrar organizaciones cerca de ti.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Utilizamos tu ubicación para hacer uso del mapa para encontrar organizaciones cerca de ti.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -492,7 +517,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = guillermoGarciaA.ConectaMx;
+				PRODUCT_BUNDLE_IDENTIFIER = Danna.ConectaMx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

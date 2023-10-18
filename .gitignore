@@ -2,3 +2,4 @@ xcuserdata/
 .DS_Store
 ConectaMx.xcodeproj/project.pbxproj
 ConectaMx.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+*.resolved
