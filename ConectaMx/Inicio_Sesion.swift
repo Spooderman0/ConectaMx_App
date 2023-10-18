@@ -10,7 +10,10 @@ import SwiftUI
 
 struct Inicio_Sesion: View {
     //@StateObject 
+    @EnvironmentObject var session: SessionModel
     var tagsModel = TagsModel()
+    @State private var navigateToPRV = false
+    @State private var navigateToPLV = false
     var body: some View {
         NavigationView{
             VStack(spacing: 30) {
@@ -25,9 +28,13 @@ struct Inicio_Sesion: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
                 
-                // Botón de inicio de sesión
+                
+                NavigationLink(destination: PersonLoginView(), isActive: $navigateToPLV) {
+                    EmptyView()
+                }
+
                 Button(action: {
-                    // Acción para el inicio de sesión
+                    navigateToPLV = true
                 }, label: {
                     Text("Iniciar Sesión")
                         .foregroundColor(.white)
@@ -50,10 +57,11 @@ struct Inicio_Sesion: View {
                         }
                 }
 
-                
-                // Botón para registrarse con número telefónico
+                NavigationLink(destination: PersonRegistrationView(), isActive: $navigateToPRV) {
+                    EmptyView()
+                }
                 Button(action: {
-                    // Acción para registrarse con número telefónico
+                    navigateToPRV = true
                 }, label: {
                     HStack {
                         Image("iphone_phone_logo")
@@ -72,20 +80,7 @@ struct Inicio_Sesion: View {
                 
                 Spacer()
                 
-                // Botón para continuar como organización
-//                Button(action: {
-//                // Acción para continuar como organización
-//                }, label: {
-//                    Text("Continuar como Organización")
-//                        .foregroundColor(Color(hex: "625C87"))
-//                        .fontWeight(.medium)
-//                        .underline()
-                
-                
-//                })
-                
-                
-                NavigationLink(destination: OrganizationRegistrationView()) {
+                NavigationLink(destination: InicioOrgs()) {
                     Text("Continuar como Organización")
                         .foregroundColor(Color(hex: "625C87"))
                         .fontWeight(.medium)

@@ -345,7 +345,41 @@ struct OrgHomeView: View {
 
 struct OrgHomeView_Previews: PreviewProvider {
     static var previews: some View {
-        let mockOrganization = Organization(id: "", name: "name", location: Location(address: "", city: "", state: "", country: " ", zip: " "), contact: Contact(email: "", phone: ""), serviceHours: "", socialMedia: SocialMedia(facebook: "", twitter: "", instagram: "", linkedIn: ""), missionStatement: "", tags: ["",""])  // Assuming Organization has a default initializer
+        let mockOrganization = Organization(
+            id: "001",
+            name: "Mock Organization",
+            alias: "MockOrg",
+            location: Location(
+                address: "123 Mock St",
+                city: "MockCity",
+                state: "MockState",
+                country: "MockCountry",
+                zip: "12345"
+            ),
+            contact: Contact(
+                email: "mock@organization.com",
+                first_phone: "123-456-7890",
+                second_phone: "098-765-4321"
+            ),
+            serviceHours: "9am - 5pm",
+            website: "www.mockorganization.com",
+            socialMedia: SocialMedia(
+                facebook: "mockFacebook",
+                twitter: "mockTwitter",
+                instagram: "mockInstagram",
+                linkedIn: "mockLinkedIn",
+                youtube: "mockYouTube",
+                tiktok: "mockTikTok",
+                whatsapp: "mockWhatsApp"
+            ),
+            missionStatement: "Making the world a better place through mock services.",
+            logo: "mockLogoURL",
+            tags: ["MockTag1", "MockTag2"],
+            RFC: "MOCKRFC123",
+            postId: ["post1", "post2"],
+            followers: ["follower1", "follower2", "follower3"],
+            password: "mockPassword"
+        )
         let mockOrgModel = OrganizationModel()  // Assuming OrganizationModel has a default initializer
                 
     OrgHomeView(orgModel: mockOrgModel, organization: mockOrganization)

@@ -11,13 +11,13 @@ import SwiftData
 struct OrgContentView: View {
     @State private var activePage: OrgActivePage = .home
     
-    @State private var organization: Organization?
+    @Binding var organization: Organization?
     
     var orgModel = OrganizationModel()
     
     var body: some View {
         
-            NavigationView {
+           
                 ZStack {
                     VStack {
                         switch activePage {
@@ -34,25 +34,19 @@ struct OrgContentView: View {
                         OrgBottomBarView(activePage: $activePage)
                     }
                 }
-            }
-            .onAppear {
-                let organizationId = "652573ca0130690d2581318f"
-                
-                orgModel.fetchOrganization(organizationId: organizationId) { fetchedOrganization, error in
-                    if let fetchedOrganization = fetchedOrganization {
-                        self.organization = fetchedOrganization
-                    } else if let error = error {
-                        print("Error fetching organization: \(error)")
-                    }
+                .onAppear {
+                    print("Print Org name in cv")
+                    print(organization?.name)
                 }
+
             }
-        }
+        
         
     }
 
 
 struct OrgContentView_Previews: PreviewProvider {
     static var previews: some View {
-        OrgContentView()
+        OrgContentView(organization: .constant(nil))
     }
 }

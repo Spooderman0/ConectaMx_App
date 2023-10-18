@@ -2,29 +2,81 @@
 import Foundation
 import SwiftData
 
+
 struct Organization: Identifiable {
     var id: String
     var name: String
+    var alias: String
     var location: Location
     var contact: Contact
     var serviceHours: String
+    var website: String
     var socialMedia: SocialMedia
     var missionStatement: String
+    var logo: String
     var tags: [String]
-    //var followers: [String]
+    var RFC: String
+    var postId: [String]
+    var followers: [String] // Added followers array
+    var password: String // Added password
     
-    init(id: String, name: String, location: Location, contact: Contact, serviceHours: String, socialMedia: SocialMedia, missionStatement: String, tags: [String]){//}, followers: [String]) {
+    init(
+        id: String,
+        name: String,
+        alias: String,
+        location: Location,
+        contact: Contact,
+        serviceHours: String,
+        website: String,
+        socialMedia: SocialMedia,
+        missionStatement: String,
+        logo: String,
+        tags: [String],
+        RFC: String,
+        postId: [String],
+        followers: [String],
+        password: String
+    ) {
         self.id = id
         self.name = name
+        self.alias = alias
         self.location = location
         self.contact = contact
         self.serviceHours = serviceHours
+        self.website = website
         self.socialMedia = socialMedia
         self.missionStatement = missionStatement
+        self.logo = logo
         self.tags = tags
-        //self.followers = followers
+        self.RFC = RFC
+        self.postId = postId
+        self.followers = followers
+        self.password = password
     }
 }
+
+struct SocialMedia {
+    var facebook: String
+    var twitter: String
+    var instagram: String
+    var linkedIn: String
+    var youtube: String // Added youtube
+    var tiktok: String // Added tiktok
+    var whatsapp: String // Added whatsapp
+    
+    init(facebook: String, twitter: String, instagram: String, linkedIn: String, youtube: String, tiktok: String, whatsapp: String) {
+        self.facebook = facebook
+        self.twitter = twitter
+        self.instagram = instagram
+        self.linkedIn = linkedIn
+        self.youtube = youtube
+        self.tiktok = tiktok
+        self.whatsapp = whatsapp
+    }
+}
+
+// Remaining structs (Location, Contact) can stay as they are.
+
 
 struct Location {
     var address: String
@@ -42,26 +94,23 @@ struct Location {
     }
 }
 
-struct Contact {
-    var email: String
-    var phone: String
-    
-    init(email: String, phone: String) {
-        self.email = email
-        self.phone = phone
+struct Logo {
+    var url: String
+
+    init(url: String) {
+        self.url = url
     }
 }
 
-struct SocialMedia {
-    var facebook: String
-    var twitter: String
-    var instagram: String
-    var linkedIn: String
-    
-    init(facebook: String, twitter: String, instagram: String, linkedIn: String) {
-        self.facebook = facebook
-        self.twitter = twitter
-        self.instagram = instagram
-        self.linkedIn = linkedIn
+struct Contact {
+    var email: String
+    var first_phone: String
+    var second_phone: String
+
+    init(email: String, first_phone: String, second_phone: String) {
+        self.email = email
+        self.first_phone = first_phone
+        self.second_phone = second_phone
     }
 }
+

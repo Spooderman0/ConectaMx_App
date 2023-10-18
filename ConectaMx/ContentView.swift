@@ -10,23 +10,24 @@ import SwiftData
 
 struct ContentView: View {
     @State private var activePage: ActivePage = .home
-   // @StateObject
+    var selectedT: Set<String>
     var tagsModel = TagsModel()
     var orgModel = OrganizationModel()
     var postsModel = PostModel()
     var personsModel = PersonModel()
+    var fetchedPerson: Person?
     
     
 
     var body: some View {
-        NavigationView {
+//        NavigationView {
             ZStack {
                 VStack {
                     switch activePage {
                     case .home:
-                        HomeView(tags: tagsModel.tags, orgModel: orgModel)
+                        HomeView(tags: tagsModel.tags, orgModel: orgModel, personsModel: personsModel)
                     case .search:
-                        SearchView(orgModel: orgModel, tags: tagsModel.tags, personsModel: personsModel)
+                        SearchView(orgModel: orgModel, tags: tagsModel.tags, personsModel: personsModel, selectedT: selectedT)
                     case .map:
                         UserOrganizationMap()
                     case .favorites:
@@ -40,29 +41,33 @@ struct ContentView: View {
                     BottomBarView(activePage: $activePage)
                 }
             }
+            .onAppear(){
+                tagsModel.fetchTags()
+                postsModel.fetchPosts()
+                orgModel.fetchOrganizations()
         }
-        .onAppear(){
-            tagsModel.fetchTags()
-            orgModel.fetchOrganizations()
-            postsModel.fetchPosts()
-           // personsModel.fetchPersons()
-            personsModel.fetchPerson(phoneNumber: "55-3456-7890") { (person, error) in
-                if let person = person {
-                    // Handle the retrieved person
-                    //print("Retrieved person: \(person.name)")
-                } else if let error = error {
-                    // Handle the error
-                    print("Error fetching person: \(error.localizedDescription)")
-                }
+        
+            
+            
+            
+//            if fetchedPerson == nil {  // Conditionally fetch a new Person only if no Person was passed
+//                            personsModel.fetchPerson(phoneNumber: "55-3456-7890") { (person, error) in
+//                                if let person = person {
+//                                    
+//                                } else if let error = error {
+//                                    print("Error fetching person: \(error.localizedDescription)")
+//                                }
+//                            }
+//                        }
             }
             //orgModel.printOrgs()
-        }
+//        }
     }
-}
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(selectedT: [""])
     }
 }
 

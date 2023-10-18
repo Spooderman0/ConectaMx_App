@@ -11,10 +11,10 @@ import SwiftUI
 
 struct Intereses_Tags_Login: View {
     var tags: [String]
+    var personModel: PersonModel? // Make this an optional
+    var phoneNumber: String? // Add a phone number to identify the user
     
-    let intereses = ["Deporte", "Tecnología", "Música", "Comida", "Arte", "Ciencia"]
-    
-    @State var seleccionados = Set<String>()
+    @State var seleccionadosT = Set<String>()
     @State private var navigateToContent = false
     
     
@@ -32,34 +32,43 @@ struct Intereses_Tags_Login: View {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 100)), count: 3), spacing: 20) {
                     ForEach(tags, id: \.self) { tag in
                         Button(action: {
-                            if seleccionados.contains(tag) {
-                                seleccionados.remove(tag)
+                            if seleccionadosT.contains(tag) {
+                                seleccionadosT.remove(tag)
                             } else {
-                                seleccionados.insert(tag)
+                                seleccionadosT.insert(tag)
                             }
                         }) {
                             Text(tag)
                                 .lineLimit(1) // Asegura que el texto solo ocupa una línea
                                 .padding(.all, 10)
                                 .frame(minWidth: 100) // Establece un ancho mínimo para cada tag
-                                .background(seleccionados.contains(tag) ? Color(hex: "625C87") : Color.gray.opacity(0.2))
-                                .foregroundColor(seleccionados.contains(tag) ? .white : .black)
+                                .background(seleccionadosT.contains(tag) ? Color(hex: "625C87") : Color.gray.opacity(0.2))
+                                .foregroundColor(seleccionadosT.contains(tag) ? .white : .black)
                                 .cornerRadius(15)
                         }
                     }
                 }
             }
             
-            NavigationLink(destination: ContentView(), isActive: $navigateToContent) {
+            NavigationLink(destination: ContentView(selectedT: seleccionadosT), isActive: $navigateToContent) {
                 EmptyView()
             }
+
             
             // Botón "Comenzar"
             Button(action: {
-                // Acción para comenzar
-                navigateToContent = true
-            }, label: {
-                Text("Comenzar")
+                            if let phone = phoneNumber, let model = personModel {
+                                model.updatePersonTags(phone: phone, newTags: Array(seleccionadosT)) { success in
+                                    if success {
+                                        print("Person tags updated successfully")
+                                    } else {
+                                        print("Failed to update person tags")
+                                    }
+                                }
+                            }
+                            navigateToContent = true
+                        }, label: {
+                            Text("Comenzar")
                     .foregroundColor(.white)
                     .padding()
                     .frame(maxWidth: .infinity)
@@ -69,28 +78,14 @@ struct Intereses_Tags_Login: View {
             .padding([.leading, .trailing], 20)
             
             
-            
-            
-            
-            // Botón para saltar este paso
-            //            Button(action: {
-            //                // Acción para saltar este paso
-            //            }, label: {
-            //                Text("Saltar este paso")
-            //                    .underline()
-            //                    .font(.footnote)
-            //                    .foregroundColor(Color(hex: "625C87"))
-            //            })
-            //        }
-            //        .padding()
-            NavigationLink(destination: ContentView()) {
+            NavigationLink(destination: ContentView(selectedT: seleccionadosT)) {
                 Text("Saltar este paso")
                     .underline()
                     .font(.footnote)
                     .foregroundColor(Color(hex: "625C87"))
             }
         }
-        
+        .padding(10)
         
     }
 }
