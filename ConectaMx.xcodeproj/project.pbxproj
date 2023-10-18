@@ -468,7 +468,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ConectaMx/Preview Content\"";
-				DEVELOPMENT_TEAM = LFG687US47;
+				DEVELOPMENT_TEAM = U9JXWD2ZKD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Utilizamos tu ubicación para hacer uso del mapa para encontrar organizaciones cerca de ti.";
@@ -498,7 +498,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ConectaMx/Preview Content\"";
-				DEVELOPMENT_TEAM = LFG687US47;
+				DEVELOPMENT_TEAM = U9JXWD2ZKD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Utilizamos tu ubicación para hacer uso del mapa para encontrar organizaciones cerca de ti.";
