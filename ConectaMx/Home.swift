@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import MapKit
 
 
 struct HomeView: View {
@@ -68,6 +68,7 @@ struct OrganizationView: View {
     //let organizationName = "String"
     var organization: Organization
     
+    
     var body: some View {
         ZStack {
             Image("Org_Mock")
@@ -112,6 +113,8 @@ struct OrganizationView: View {
 
 struct OrganizationDetailView: View {
     var organization: Organization
+    let map = [OrganizationMap(id: 1, name: "Organización A", coordinate: CLLocationCoordinate2D(latitude: 25.649837, longitude: -100.289034))]
+    
     var body: some View {
         ScrollView {
             Text(organization.name)
@@ -179,8 +182,8 @@ struct OrganizationDetailView: View {
                 .padding(.bottom, 10)
                 .fontWeight(.bold)
 
-            
-            MapView(latitude: 40.7128, longitude: -74.0060)
+            //25.649837, -100.289034
+            MapView(organizations: map)
                 .frame(height: 200)
             
          

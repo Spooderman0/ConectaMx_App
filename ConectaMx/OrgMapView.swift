@@ -23,46 +23,36 @@ func getCoordinate(addressString : String,
     }
 }
 
-struct OrganizationMap: Identifiable {
-    let id: Int
-    let name: String
-    var coordinate: CLLocationCoordinate2D
-}
+
 
 struct OrgMapView: View {
-    @State private var organizations: [OrganizationMap] = [
-        OrganizationMap(id: 1, name: "Organización 1", coordinate: kCLLocationCoordinate2DInvalid),
-        OrganizationMap(id: 2, name: "Organización 2", coordinate: kCLLocationCoordinate2DInvalid),
-        OrganizationMap(id: 3, name: "Organización 3", coordinate: kCLLocationCoordinate2DInvalid)
-    ]
+    
+    
+    @State private var organization: OrganizationMap = OrganizationMap(id: 1, name: "Organización", coordinate: kCLLocationCoordinate2DInvalid)
+    
+    let address: String
 
-    let addresses = [
-        "Avenida Eugenio Garza Sada 2411, Tecnologico, 64700 Monterrey, N.L., México",
-        "Eugenio Garza Sada 2501, Tecnologico, 64840 Monterrey, NL, México",
-        "Técnicos 202, Tecnologico, 64700 Monterrey, N.L., México"
-    ]
+    init(calle: String, numero: String, colonia: String, cp: String, ciudad: String, estado: String, pais: String) {
+        self.address = "\(calle) \(numero), \(colonia), \(cp), \(ciudad), \(estado), \(pais)"
+    }
     
     var body: some View {
         Map {
-            ForEach(organizations) { organization in
-                if CLLocationCoordinate2DIsValid(organization.coordinate) {
-                    Marker(organization.name, coordinate: organization.coordinate)
-                }
+            if CLLocationCoordinate2DIsValid(organization.coordinate) {
+                Marker(organization.name, coordinate: organization.coordinate)
             }
         }
         .onAppear {
-            loadCoordinates()
+            loadCoordinate()
         }
     }
 
-    func loadCoordinates() {
-        for (index, address) in addresses.enumerated() {
-            getCoordinate(addressString: address) { (coordinate, error) in
-                if let error = error {
-                    print("Error geocoding address: \(error)")
-                } else {
-                    organizations[index].coordinate = coordinate
-                }
+    func loadCoordinate() {
+        getCoordinate(addressString: address) { (coordinate, error) in
+            if let error = error {
+                print("Error geocoding address: \(error)")
+            } else {
+                organization.coordinate = coordinate
             }
         }
     }
@@ -70,6 +60,10 @@ struct OrgMapView: View {
 
 struct OrgMapView_Previews: PreviewProvider {
     static var previews: some View {
-        OrgMapView()
+        OrgMapView(calle:"Avenida Eugenio Garza Sada", numero: "2411", colonia: "Tecnologico", cp:"64700", ciudad: "Monterrey", estado: "N.L.", pais: "México")
     }
 }
+
+/*
+ OrgMapView(calle: .constant("Avenida Eugenio Garza Sada"), numero: .constant("2411"), colonia: .constant("Tecnologico"), cp: .constant("64700"), ciudad: .constant("Monterrey"), estado: .constant("N.L."), pais: .constant("México"))
+ */

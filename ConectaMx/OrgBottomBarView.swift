@@ -20,6 +20,7 @@ struct OrgBottomBarView: View {
         VStack{ // Agrega
             Spacer()
             HStack {
+                Spacer()
                 Button(action: {
                     activePage = .home
                 }) {
@@ -54,6 +55,7 @@ struct OrgBottomBarView: View {
                         .foregroundColor(.white)
                         .opacity(activePage == .profile ? 1.0 : 0.5)
                 }
+                Spacer()
             }
             .padding(.horizontal, 40)
             .padding(.vertical, 20)

@@ -28,6 +28,8 @@ struct ContentView: View {
                         HomeView(tags: tagsModel.tags, orgModel: orgModel, personsModel: personsModel)
                     case .search:
                         SearchView(orgModel: orgModel, tags: tagsModel.tags, personsModel: personsModel, selectedT: selectedT)
+                    case .map:
+                        UserOrganizationMap()
                     case .favorites:
                         FavoritesView(orgModel: orgModel, tags: tagsModel.tags)
                     case .profile:

@@ -3,6 +3,7 @@ import SwiftUI
 enum ActivePage {
     case home
     case search
+    case map
     case favorites
     case profile
 }
@@ -46,6 +47,18 @@ struct BottomBarView: View {
                         .frame(width: 30, height: 30)
                         .foregroundColor(.white)
                         .opacity(activePage == .favorites ? 1.0 : 0.5)
+                }
+                
+                Spacer()
+                
+                Button(action: {
+                    activePage = .map
+                }) {
+                    Image(systemName: activePage == .map ? "map.fill" : "map")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(.white)
+                        .opacity(activePage == .map ? 1.0 : 0.5)
                 }
                 
                 Spacer()
