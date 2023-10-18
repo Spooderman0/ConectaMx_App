@@ -173,6 +173,7 @@ struct SearchView: View {
                     for tag in selectedT {
                         orgModel.fetchOrganizationsByTag(tag: tag)
                     }
+            
                 
             
 //            print("Printing Selected tags before setting")

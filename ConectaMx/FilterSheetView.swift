@@ -49,21 +49,39 @@ struct FilterSheetView: View {
 
             
             // Botón "Aplicar Filtros"
-        Button(action: {
-           //personsModel.fetchedPerson?.interestedTags.removeAll()
-            if let person = personsModel.fetchedPerson {
-                let updatedTags = Array(selectedT)
-                personsModel.updatePersonTags(phone: person.phone, newTags: updatedTags) { success in
-                    if success {
-                        print("Tags updated successfully")
-                    } else {
-                        print("Failed to update tags")
+//        Button(action: {
+//           //personsModel.fetchedPerson?.interestedTags.removeAll()
+//            if let person = personsModel.fetchedPerson {
+//                let updatedTags = Array(selectedT)
+//                personsModel.updatePersonTags(phone: person.phone, newTags: updatedTags) { success in
+//                    if success {
+//                        print("Tags updated successfully")
+//                    } else {
+//                        print("Failed to update tags")
+//                    }
+//                }
+//            }
+//                let tagsToSearch = selectedT.joined(separator: ",")
+//                    orgModel.fetchOrganizationsByTag(tag: tagsToSearch)
+//                }, label: {
+//                Text("Aplicar Filtros")
+            Button(action: {
+                if let person = personsModel.fetchedPerson {
+                    let updatedTags = Array(selectedT)
+                    personsModel.updatePersonTags(phone: person.phone, newTags: updatedTags) { success in
+                        if success {
+                            print("Tags updated successfully")
+                            
+                            // Once the person's tags are updated successfully, then update the organization's tags.
+                            let tagsToSearch = selectedT.joined(separator: ",")
+                            orgModel.fetchOrganizationsByTag(tag: tagsToSearch)
+                            
+                        } else {
+                            print("Failed to update tags")
+                        }
                     }
                 }
-            }
-                let tagsToSearch = selectedT.joined(separator: ",")
-                    orgModel.fetchOrganizationsByTag(tag: tagsToSearch)
-                }, label: {
+            }, label: {
                 Text("Aplicar Filtros")
                     .foregroundColor(.white)
                     .padding()
