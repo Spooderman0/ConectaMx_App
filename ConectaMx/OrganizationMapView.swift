@@ -9,6 +9,7 @@
 import SwiftUI
 import MapKit
 
+
 struct OrganizationMapView: View {
     
     // Mapa direción
@@ -20,11 +21,7 @@ struct OrganizationMapView: View {
     @Binding var estado: String
     @Binding var pais: String
     
-    
-    var fullAddress: String {
-        "\(calle) \(numero), \(colonia), \(cp), \(ciudad), \(estado), \(pais)"
-    }
-    
+
     var body: some View {
         
         Spacer()
@@ -49,87 +46,91 @@ struct OrganizationMapView: View {
                     .padding()
                     .background(RoundedRectangle(cornerRadius: 8)
                         .stroke(Color.gray.opacity(0.5), lineWidth: 1))
-            }
-            // Número y colonia
-            HStack{
-                VStack{
-                    Text("Número")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 10)
-
-                    TextField("Número", text: $numero)
-                        .padding()
-                        .background(RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray.opacity(0.5), lineWidth: 1))
-                }
-                VStack{
-                    Text("Colonia")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 10)
-                    TextField("Colonia", text: $colonia)
-                        .padding()
-                        .background(RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray.opacity(0.5), lineWidth: 1))
-                }
-            }
-            
-            // CP y ciudad
-            HStack{
-
-                VStack{
-                    Text("Código Postal")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 10)
-
-                    TextField("Código Postal", text: $cp)
-                        .padding()
-                        .background(RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray.opacity(0.5), lineWidth: 1))
-                }
-                VStack{
-                    Text("Ciudad")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 10)
-                    TextField("Ciudad", text: $ciudad)
-                        .padding()
-                        .background(RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray.opacity(0.5), lineWidth: 1))
-                }
-            }
-            
-            // Estado y país
-            HStack{
-
-                VStack{
-                    Text("Estado")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 10)
-
-                    TextField("Estado", text: $estado)
-                        .padding()
-                        .background(RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray.opacity(0.5), lineWidth: 1))
-                }
-                VStack{
-                    Text("País")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 10)
-
-                    TextField("País", text: $pais)
-                        .padding()
-                        .background(RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray.opacity(0.5), lineWidth: 1))
+                   // .onChange(of: calle, initial: true) {
+                     //   updateLocationFromAddress()
+                    }
+                // Número y colonia
+                HStack{
+                    VStack{
+                        Text("Número")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 10)
+                        
+                        TextField("Número", text: $numero)
+                            .padding()
+                            .background(RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.5), lineWidth: 1))
+                    }
+                    VStack{
+                        Text("Colonia")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 10)
+                        TextField("Colonia", text: $colonia)
+                            .padding()
+                            .background(RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.5), lineWidth: 1))
+                    }
                 }
                 
+                // CP y ciudad
+                HStack{
+                    
+                    VStack{
+                        Text("Código Postal")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 10)
+                        
+                        TextField("Código Postal", text: $cp)
+                            .padding()
+                            .background(RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.5), lineWidth: 1))
+                    }
+                    VStack{
+                        Text("Ciudad")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 10)
+                        TextField("Ciudad", text: $ciudad)
+                            .padding()
+                            .background(RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.5), lineWidth: 1))
+                    }
+                }
+                
+                // Estado y país
+                HStack{
+                    
+                    VStack{
+                        Text("Estado")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 10)
+                        
+                        TextField("Estado", text: $estado)
+                            .padding()
+                            .background(RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.5), lineWidth: 1))
+                    }
+                    VStack{
+                        Text("País")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 10)
+                        
+                        TextField("País", text: $pais)
+                            .padding()
+                            .background(RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.5), lineWidth: 1))
+                    }
+                    
+                }
+
+                
             }
-
+            .padding(.horizontal)
+            
+        OrgMapView(calle: calle, numero: numero, colonia: colonia, cp: cp, ciudad: ciudad, estado: estado, pais: pais)
+            
         }
-        .padding(.horizontal)
-
-        OrgMapView(address: fullAddress)
-
     }
-}
+
 
 #Preview {
     OrganizationMapView(calle: .constant("Avenida Eugenio Garza Sada"), numero: .constant("2411"), colonia: .constant("Tecnologico"), cp: .constant("64700"), ciudad: .constant("Monterrey"), estado: .constant("N.L."), pais: .constant("Mexico"))

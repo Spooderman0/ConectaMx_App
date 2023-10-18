@@ -239,9 +239,9 @@ struct OrgHomeView: View {
 
                     
                 // Mapa
-                OrgMapView(address: fullAddress)
-                    .frame(height: UIScreen.main.bounds.height / 3)
-                    .padding([.top, .bottom])
+                //OrgMapView(calle: calle, numero: numero, colonia: colonia, cp: cp, ciudad: ciudad, estado: estado, pais: pais)
+                  //  .frame(height: UIScreen.main.bounds.height / 3)
+                    //.padding([.top, .bottom])
                 
                     
                 //Social Media buttons

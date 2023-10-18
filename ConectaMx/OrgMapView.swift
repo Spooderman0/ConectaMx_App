@@ -30,13 +30,14 @@ struct OrganizationMap: Identifiable {
 }
 
 struct OrgMapView: View {
+    
+    
     @State private var organization: OrganizationMap = OrganizationMap(id: 1, name: "Organización", coordinate: kCLLocationCoordinate2DInvalid)
     
     let address: String
 
-    // El inicializador ahora simplemente acepta la dirección completa
-    init(address: String) {
-        self.address = address
+    init(calle: String, numero: String, colonia: String, cp: String, ciudad: String, estado: String, pais: String) {
+        self.address = "\(calle) \(numero), \(colonia), \(cp), \(ciudad), \(estado), \(pais)"
     }
     
     var body: some View {
@@ -63,6 +64,10 @@ struct OrgMapView: View {
 
 struct OrgMapView_Previews: PreviewProvider {
     static var previews: some View {
-        OrgMapView(address: "Avenida Eugenio Garza Sada 2411, Tecnologico, 64700 Monterrey, N.L., México")
+        OrgMapView(calle:"Avenida Eugenio Garza Sada", numero: "2411", colonia: "Tecnologico", cp:"64700", ciudad: "Monterrey", estado: "N.L.", pais: "México")
     }
 }
+
+/*
+ OrgMapView(calle: .constant("Avenida Eugenio Garza Sada"), numero: .constant("2411"), colonia: .constant("Tecnologico"), cp: .constant("64700"), ciudad: .constant("Monterrey"), estado: .constant("N.L."), pais: .constant("México"))
+ */
