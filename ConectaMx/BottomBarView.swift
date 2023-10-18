@@ -58,7 +58,7 @@ struct BottomBarView: View {
                         .resizable()
                         .frame(width: 30, height: 30)
                         .foregroundColor(.white)
-                        .opacity(activePage == .favorites ? 1.0 : 0.5)
+                        .opacity(activePage == .map ? 1.0 : 0.5)
                 }
                 
                 Spacer()
