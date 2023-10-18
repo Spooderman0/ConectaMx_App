@@ -65,34 +65,74 @@ class PersonModel: ObservableObject {
         }
     }
     
-    func login(phone: String, password: String, completion: @escaping (Bool, String?) -> Void) {
+//    func login(phone: String, password: String, completion: @escaping (Bool, String?) -> Void) {
+//        let urlString = "http://10.14.255.172:5000/login_client"
+//
+//        // Parameters based on the API expectations
+//        let parameters: [String: Any] = [
+//            "phone": phone,
+//            "password": password
+//        ]
+//
+//        // Alamofire POST request
+//        AF.request(urlString, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON { response in
+//            switch response.result {
+//            case .success(let value):
+//                let json = JSON(value)
+//
+//                if let message = json["message"].string {
+//                    completion(true, message)  // Login successful
+//                } else if let error = json["error"].string {
+//                    completion(false, error)  // Login failed with an error message
+//                } else {
+//                    completion(false, "Unknown error")  // An unknown error occurred
+//                }
+//
+//            case .failure(let error):
+//                completion(false, error.localizedDescription)  // Handling failure in network request
+//            }
+//        }
+//    }
+    
+    func login(phone: String, password: String, completion: @escaping (Bool, Person?, String?) -> Void) {
         let urlString = "http://10.14.255.172:5000/login_client"
-
-        // Parameters based on the API expectations
+        
         let parameters: [String: Any] = [
             "phone": phone,
             "password": password
         ]
-
-        // Alamofire POST request
+        
         AF.request(urlString, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON { response in
             switch response.result {
             case .success(let value):
                 let json = JSON(value)
-
-                if let message = json["message"].string {
-                    completion(true, message)  // Login successful
-                } else if let error = json["error"].string {
-                    completion(false, error)  // Login failed with an error message
+                
+                if response.response?.statusCode == 200 {
+                    if let personJSON = json.dictionary {
+                        let person = Person(
+                            id: personJSON["id"]?.string ?? "",
+                            name: personJSON["name"]?.string ?? "",
+                            phone: personJSON["phone"]?.string ?? "",
+                            email: personJSON["email"]?.string ?? "",
+                            password: personJSON["password"]?.string ?? "",
+                            interestedTags: personJSON["interestedTags"]?.arrayObject as? [String] ?? [],
+                            favorites: personJSON["favorites"]?.arrayObject as? [String] ?? []
+                        )
+                        
+                        completion(true, person, nil)
+                    }
+                    
                 } else {
-                    completion(false, "Unknown error")  // An unknown error occurred
+                    let errorMessage = json["error"].string ?? "Unknown error occurred"
+                    completion(false, nil, errorMessage)
                 }
-
+                
             case .failure(let error):
-                completion(false, error.localizedDescription)  // Handling failure in network request
+                completion(false, nil, error.localizedDescription)
             }
         }
     }
+
 
     
     func updatePersonTags(phone: String, newTags: [String], completion: @escaping (Bool) -> Void) {

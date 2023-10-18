@@ -35,6 +35,7 @@ struct OrgContentView: View {
                     }
                 }
                 .onAppear {
+                    print("Print Org name in cv")
                     print(organization?.name)
                 }
 

@@ -16,6 +16,9 @@ struct Organization_Tags: View {
     @State private var navigateToOrgContent = false
     @Binding var fetchedOrganization: Organization?
     
+     var orgModel = OrganizationModel()
+
+    
     
     var body: some View {
         VStack(spacing: 20) {
@@ -54,10 +57,26 @@ struct Organization_Tags: View {
             
             // Botón "Comenzar"
             Button(action: {
-                // Acción para comenzar
-                navigateToOrgContent = true
-            }, label: {
-                Text("Comenzar")
+                    // Update the local fetchedOrganization's tags
+                    fetchedOrganization?.tags = Array(seleccionados)
+
+                    // Check if the organization has a valid ID to update
+                    if let orgID = fetchedOrganization?.id {
+                        // Call updateOrganizationTags to persist the changes
+                        orgModel.updateOrganizationTags(organizationId: orgID, newTags: Array(seleccionados)) { success in
+                            if success {
+                                print("Tags updated successfully!")
+                            } else {
+                                print("Failed to update tags.")
+                            }
+                        }
+                    }
+
+                    // Navigate to the next screen
+                    navigateToOrgContent = true
+
+                }, label: {
+                    Text("Comenzar")
                     .foregroundColor(.white)
                     .padding()
                     .frame(maxWidth: .infinity)

@@ -8,6 +8,7 @@ import Alamofire
 class OrganizationModel {
     var organizations = [Organization]()
     var tagOrgs = [Organization]()
+    //var LogedInOrg = Organization()
     //@Published var currentOrganization: Organization?
     
     init() {
@@ -62,10 +63,10 @@ class OrganizationModel {
                     socialMedia: socialMedia,
                     missionStatement: organization.1["missionStatement"].stringValue,
                     logo: organization.1["logo"].stringValue,
-                    tags: (organization.1["tags"].arrayObject as? [String])!,
+                    tags: (organization.1["tags"].arrayObject as? [String]) ?? [],
                     RFC: organization.1["RFC"].stringValue,
-                    postId: (organization.1["postId"].arrayObject as? [String])!,
-                    followers: (organization.1["followers"].arrayObject as? [String])!,
+                    postId: (organization.1["postId"].arrayObject as? [String]) ?? [],
+                    followers: (organization.1["followers"].arrayObject as? [String]) ?? [],
                     password: organization.1["password"].stringValue
                 )
                 //print(newOrganization)
@@ -143,14 +144,34 @@ class OrganizationModel {
     }
 
     
+//    func fetchOrganization(rfc: String, password: String, completion: @escaping (Organization?, Error?) -> Void) {
+//        let urlString = "\(baseURL)/get_organization?rfc=\(rfc)&password=\(password)"
+//        
+//        AF.request(urlString, method: .get, encoding: URLEncoding.default).responseData { response in
+//            switch response.result {
+//            case .success(let data):
+//                do {
+//                    let json = try JSON(data: data)
     func fetchOrganization(rfc: String, password: String, completion: @escaping (Organization?, Error?) -> Void) {
-        let urlString = "\(baseURL)/get_organization?rfc=\(rfc)&password=\(password)"
+        let urlString = "\(baseURL)/get_organization"
         
-        AF.request(urlString, method: .get, encoding: URLEncoding.default).responseData { response in
+        let parameters: [String: Any] = [
+            "rfc": rfc,
+            "password": password
+        ]
+        
+        AF.request(urlString, method: .get, parameters: parameters, encoding: URLEncoding.default).responseData { response in
             switch response.result {
             case .success(let data):
                 do {
                     let json = try JSON(data: data)
+                    
+                    // Assuming the first organization is the one you want
+                    guard let organizationData = json.array?.first else {
+                        completion(nil, NSError(domain: "", code: 404, userInfo: ["message": "Organization not found"]))
+                        return
+                    }
+                    
                     let location = Location(
                         address: json["location"]["address"].stringValue,
                         city: json["location"]["city"].stringValue,
@@ -196,6 +217,73 @@ class OrganizationModel {
                 } catch {
                     completion(nil, error)
                 }
+            case .failure(let error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    
+    func loginOrganization(rfc: String, password: String, completion: @escaping (Organization?, Error?) -> Void) {
+        let urlString = "\(baseURL)/login_organization"
+        
+        let parameters: [String: Any] = [
+            "RFC": rfc,
+            "password": password
+        ]
+        
+        AF.request(urlString, method: .post, parameters: parameters, encoding: JSONEncoding.default).response { response in
+            switch response.result {
+            case .success(let data):
+                do {
+                    let json = try JSON(data: data!)
+                    
+                    let location = Location(
+                        address: json["organization_info"]["location"]["address"].stringValue,
+                        city: json["organization_info"]["location"]["city"].stringValue,
+                        state: json["organization_info"]["location"]["state"].stringValue,
+                        country: json["organization_info"]["location"]["country"].stringValue,
+                        zip: json["organization_info"]["location"]["zip"].stringValue
+                    )
+                    
+                    let contact = Contact(
+                        email: json["organization_info"]["contact"]["email"].stringValue,
+                        first_phone: json["organization_info"]["contact"]["first_phone"].stringValue,
+                        second_phone: json["organization_info"]["contact"]["second_phone"].stringValue
+                    )
+                    
+                    let socialMedia = SocialMedia(
+                        facebook: json["organization_info"]["socialMedia"]["facebook"].stringValue,
+                        twitter: json["organization_info"]["socialMedia"]["twitter"].stringValue,
+                        instagram: json["organization_info"]["socialMedia"]["instagram"].stringValue,
+                        linkedIn: json["organization_info"]["socialMedia"]["linkedIn"].stringValue,
+                        youtube: json["organization_info"]["socialMedia"]["youtube"].stringValue,
+                        tiktok: json["organization_info"]["socialMedia"]["tiktok"].stringValue,
+                        whatsapp: json["organization_info"]["socialMedia"]["whatsapp"].stringValue
+                    )
+                    
+                    let loggedInOrganization = Organization(
+                        id: json["organization_info"]["_id"]["$oid"].stringValue,
+                        name: json["organization_info"]["name"].stringValue,
+                        alias: json["organization_info"]["alias"].stringValue,
+                        location: location,
+                        contact: contact,
+                        serviceHours: json["organization_info"]["serviceHours"].stringValue,
+                        website: json["organization_info"]["website"].stringValue,
+                        socialMedia: socialMedia,
+                        missionStatement: json["organization_info"]["missionStatement"].stringValue,
+                        logo: json["organization_info"]["logo"].stringValue,
+                        tags: (json["organization_info"]["tags"].arrayObject as? [String]) ?? [],
+                        RFC: json["organization_info"]["RFC"].stringValue,
+                        postId: (json["organization_info"]["postId"].arrayObject as? [String]) ?? [],
+                        followers: (json["organization_info"]["followers"].arrayObject as? [String]) ?? [],
+                        password: json["organization_info"]["password"].stringValue
+                    )
+                    completion(loggedInOrganization, nil)
+                } catch {
+                    completion(nil, error)
+                }
+                
             case .failure(let error):
                 completion(nil, error)
             }

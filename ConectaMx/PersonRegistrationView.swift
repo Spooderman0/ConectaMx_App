@@ -18,8 +18,12 @@ struct PersonRegistrationView: View {
     var tagsModel = TagsModel()
     
     
+    func loginUser() {
+        
+     }
+    
     var body: some View {
-        NavigationView {
+       
             ScrollView {
                 VStack {
                     
@@ -81,18 +85,26 @@ struct PersonRegistrationView: View {
                                 if success {
                                     print("Person posted successfully")
                                     
-                                    // Fetching the details of the newly registered person
+//                                    // Fetching the details of the newly registered person
 //                                    self.personModel.fetchPerson(phoneNumber: self.phone) { (person, error) in
 //                                        if let person = person {
 //                                            print("Person fetched successfully")
 //                                            self.personModel.fetchedPerson = person // Save fetched person details
 //                                            self.navigateToITL = true // Navigate to the next view
-//                                        } else {
-//                                            print("Failed to fetch person details: \(error?.localizedDescription ?? "")")
-//                                        }
-//                                    }
+                                    personModel.login(phone: phone, password: password) { success, person, error in
+                                         if success, let person = person {
+                                             print("Login successful")
+                                             self.personModel.fetchedPerson = person // Save fetched person details
+                                             self.navigateToITL = true // Navigate to the next view
+                                         } else {
+                                             print("Login failed: \(error ?? "Unknown error")")
+                                         }
+                                     }
+                                        
+                                    }
+                                   // navigateToITL = true
                                     
-                                } else {
+                                 else {
                                     print("Failed to post person")
                                 }
                             }
@@ -120,7 +132,7 @@ struct PersonRegistrationView: View {
                 .padding()
             }
         }
-    }
+    
 }
 
 struct PersonRegistrationView_Previews: PreviewProvider {

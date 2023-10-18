@@ -252,7 +252,7 @@ struct OrganizationRegistrationView: View {
                                         print("Organization posted successfully")
                                         
                                         // Fetch and save the organization details after successfully posting it
-                                        self.organizationModel.fetchOrganization(rfc: self.rfc, password: self.password) { (organization, error) in
+                                        self.organizationModel.loginOrganization(rfc: self.rfc, password: self.password) { (organization, error) in
                                             if let organization = organization {
                                                 self.fetchedOrganization = organization
                                                 navigateToOrgTags = true

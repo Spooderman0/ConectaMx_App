@@ -74,8 +74,10 @@ struct PersonLoginView: View {
                     
             
                     Button(action: {
-                        personModel.login(phone: self.phone, password: self.password) { (success, message) in
+                        print("printing")
+                        personModel.login(phone: phone, password: password) { success, person, error in
                             if success {
+                                print("Person Login Succsessful")
                                 personModel.fetchPerson(phoneNumber: self.phone) { person, error in
                                     if let person = person {
                                         
@@ -86,7 +88,10 @@ struct PersonLoginView: View {
                                         }
                                     }
                                 }
+                            }else{
+                                print("Not succesful")
                             }
+                            
                         }
                         
                     }) {
