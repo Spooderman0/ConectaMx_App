@@ -34,11 +34,7 @@ struct OrganizationRegistrationView: View {
     var tagsModel = TagsModel()
     var organizationModel = OrganizationModel()
     
-   
-    
     @State private var navigateToOrgTags = false
-    @State private var fetchedOrganization: Organization?
-
     
     var body: some View {
         NavigationView{
@@ -213,13 +209,9 @@ struct OrganizationRegistrationView: View {
                         }
                         .padding()
                         
-                        NavigationLink(
-                            destination: Organization_Tags(tags: tagsModel.tags, organizationModel: organizationModel),  // Use the @State variable here
-                            isActive: $navigateToOrgTags
-                        ) {
+                        NavigationLink(destination: Organization_Tags(tags: tagsModel.tags), isActive: $navigateToOrgTags) {
                             EmptyView()
                         }
-
                         
 //                        Button(action: {
 //                            // Step 2: Construct an Organization instance
@@ -285,38 +277,26 @@ struct OrganizationRegistrationView: View {
                             )
                             
                             // Step 3: Post the new organization
-                                self.organizationModel.postOrganization(organization: newOrganization) { success in
-                                    if success {
-                                        print("Organization posted successfully")
-                                        
-                                        // Step 4: Fetch the newly created organization
-                                        self.organizationModel.fetchOrganization(rfc: self.rfc, password: self.password) { organization, error in
-                                            if let organization = organization {
-                                                // Set the @State variable
-                                                self.fetchedOrganization = organization
-                                                
-                                                // Step 5: Navigate to Organization_Tags view
-                                                DispatchQueue.main.async {
-                                                    self.navigateToOrgTags = true
-                                                }
-                                            } else {
-                                                print("Failed to fetch organization: \(error?.localizedDescription ?? "Unknown error")")
-                                            }
-                                        }
-                                        
-                                    } else {
-                                        print("Failed to post organization")
-                                    }
+                            self.organizationModel.postOrganization(organization: newOrganization) { success in
+                                if success {
+                                    print("Organization posted successfully")
+                                } else {
+                                    print("Failed to post organization")
                                 }
-                            }) {
-                                Text("Continuar")
-                                    .foregroundColor(.white)
-                                    .padding(.top, 5)
-                                    .frame(maxWidth: .infinity)
-                                    .background(Color(hex: "625C87"))
-                                    .cornerRadius(10)
-                                    .padding(.trailing, 45)
                             }
+                            
+                            navigateToOrgTags = true
+                            
+                        }) {
+                            Text("Continuar")
+                            .foregroundColor(.white)
+                            .padding(.top, 5)
+                            .frame(maxWidth: .infinity)
+                            .background(Color(hex: "625C87"))
+                            .cornerRadius(10)
+                            .padding(.trailing, 45)
+                        }
+                        
                         }
                     }
                     

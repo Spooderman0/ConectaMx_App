@@ -13,13 +13,7 @@ struct OrgContentView: View {
     
     @State private var organization: Organization?
     
-    var orgModel: OrganizationModel  // Updated this line
-        
-        // Added initializer to accept an OrganizationModel parameter
-        init(orgModel: OrganizationModel) {
-            self.orgModel = orgModel
-        }
-    
+    var orgModel = OrganizationModel()
     
     var body: some View {
         
@@ -59,7 +53,6 @@ struct OrgContentView: View {
 
 struct OrgContentView_Previews: PreviewProvider {
     static var previews: some View {
-
-        OrgContentView(orgModel: OrganizationModel())
+        OrgContentView()
     }
 }

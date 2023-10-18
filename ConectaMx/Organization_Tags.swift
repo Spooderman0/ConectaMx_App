@@ -9,15 +9,6 @@ import SwiftUI
 
 struct Organization_Tags: View {
     var tags: [String]
-    
-    
-    
-//    var orgModel: OrganizationModel
-//    
-//    init(tags: [String], orgModel: OrganizationModel, orgId: String) {
-//        self.tags = tags
-//        self.orgModel = orgModel
-//    }
 
     
     @State var seleccionados = Set<String>()
@@ -56,32 +47,13 @@ struct Organization_Tags: View {
                 }
             }
             
-            NavigationLink(destination: OrgContentView(orgModel: self.orgModel), isActive: $navigateToOrgContent) {
+            NavigationLink(destination: OrgContentView(), isActive: $navigateToOrgContent) {
                 EmptyView()
             }
             
-//            // Botón "Comenzar"
-//            Button(action: {
-//                // Acción para comenzar
-//                navigateToOrgContent = true
-//            }, label: {
-//                Text("Comenzar")
-//                    .foregroundColor(.white)
-//                    .padding()
-//                    .frame(maxWidth: .infinity)
-//                    .background(Color(hex: "625C87"))
-//                    .cornerRadius(10)
-//            })
-//            .padding([.leading, .trailing], 20)
-            
+            // Botón "Comenzar"
             Button(action: {
-                orgModel.updateOrganizationTags(organizationId: self.orgId, newTags: Array(seleccionados)) { success in
-                    if success {
-                        print("Organization tags updated successfully")
-                    } else {
-                        print("Failed to update organization tags")
-                    }
-                }
+                // Acción para comenzar
                 navigateToOrgContent = true
             }, label: {
                 Text("Comenzar")
@@ -92,7 +64,6 @@ struct Organization_Tags: View {
                     .cornerRadius(10)
             })
             .padding([.leading, .trailing], 20)
-
             
             // Botón para saltar este paso
             Button(action: {
@@ -111,6 +82,6 @@ struct Organization_Tags: View {
 
 struct Organization_Tags_Previews: PreviewProvider {
     static var previews: some View {
-        Organization_Tags(tags: ["autismo", "cancer"], orgModel: OrganizationModel())  // Updated this line
+        Organization_Tags(tags: ["autismo", "cancer"])
     }
 }

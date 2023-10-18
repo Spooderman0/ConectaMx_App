@@ -19,7 +19,7 @@ struct OrgLoginView: View {
     @State var seleccionadosT = Set<String>()
     
     var body: some View {
-        NavigationView {
+        
             ScrollView {
                 VStack {
                     
@@ -87,11 +87,12 @@ struct OrgLoginView: View {
                 }
                 .padding()
             }
+            .onAppear(){
+                tagsModel.fetchTags()
+            }
         }
-        .onAppear(){
-            tagsModel.fetchTags()
-        }
-    }
+        
+    
         
 }
 
