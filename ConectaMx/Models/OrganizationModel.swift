@@ -85,16 +85,7 @@ class OrganizationModel {
         
     }
     
-    func printOrgs() {
-//        let orgModel = OrganizationModel()
-//        //orgModel.fetchOrganizations()
-//        print("Printing orgs")
-//        print(orgModel.organizations.count)
-//        for org in orgModel.organizations {
-//            print("1+")
-//            print(org)
-//        }
-    }
+
     
     
     func postOrganization(organization: Organization, completion: @escaping (Bool) -> Void) {
@@ -150,15 +141,7 @@ class OrganizationModel {
         }
     }
 
-    
-//    func fetchOrganization(rfc: String, password: String, completion: @escaping (Organization?, Error?) -> Void) {
-//        let urlString = "\(baseURL)/get_organization?rfc=\(rfc)&password=\(password)"
-//        
-//        AF.request(urlString, method: .get, encoding: URLEncoding.default).responseData { response in
-//            switch response.result {
-//            case .success(let data):
-//                do {
-//                    let json = try JSON(data: data)
+
     func fetchOrganization(rfc: String, password: String, completion: @escaping (Organization?, Error?) -> Void) {
         let urlString = "\(baseURL)/get_organization"
         

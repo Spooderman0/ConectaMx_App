@@ -16,6 +16,7 @@ struct ProfileView: View {
     
     var personsModel: PersonModel
     var personas = [PersonModel]()
+    var fetchedPerson: Person?
     
     //let personT = personsModel.fetchedPerson
     
@@ -106,7 +107,7 @@ struct ProfileView: View {
         Button(action: {
             // Acción para botones
             if text == "Datos personales" {
-                let editProfileView = EditProfileView(profileImage: $profileImage, personsModel: personsModel)
+                let editProfileView = EditProfileView(profileImage: $profileImage, personsModel: personsModel, fetchedPerson: fetchedPerson)
                 let navigationController = UINavigationController(rootViewController: UIHostingController(rootView: editProfileView))
                 navigationController.navigationBar.prefersLargeTitles = true
                 UIApplication.shared.windows.first?.rootViewController?.present(navigationController, animated: true, completion: nil)

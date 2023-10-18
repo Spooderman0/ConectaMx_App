@@ -24,6 +24,7 @@ struct SearchView: View {
     var personas = [PersonModel]()
     var PersonsModel = PersonModel()
     @State var selectedT: Set<String>
+    var fetchedPerson: Person?
     
 
     
@@ -109,6 +110,9 @@ struct SearchView: View {
         }
         .padding(.top, 10)
         .onAppear {
+//            personsModel.updatePersonTags(phone: fetchedPerson?.phone ?? [], newTags: selectedT) { Bool in
+//                
+//            }
             
         
 //            if let person = personsModel.fetchedPerson {
