@@ -201,6 +201,7 @@ struct OrganizationRegistrationView: View {
                     }
                     
                     HStack(alignment: .bottom){
+                        /*
                         Button(action: {
                             // Add action to go back (e.g., navigation or presentation dismissal)
                         }) {
@@ -215,7 +216,7 @@ struct OrganizationRegistrationView: View {
                             EmptyView()
                         }
                         
-
+*/
 
                         Button(action: {
                             // Step 2: Construct an Organization instance
@@ -267,17 +268,29 @@ struct OrganizationRegistrationView: View {
                                 }
                                 
                                 navigateToOrgTags = true
-                                
                             }) {
+                                
+
                                 Text("Continuar")
                             .foregroundColor(.white)
-                            .padding(.top, 5)
+                            .padding()
                             .frame(maxWidth: .infinity)
                             .background(Color(hex: "625C87"))
                             .cornerRadius(10)
-                            .padding(.trailing, 45)
                         }
-                        
+                            .padding([.top,.bottom],40)
+
+                        /*
+                         .foregroundColor(.white)
+                         .padding()
+                         .frame(maxWidth: .infinity)
+                         .background(Color(hex: "625C87"))
+                         .cornerRadius(10)
+                         .padding(.horizontal)
+                         .onAppear(){
+                             tagsModel.fetchTags()
+                         }
+                         */
                         }
                     }
                     

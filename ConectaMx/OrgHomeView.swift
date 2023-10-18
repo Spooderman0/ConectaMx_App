@@ -41,13 +41,7 @@ struct ProfileButton: Identifiable {
     var iconName: String
 }
 
-struct SocialButton: Identifiable {
-    var id: UUID = UUID()
-    var title: String
-    var isVisible: Bool
-    var image: String
-    var url: String
-}
+
 
 
 struct OrgHomeView: View {

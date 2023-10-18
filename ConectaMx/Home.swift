@@ -113,7 +113,29 @@ struct OrganizationView: View {
 
 struct OrganizationDetailView: View {
     var organization: Organization
-    let map = [OrganizationMap(id: 1, name: "Organización A", coordinate: CLLocationCoordinate2D(latitude: 25.649837, longitude: -100.289034))]
+    let map = [OrganizationMap(id: 1, name: "Paz Es", coordinate: CLLocationCoordinate2D(latitude: 25.649837, longitude: -100.289034))]
+    
+    @State private var socialButtons: [SocialButton] = [
+        SocialButton(title: "Web", isVisible: true, image: "web", url: ""),
+        SocialButton(title: "Facebook",isVisible: true, image: "facebook", url: ""),
+        SocialButton(title: "Instagram",isVisible: true, image: "instagram", url: ""),
+        SocialButton(title: "Mail",isVisible: true, image: "mail", url: ""),
+        SocialButton(title: "Compartir",isVisible: true, image: "share", url: "")
+    ]
+    
+    // Image Slider
+    @State private var items: [ItemSlider] = [
+        .init(imageName: "niño", title: "Misión", subTitle: "Ser un referente nacional de inclusión y promoción de derechos de personas con discapacidad intelectual."),
+        .init(imageName: "contribuir", title: "Visión", subTitle: "Impulsamos la inclusión y los derechos de las personas con discapacidad intelectual, a través de la educación, formación y vinculación laboral, el acompañamiento de sus familias, y la sensibilización y capacitación en el entorno."),
+        .init(imageName: "niños", title: "Valores", subTitle: "Siempre promoviendo valores como la apertura, empatía, integridad, calidad y colaboración."),
+        .init(imageName: "voluntariado", title: "Abriendo posibilidades, cerrando diferencias.", subTitle: "")
+    ]
+    /// Customization Properties
+    @State private var showPagingControl: Bool = false
+    @State private var disablePagingInteraction: Bool = false
+    @State private var pagingSpacing: CGFloat = 20
+    @State private var titleScrollSpeed: CGFloat = 0.6
+    @State private var stretchContent: Bool = false
     
     var body: some View {
         ScrollView {
@@ -159,21 +181,44 @@ struct OrganizationDetailView: View {
                         .foregroundColor(Color(hex: "625C87"))
                 }
             }
-            .padding(.bottom, 20)
+            .padding([.top,.bottom],20)
             
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    ForEach(1..<4) { _ in
-                        Image("Org_Mock")
+            // Slider
+            VStack {
+                CustomPagingSlider(
+                    showPagingControl: showPagingControl,
+                    disablePagingInteraction: disablePagingInteraction,
+                    titleScrollSpeed: titleScrollSpeed,
+                    pagingControlSpacing: pagingSpacing,
+                    data: $items
+                ) { $item in
+                    /// Content View
+                    NavigationLink(destination: FullImageView(imageName: item.imageName)) {
+                        Image(item.imageName)
                             .resizable()
-                            .scaledToFill()
-                            .frame(width: 150, height: 150)
-                            .clipped()
-                            .cornerRadius(10)
+                            .scaledToFit()
+                            .frame(width: stretchContent ? nil : 280, height: stretchContent ? 320 : 220)
+                            .cornerRadius(15)
                     }
+                    
+                    
+                } titleContent: { $item in
+                    /// Title View
+                    VStack(spacing: 5) {
+                        Text(item.title)
+                            .font(.largeTitle.bold())
+                        
+                        Text(item.subTitle)
+                            .foregroundStyle(.gray)
+                            .multilineTextAlignment(.center)
+                            .lineLimit(10) // Aquí puedes limitar el número de líneas si lo deseas
+                            .minimumScaleFactor(0.7) // Ajusta este valor según tus necesidades
+                    }
+                    .padding(.bottom, 5)
                 }
+                /// Use Safe Area Padding to avoid Clipping of ScrollView
+                .safeAreaPadding([.horizontal, .top], 35)
             }
-            .padding(.bottom, 20)
             
             Text("Mapa:")
                 .foregroundColor(Color(hex: "625C87"))
@@ -187,22 +232,24 @@ struct OrganizationDetailView: View {
                 .frame(height: 200)
             
          
-            HStack {
-                Link(destination: URL(string: "https://example.com")!) {
-                    Image(systemName: "globe")
-                        .foregroundColor(Color(hex: "625C87"))
-                }
-                Link(destination: URL(string: "https://example.com/link")!) {
-                    Image(systemName: "link")
-                        .foregroundColor(Color(hex: "625C87"))
-                }
-                Link(destination: URL(string: "mailto:email@example.com")!) {
-                    Image(systemName: "mail")
-                        .foregroundColor(Color(hex: "625C87"))
-                }
-                Link(destination: URL(string: "https://example.com/share")!) {
-                    Image(systemName: "square.and.arrow.up")
-                        .foregroundColor(Color(hex: "625C87"))
+            HStack(spacing: 1) {
+                ForEach(socialButtons) { button in
+                    if button.isVisible {
+                        Button(action: {
+                            // Acción del botón
+                            print("presionado")
+                        }) {
+                            HStack {
+                                // Imagen
+                                Image(button.image)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 30, height: 30)
+                            }
+                            .padding()
+                            .foregroundColor(.white)
+                        }
+                    }
                 }
             }
             .padding(.top, 20)
@@ -214,7 +261,6 @@ struct OrganizationDetailView: View {
 struct HomeView_Previews: PreviewProvider {
     
     static var previews: some View {
-        
         HomeView(tags: ["austismo", "cancer"], orgModel: OrganizationModel(), personsModel: PersonModel())
     }
 }
