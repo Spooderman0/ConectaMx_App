@@ -19,11 +19,11 @@ struct SearchView: View {
     var orgModel = OrganizationModel()
 //    @StateObject var orgModel = OrganizationModel()
     var tags: [String]
-    @State private var selectedTags: Set<String> = []
+    @State var selectedTags: Set<String> = []
     var personsModel: PersonModel
     var personas = [PersonModel]()
     var PersonsModel = PersonModel()
-    var selectedT: Set<String>
+    @State var selectedT: Set<String>
     
 
     
@@ -48,7 +48,7 @@ struct SearchView: View {
                             .foregroundColor(Color(hex: "625C87"))
                     }
                     .sheet(isPresented: $showFilterSheet) {
-                        FilterSheetView(selectedTags: $selectedTags, tags: tags, orgModel: orgModel, personsModel: personsModel)
+                        FilterSheetView(selectedT: $selectedT, tags: tags, orgModel: orgModel, personsModel: personsModel)
                     }
 
 
@@ -63,7 +63,7 @@ struct SearchView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         
-                        ForEach(Array(selectedTags), id: \.self) { tag in
+                        ForEach(Array(selectedT), id: \.self) { tag in
                             Text(tag)
                                 .foregroundStyle(.white)
                                 .padding(.all, 10)
@@ -111,21 +111,26 @@ struct SearchView: View {
         .onAppear {
             
         
-            if let person = personsModel.fetchedPerson {
-                    if !person.interestedTags.isEmpty && selectedTags.isEmpty {
-                        // Update selectedTags if they are empty
-                        selectedTags = Set(person.interestedTags)
-                    } else if selectedTags.isEmpty == false {
-                        // Update person's interested tags if selectedTags is not empty
-                        personsModel.updatePersonTags(phone: person.phone, newTags: Array(selectedTags)) { success in
-                            if success {
-                                print("Person’s tags updated successfully")
-                            } else {
-                                print("Failed to update person’s tags")
-                            }
-                        }
-                    }
-                }
+//            if let person = personsModel.fetchedPerson {
+//                    if !person.interestedTags.isEmpty && selectedT.isEmpty {
+//                        // Update selectedTags if they are empty
+//                        selectedT = Set(person.interestedTags)
+//                    } else if selectedT.isEmpty == false {
+//                        // Update person's interested tags if selectedTags is not empty
+//                        personsModel.updatePersonTags(phone: person.phone, newTags: Array(selectedTags)) { success in
+//                            if success {
+//                                print("Person’s tags updated successfully")
+//                            } else {
+//                                print("Failed to update person’s tags")
+//                            }
+//                        }
+//                    }
+//                }
+            
+            
+//                if let person = personsModel.fetchedPerson {
+//                    selectedT = Set(person.interestedTags)
+//                }
                 
             print("*******************")
             print("printing org model tags")
@@ -133,8 +138,8 @@ struct SearchView: View {
             print("*******************")
             
             print("*******************")
-            print("printing selected tags")
-            print(selectedTags)
+            print("printing selected t")
+            print(selectedT)
             print("*******************")
             
 //            print("*******************")
@@ -161,7 +166,7 @@ struct SearchView: View {
             
             
                             
-                    for tag in selectedTags {
+                    for tag in selectedT {
                         orgModel.fetchOrganizationsByTag(tag: tag)
                     }
                 

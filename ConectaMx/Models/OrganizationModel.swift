@@ -345,10 +345,10 @@ class OrganizationModel {
                         socialMedia: socialMedia,
                         missionStatement: json["missionStatement"].stringValue,
                         logo: json["logo"].stringValue,
-                        tags: (json["tags"].arrayObject as? [String])!,
+                        tags: (json["tags"].arrayObject as? [String]) ?? [],
                         RFC: json["RFC"].stringValue,
-                        postId: (json["postId"].arrayObject as? [String])!,
-                        followers: (json["followers"].arrayObject as? [String])!,
+                        postId: (json["postId"].arrayObject as? [String]) ?? [],
+                        followers: (json["followers"].arrayObject as? [String]) ?? [],
                         password: json["password"].stringValue
                     )
                     print(newOrganization)

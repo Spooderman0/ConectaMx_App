@@ -10,7 +10,7 @@ import SwiftData
 
 struct ContentView: View {
     @State private var activePage: ActivePage = .home
-    var selectedT: Set<String>
+    /*@State*/ var selectedT: Set<String>
     var tagsModel = TagsModel()
     var orgModel = OrganizationModel()
     var postsModel = PostModel()
@@ -45,23 +45,14 @@ struct ContentView: View {
                 tagsModel.fetchTags()
                 postsModel.fetchPosts()
                 orgModel.fetchOrganizations()
+                print("Printing Selected tags")
+                print(selectedT)
         }
         
             
-            
-            
-//            if fetchedPerson == nil {  // Conditionally fetch a new Person only if no Person was passed
-//                            personsModel.fetchPerson(phoneNumber: "55-3456-7890") { (person, error) in
-//                                if let person = person {
-//                                    
-//                                } else if let error = error {
-//                                    print("Error fetching person: \(error.localizedDescription)")
-//                                }
-//                            }
-//                        }
-            }
-            //orgModel.printOrgs()
-//        }
+        
+    }
+
     }
 
 
