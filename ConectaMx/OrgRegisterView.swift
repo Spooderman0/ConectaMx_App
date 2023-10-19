@@ -211,12 +211,12 @@ struct OrganizationRegistrationView: View {
                                 .foregroundColor(Color(hex: 524848))
                         }
                         .padding()
-                        
+            */
                         NavigationLink(destination: Organization_Tags(tags: tagsModel.tags, fetchedOrganization: $fetchedOrganization), isActive: $navigateToOrgTags) {
                             EmptyView()
                         }
                         
-*/
+
 
                         Button(action: {
                             // Step 2: Construct an Organization instance

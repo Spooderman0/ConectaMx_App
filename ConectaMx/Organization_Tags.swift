@@ -57,26 +57,30 @@ struct Organization_Tags: View {
             
             // Botón "Comenzar"
             Button(action: {
+                // Output the RFC to ensure it's being passed correctly
+                if let orgRFC = fetchedOrganization?.RFC, !orgRFC.isEmpty {
+                    print("Organization RFC: \(orgRFC)") // This will print the organization RFC to the console
+                    
                     // Update the local fetchedOrganization's tags
                     fetchedOrganization?.tags = Array(seleccionados)
-
-                    // Check if the organization has a valid ID to update
-                    if let orgID = fetchedOrganization?.id {
-                        // Call updateOrganizationTags to persist the changes
-                        orgModel.updateOrganizationTags(organizationId: orgID, newTags: Array(seleccionados)) { success in
-                            if success {
-                                print("Tags updated successfully!")
-                            } else {
-                                print("Failed to update tags.")
-                            }
+                    
+                    // Call updateOrganizationTags to persist the changes
+                    orgModel.updateOrganizationTags(rfc: orgRFC, newTags: Array(seleccionados)) { success in
+                        if success {
+                            print("Tags updated successfully!")
+                        } else {
+                            print("Failed to update tags.")
                         }
                     }
-
+                    
                     // Navigate to the next screen
                     navigateToOrgContent = true
-
-                }, label: {
-                    Text("Comenzar")
+                    
+                } else {
+                    print("Organization RFC is nil or empty.") // This will show if the RFC is nil or empty
+                }
+            }, label: {
+                Text("Comenzar")
                     .foregroundColor(.white)
                     .padding()
                     .frame(maxWidth: .infinity)

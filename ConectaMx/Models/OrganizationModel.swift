@@ -85,16 +85,7 @@ class OrganizationModel {
         
     }
     
-    func printOrgs() {
-//        let orgModel = OrganizationModel()
-//        //orgModel.fetchOrganizations()
-//        print("Printing orgs")
-//        print(orgModel.organizations.count)
-//        for org in orgModel.organizations {
-//            print("1+")
-//            print(org)
-//        }
-    }
+
     
     
     func postOrganization(organization: Organization, completion: @escaping (Bool) -> Void) {
@@ -128,8 +119,10 @@ class OrganizationModel {
             }
         }
     }
-    func updateOrganizationTags(organizationId: String, newTags: [String], completion: @escaping (Bool) -> Void) {
-        let urlString = "\(baseURL)/update_organization/\(organizationId)"
+    func updateOrganizationTags(rfc: String, newTags: [String], completion: @escaping (Bool) -> Void) {
+        print("Updating tags for RFC: \(rfc)") // log RFC here
+        
+        let urlString = "\(baseURL)/update_organization/\(rfc)"
         
         let parameters: [String: Any] = ["tags": newTags]
         
@@ -137,21 +130,18 @@ class OrganizationModel {
             switch response.result {
             case .success(_):
                 completion(true)
-            case .failure(_):
+                print("Success: \(String(describing: response.response?.statusCode))")
+            case .failure(let error):
                 completion(false)
+                print("Failure: \(error)")
+                if let data = response.data, let string = String(data: data, encoding: .utf8) {
+                    print("Response Data: \(string)")
+                }
             }
         }
     }
 
-    
-//    func fetchOrganization(rfc: String, password: String, completion: @escaping (Organization?, Error?) -> Void) {
-//        let urlString = "\(baseURL)/get_organization?rfc=\(rfc)&password=\(password)"
-//        
-//        AF.request(urlString, method: .get, encoding: URLEncoding.default).responseData { response in
-//            switch response.result {
-//            case .success(let data):
-//                do {
-//                    let json = try JSON(data: data)
+
     func fetchOrganization(rfc: String, password: String, completion: @escaping (Organization?, Error?) -> Void) {
         let urlString = "\(baseURL)/get_organization"
         
@@ -338,10 +328,10 @@ class OrganizationModel {
                         socialMedia: socialMedia,
                         missionStatement: json["missionStatement"].stringValue,
                         logo: json["logo"].stringValue,
-                        tags: (json["tags"].arrayObject as? [String])!,
+                        tags: (json["tags"].arrayObject as? [String]) ?? [],
                         RFC: json["RFC"].stringValue,
-                        postId: (json["postId"].arrayObject as? [String])!,
-                        followers: (json["followers"].arrayObject as? [String])!,
+                        postId: (json["postId"].arrayObject as? [String]) ?? [],
+                        followers: (json["followers"].arrayObject as? [String]) ?? [],
                         password: json["password"].stringValue
                     )
                     print(newOrganization)

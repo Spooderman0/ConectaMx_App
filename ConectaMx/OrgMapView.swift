@@ -8,6 +8,7 @@
 import SwiftUI
 import MapKit
 
+
 func getCoordinate(addressString : String,
                    completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void ) {
     let geocoder = CLGeocoder()

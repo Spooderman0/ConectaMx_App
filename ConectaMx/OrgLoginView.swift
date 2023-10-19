@@ -134,7 +134,7 @@ struct OrgLoginView: View {
                         .scaledToFit()
                         .frame(width: 200, height: 200)
                     
-                    Text("Organization Login")
+                    Text("Ingresa a tu cuenta")
                         .font(.largeTitle)
                         .padding()
                     

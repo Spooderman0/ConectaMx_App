@@ -57,41 +57,20 @@ struct PersonLoginView: View {
                         EmptyView()
                     }
                     
-//                    Button(action: {
-//                            personModel.fetchPerson(phoneNumber: self.phone) { person, error in
-//                                if let person = person {
-//
-//                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//                                        self.personModel.fetchedPerson = person
-//                                        self.seleccionadosT.removeAll()
-//                                        self.navigateToCV = true
-//                                    }
-//                                } else {
-//                                }
-//                            }
-//                        }) {
-//                            Text("Login")
+
                     
-            
                     Button(action: {
                         print("printing")
                         personModel.login(phone: phone, password: password) { success, person, error in
                             if success {
-                                print("Person Login Succsessful")
-                                personModel.fetchPerson(phoneNumber: self.phone) { person, error in
-                                    if let person = person {
-                                        
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                            self.personModel.fetchedPerson = person
-                                            self.seleccionadosT.removeAll()
-                                            self.navigateToCV = true
-                                        }
-                                    }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                    self.personModel.fetchedPerson = person
+                                    //self.seleccionadosT.removeAll()
+                                    self.navigateToCV = true
                                 }
                             }else{
                                 print("Not succesful")
                             }
-                            
                         }
                         
                     }) {

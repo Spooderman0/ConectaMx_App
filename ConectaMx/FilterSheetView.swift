@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FilterSheetView: View {
-    @Binding var selectedTags: Set<String>
+    @Binding var selectedT: Set<String>
     var tags: [String]
     var orgModel: OrganizationModel
    
@@ -29,18 +29,18 @@ struct FilterSheetView: View {
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 100)), count: 3), spacing: 20) {
                 ForEach(tags, id: \.self) { tag in
                     Button(action: {
-            if selectedTags.contains(tag) {
-                selectedTags.remove(tag)
+            if selectedT.contains(tag) {
+                selectedT.remove(tag)
             } else {
-                selectedTags.insert(tag)
+                selectedT.insert(tag)
             }
             }) {
                 Text(tag)
                     .lineLimit(1)
                     .padding(.all, 10)
                     .frame(minWidth: 100) 
-                    .background(selectedTags.contains(tag) ? Color(hex: "625C87") : Color.gray.opacity(0.2))
-                    .foregroundColor(selectedTags.contains(tag) ? .white : .black)
+                    .background(selectedT.contains(tag) ? Color(hex: "625C87") : Color.gray.opacity(0.2))
+                    .foregroundColor(selectedT.contains(tag) ? .white : .black)
                     .cornerRadius(15)
                         }
                     }
@@ -49,21 +49,39 @@ struct FilterSheetView: View {
 
             
             // Botón "Aplicar Filtros"
-        Button(action: {
-           //personsModel.fetchedPerson?.interestedTags.removeAll()
-            if let person = personsModel.fetchedPerson {
-                let updatedTags = Array(selectedTags)
-                personsModel.updatePersonTags(phone: person.phone, newTags: updatedTags) { success in
-                    if success {
-                        print("Tags updated successfully")
-                    } else {
-                        print("Failed to update tags")
+//        Button(action: {
+//           //personsModel.fetchedPerson?.interestedTags.removeAll()
+//            if let person = personsModel.fetchedPerson {
+//                let updatedTags = Array(selectedT)
+//                personsModel.updatePersonTags(phone: person.phone, newTags: updatedTags) { success in
+//                    if success {
+//                        print("Tags updated successfully")
+//                    } else {
+//                        print("Failed to update tags")
+//                    }
+//                }
+//            }
+//                let tagsToSearch = selectedT.joined(separator: ",")
+//                    orgModel.fetchOrganizationsByTag(tag: tagsToSearch)
+//                }, label: {
+//                Text("Aplicar Filtros")
+            Button(action: {
+                if let person = personsModel.fetchedPerson {
+                    let updatedTags = Array(selectedT)
+                    personsModel.updatePersonTags(phone: person.phone, newTags: updatedTags) { success in
+                        if success {
+                            print("Tags updated successfully")
+                            
+                            // Once the person's tags are updated successfully, then update the organization's tags.
+                            let tagsToSearch = selectedT.joined(separator: ",")
+                            orgModel.fetchOrganizationsByTag(tag: tagsToSearch)
+                            
+                        } else {
+                            print("Failed to update tags")
+                        }
                     }
                 }
-            }
-                let tagsToSearch = selectedTags.joined(separator: ",")
-                    orgModel.fetchOrganizationsByTag(tag: tagsToSearch)
-                }, label: {
+            }, label: {
                 Text("Aplicar Filtros")
                     .foregroundColor(.white)
                     .padding()
@@ -83,8 +101,8 @@ struct FilterSheetView: View {
 //        }
         .onAppear {
             if let person = personsModel.fetchedPerson, !person.interestedTags.isEmpty {
-                if selectedTags.isEmpty {
-                    selectedTags = Set(person.interestedTags)
+                if selectedT.isEmpty {
+                    selectedT = Set(person.interestedTags)
                 }
             }
         }
@@ -97,7 +115,7 @@ struct FilterSheetView: View {
 struct FilterSheetView_Previews: PreviewProvider {
     static var previews: some View {
         @State var dummyTags: Set<String> = []
-        FilterSheetView(selectedTags:  $dummyTags,tags: ["autismo", "cancer"], orgModel: OrganizationModel(), personsModel: PersonModel())
+        FilterSheetView(selectedT:  $dummyTags,tags: ["autismo", "cancer"], orgModel: OrganizationModel(), personsModel: PersonModel())
     }
 }
 

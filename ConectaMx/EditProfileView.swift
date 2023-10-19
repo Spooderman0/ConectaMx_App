@@ -14,10 +14,11 @@ struct EditProfileView: View {
         @State private var showImagePicker = false
     
     var personsModel: PersonModel
+    var fetchedPerson: Person?
     
     var body: some View {
         VStack(spacing: 20) {
-            if let person = personsModel.fetchedPerson {
+//            if let person = personsModel.fetchedPerson {
                                 
                             
             
@@ -78,10 +79,11 @@ struct EditProfileView: View {
                     .background(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.5), lineWidth: 1))
                 
                     .onAppear {
+                        print(fetchedPerson?.phone)
                         if let person = personsModel.fetchedPerson {
-                            name = person.name
-                            phone = person.phone
-                            email = person.email
+                            name = fetchedPerson!.name
+                            phone = fetchedPerson!.phone
+                            email = fetchedPerson!.email
                         }
                     }
             }
@@ -91,7 +93,7 @@ struct EditProfileView: View {
             }
                 
 
-        }
+//        }
         .padding()
         .background(Color.gray.opacity(0.1))
         .edgesIgnoringSafeArea(.all)
