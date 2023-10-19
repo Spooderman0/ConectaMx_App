@@ -24,7 +24,7 @@ struct SearchView: View {
     var personas = [PersonModel]()
     var PersonsModel = PersonModel()
     @State var selectedT: Set<String>
-    var fetchedPerson: Person?
+    @State var fetchedPerson: Person?
     
 
     
@@ -49,9 +49,8 @@ struct SearchView: View {
                             .foregroundColor(Color(hex: "625C87"))
                     }
                     .sheet(isPresented: $showFilterSheet) {
-                        FilterSheetView(selectedT: $selectedT, tags: tags, orgModel: orgModel, personsModel: personsModel)
+                        FilterSheetView(selectedT: $selectedT, tags: tags, orgModel: orgModel, fetchedPerson: $fetchedPerson, personsModel: personsModel)
                     }
-
 
                 }
                 .padding(.all, 10)
@@ -110,82 +109,10 @@ struct SearchView: View {
         }
         .padding(.top, 10)
         .onAppear {
-//            personsModel.updatePersonTags(phone: fetchedPerson?.phone ?? [], newTags: selectedT) { Bool in
-//                
-//            }
-            
-        
-//            if let person = personsModel.fetchedPerson {
-//                    if !person.interestedTags.isEmpty && selectedT.isEmpty {
-//                        // Update selectedTags if they are empty
-//                        selectedT = Set(person.interestedTags)
-//                    } else if selectedT.isEmpty == false {
-//                        // Update person's interested tags if selectedTags is not empty
-//                        personsModel.updatePersonTags(phone: person.phone, newTags: Array(selectedTags)) { success in
-//                            if success {
-//                                print("Person’s tags updated successfully")
-//                            } else {
-//                                print("Failed to update person’s tags")
-//                            }
-//                        }
-//                    }
-//                }
-            
-            
-//                if let person = personsModel.fetchedPerson {
-//                    selectedT = Set(person.interestedTags)
-//                }
-                
-            print("*******************")
-            print("printing org model tags")
-            print(orgModel.tagOrgs.count)
-            print("*******************")
-            
-            print("*******************")
-            print("printing selected t")
-            print(selectedT)
-            print("*******************")
-            
-//            print("*******************")
-//            print("printing person tags")
-//            print(PersonModel.fetchPerson(T##self: PersonModel##PersonModel))
-//            print("*******************")
-            
-            
-//                print()
-//            PersonsModel.fetchPerson(phoneNumber: "55-3456-7890") { (person, error) in
-//                if let person = person {
-//                } else if let error = error {
-//                    print("Error fetching person: \(error.localizedDescription)")
-//                }
-//            }
-//            if let person = personsModel.fetchedPerson {
-//                    print("Printing person interested tags")
-//                    print(person.interestedTags)
-//                            
-//                    for tag in person.interestedTags {
-//                        orgModel.fetchOrganizationsByTag(tag: tag)
-//                    }
-//                }
-            
-            
-                            
                     for tag in selectedT {
+                        print(tag)
                         orgModel.fetchOrganizationsByTag(tag: tag)
                     }
-            
-                
-            
-//            print("Printing Selected tags before setting")
-//            print(selectedTags)
-//            if let person = personsModel.fetchedPerson {
-//                selectedTags = Set(person.interestedTags)
-//            }
-//            print("Printing Selected tags after setting")
-//            print(selectedTags)
-            
-            
-
         }
         
     }

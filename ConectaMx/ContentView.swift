@@ -45,10 +45,25 @@ struct ContentView: View {
                 tagsModel.fetchTags()
                 postsModel.fetchPosts()
                 orgModel.fetchOrganizations()
-                
+            personsModel.fetchPerson(phoneNumber: fetchedPerson?.phone ?? "", completion: { (person, error) in
+                    if let error = error {
+                        // Handle the error
+                        print("An error occurred: \(error)")
+                    } else if let person = person {
+                        // Successfully fetched the person, now you can access the person's properties and methods
+                        print("Successfully fetched person: \(person.name)") // Assuming person has a name property
+                    } else {
+                        // Handle the case where there is no error but the person object is also nil (unlikely, but good to handle all cases)
+                        print("No error occurred, but no person was fetched.")
+                    }
+                })
                 // Check if selectedT is empty and assign tags from tagsModel
                 if selectedT.isEmpty {
                     selectedT = Set(fetchedPerson?.interestedTags ?? [])
+                }else{
+//                    personModel?.updatePersonTags(phone: fetchedPerson?.phone, newTags: selectedT, completion: { Bool in
+//                        
+//                    })
                 }
                 
                 print("Printing Selected tags")

@@ -11,11 +11,19 @@ struct FilterSheetView: View {
     @Binding var selectedT: Set<String>
     var tags: [String]
     var orgModel: OrganizationModel
-   
+    @Binding var fetchedPerson: Person?
+
     
     @ObservedObject var personsModel: PersonModel
+    @State private var navigateToSV = false
+
     
     var body: some View {
+//        NavigationLink(destination: SearchView(tags: tags, personsModel: personsModel, selectedT: selectedT, isActive: $navigateToSV) {
+//            EmptyView()
+//        }
+        
+        
         VStack(spacing: 20) {
             // Título "Filtrar por Intereses:"
             Text("Filtrar por Intereses:")
@@ -65,14 +73,17 @@ struct FilterSheetView: View {
 //                    orgModel.fetchOrganizationsByTag(tag: tagsToSearch)
 //                }, label: {
 //                Text("Aplicar Filtros")
+            
+            
             Button(action: {
-                if let person = personsModel.fetchedPerson {
+                
+                
                     let updatedTags = Array(selectedT)
-                    personsModel.updatePersonTags(phone: person.phone, newTags: updatedTags) { success in
+                personsModel.updatePersonTags(phone: fetchedPerson?.phone ?? "", newTags: updatedTags) { success in
                         if success {
                             print("Tags updated successfully")
                             
-                            // Once the person's tags are updated successfully, then update the organization's tags.
+                            
                             let tagsToSearch = selectedT.joined(separator: ",")
                             orgModel.fetchOrganizationsByTag(tag: tagsToSearch)
                             
@@ -80,7 +91,8 @@ struct FilterSheetView: View {
                             print("Failed to update tags")
                         }
                     }
-                }
+//                navigateToSV = true
+                
             }, label: {
                 Text("Aplicar Filtros")
                     .foregroundColor(.white)
@@ -100,11 +112,11 @@ struct FilterSheetView: View {
 //
 //        }
         .onAppear {
-            if let person = personsModel.fetchedPerson, !person.interestedTags.isEmpty {
-                if selectedT.isEmpty {
-                    selectedT = Set(person.interestedTags)
-                }
-            }
+            if let person = fetchedPerson, !person.interestedTags.isEmpty {
+                            if selectedT.isEmpty {
+                                selectedT = Set(person.interestedTags)
+                            }
+                        }
         }
         
         
@@ -115,7 +127,8 @@ struct FilterSheetView: View {
 struct FilterSheetView_Previews: PreviewProvider {
     static var previews: some View {
         @State var dummyTags: Set<String> = []
-        FilterSheetView(selectedT:  $dummyTags,tags: ["autismo", "cancer"], orgModel: OrganizationModel(), personsModel: PersonModel())
+        @State var fetchedPerson: Person? = Person(id: "", name: "", phone: "", email: "", password: "", interestedTags: [""], favorites: [""]) // Assuming Person is your model and it can be initialized like this
+        FilterSheetView(selectedT:  $dummyTags,tags: ["autismo", "cancer"], orgModel: OrganizationModel(), fetchedPerson: $fetchedPerson, personsModel: PersonModel())
     }
 }
 
