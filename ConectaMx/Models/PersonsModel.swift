@@ -148,49 +148,6 @@ class PersonModel: ObservableObject {
         }
     }
     
-//    func getFavoritesByPhone(phone: String, completion: @escaping ([String]?, Error?) -> Void) {
-//        let urlString = "\(baseURL)/get_favorites_by_phone/\(phone)"
-//        
-//        AF.request(urlString, method: .get, encoding: URLEncoding.default).responseData { response in
-//            switch response.result {
-//            case .success(let data):
-//                do {
-//                    let json = try JSON(data: data)
-//                    if let favoritesArray = json.arrayObject as? [String] {
-//                        completion(favoritesArray, nil)
-//                    } else {
-//                        completion(nil, NSError(domain: "", code: -1, userInfo: ["message": "Invalid data format"]))
-//                    }
-//                } catch {
-//                    completion(nil, error)
-//                }
-//            case .failure(let error):
-//                completion(nil, error)
-//            }
-//        }
-//    }
-    
-//    func getFavoritesByPhone(phone: String, completion: @escaping ([String]?, Error?) -> Void) {
-//        let urlString = "\(baseURL)/get_favorites_by_phone/+52\(phone)"
-//        
-//        AF.request(urlString, method: .get, encoding: URLEncoding.default).responseData { response in
-//            switch response.result {
-//            case .success(let data):
-//                do {
-//                    let json = try JSON(data: data)
-//                    if let favoritesArray = json.arrayObject as? [String] {
-//                        completion(favoritesArray, nil)
-//                    } else {
-//                        completion(nil, NSError(domain: "", code: -1, userInfo: ["message": "Invalid data format"]))
-//                    }
-//                } catch {
-//                    completion(nil, error)
-//                }
-//            case .failure(let error):
-//                completion(nil, error)
-//            }
-//        }
-//    }
     
     func getFavoritesByPhone(phone: String, completion: @escaping ([Organization]?, Error?) -> Void) {
         let urlString = "\(baseURL)/get_favorites_by_phone/\(phone)"

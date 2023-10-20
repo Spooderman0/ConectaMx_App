@@ -22,7 +22,7 @@ struct SearchView: View {
     @State var selectedTags: Set<String> = []
     @ObservedObject var personModel: PersonModel
     @State var selectedT: Set<String>
-  
+    var LL: Bool
     
 
     
@@ -86,7 +86,7 @@ struct SearchView: View {
 
                         ForEach(orgModel.tagOrgs) { organization in
                             NavigationLink {
-                                OrganizationDetailView(organization: organization)
+                                OrganizationDetailView(organization: organization, LL: LL,personModel: personModel)
                             } label: {
                                 OrganizationView(organization: organization)
                             }
@@ -131,7 +131,7 @@ struct SearchView_Previews: PreviewProvider {
     @State static var dummyTags: [String] = []
 
     static var previews: some View {
-        SearchView(orgModel: OrganizationModel(), tags: ["autismo", "Cancer"], personModel: PersonModel(), selectedT: [""])
+        SearchView(orgModel: OrganizationModel(), tags: ["autismo", "Cancer"], personModel: PersonModel(), selectedT: [""], LL: false)
     }
 }
 

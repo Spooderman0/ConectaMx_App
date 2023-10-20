@@ -15,6 +15,7 @@ struct ProfileView: View {
     
     
     var personModel: PersonModel
+    var LL: Bool
     
     
     //let personT = personsModel.fetchedPerson
@@ -128,6 +129,6 @@ struct ProfileView: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView(personModel: PersonModel())
+        ProfileView(personModel: PersonModel(), LL: false)
     }
 }

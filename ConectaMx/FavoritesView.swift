@@ -16,6 +16,7 @@ struct FavoritesView: View {
     var orgModel = OrganizationModel()
     var personModel: PersonModel
     @State private var favorites: [Organization] = [] // Assuming Organization is a model
+    var LL: Bool
     
     
     
@@ -33,7 +34,7 @@ struct FavoritesView: View {
                     VStack {
                         ForEach(favorites) { organization in
                             
-                            NavigationLink(destination: OrganizationDetailView(organization: organization)) {
+                            NavigationLink(destination: OrganizationDetailView(organization: organization, LL: LL,  personModel: personModel)) {
                                 OrganizationView(organization: organization)
                             }
                             .cornerRadius(10)
@@ -55,16 +56,16 @@ struct FavoritesView: View {
             .zIndex(1)
         }
         .onAppear{
+            print("====================")
+            print("Printing LL for favs")
+            print(LL)
+            print("====================")
+            
             if let phone = personModel.fetchedPerson?.phone {
-                print("first if passed")
-                print(phone)
                 personModel.getFavoritesByPhone(phone: phone) { (fetchedOrganizations, error) in
-                    print("second if passed")
                     if let fetchedOrganizations = fetchedOrganizations {
-                        print("third if passed")
                         self.favorites = fetchedOrganizations
                         for organization in fetchedOrganizations {
-                            print(organization.name) // Printing organization names as an example
                         }
                     } else if let error = error {
                         print("An error occurred: \(error)")
@@ -79,7 +80,7 @@ struct FavoritesView_Previews: PreviewProvider {
     @State static var dummyTags: [String] = []
 
     static var previews: some View {
-        FavoritesView(orgModel: OrganizationModel(), personModel: PersonModel())
+        FavoritesView(orgModel: OrganizationModel(), personModel: PersonModel(), LL: false)
     }
 }
 

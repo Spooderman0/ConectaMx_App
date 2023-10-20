@@ -15,12 +15,14 @@ struct HomeView: View {
     @State private var showDetails = false
     @State private var selectedOrganization = ""
     @State private var activePage: ActivePage = .home
+    
 
     var tags: [String]
     var orgModel: OrganizationModel
     var organizations = [Organization]()
     var personsModel: PersonModel
     var personas = [PersonModel]()
+    var LL: Bool
     
     
     var body: some View {
@@ -38,7 +40,7 @@ struct HomeView: View {
                         ForEach(orgModel.organizations) { organization in
                             
                             NavigationLink {
-                                OrganizationDetailView(organization: organization)
+                                OrganizationDetailView(organization: organization, LL: LL, personModel: personsModel)
                             } label: {
                                 OrganizationView(organization: organization)
                             }
@@ -60,6 +62,12 @@ struct HomeView: View {
                 BottomBarView(activePage: $activePage)
             }
             .zIndex(1)
+        }
+        .onAppear{
+            print("====================")
+            print("Printing LL for home")
+            print(LL)
+            print("====================")
         }
     }
 }
@@ -136,6 +144,9 @@ struct OrganizationDetailView: View {
     @State private var pagingSpacing: CGFloat = 20
     @State private var titleScrollSpeed: CGFloat = 0.6
     @State private var stretchContent: Bool = false
+    @State private var isHeartFilled = false
+    var LL: Bool
+    var personModel: PersonModel
     
     var body: some View {
         ScrollView {
@@ -173,15 +184,29 @@ struct OrganizationDetailView: View {
                 Spacer()
                 
                 Button(action: {
-                    Image(systemName: "heart")
-                        .foregroundColor(Color(hex: "f91100"))
+                    if LL == true{
+//                        isHeartFilled.toggle()
+                        FavoriteButton(personModel: personModel, orgId: organization.id)
+
+                    }
+                }){
                     
-                }) {
-                    Image(systemName: "heart")
-                        .foregroundColor(Color(hex: "625C87"))
                 }
-            }
-            .padding([.top,.bottom],20)
+//                {
+//                    if isHeartFilled {
+//                        Image(systemName: "heart.fill") // Filled heart icon
+//                            .foregroundColor(Color(hex: "f91100"))
+//
+//                        
+//                        
+//                    } else {
+//                        Image(systemName: "heart") // Empty heart icon
+//                            .foregroundColor(Color(hex: "625C87"))
+//                    }
+//                }
+                
+        }
+        .padding([.top,.bottom],20)
             
             // Slider
             VStack {
@@ -261,7 +286,7 @@ struct OrganizationDetailView: View {
 struct HomeView_Previews: PreviewProvider {
     
     static var previews: some View {
-        HomeView(tags: ["austismo", "cancer"], orgModel: OrganizationModel(), personsModel: PersonModel())
+        HomeView(tags: ["austismo", "cancer"], orgModel: OrganizationModel(), personsModel: PersonModel(), LL: false)
     }
 }
 
@@ -280,3 +305,43 @@ struct ScrollableTextView: UIViewRepresentable {
         uiView.text = text
     }
 }
+
+struct FavoriteButton: View {
+    @ObservedObject var personModel: PersonModel
+    var orgId: String
+    @State private var isFavorite: Bool = false
+    
+    var body: some View {
+        Button(action: toggleFavorite) {
+            Image(systemName: isFavorite ? "heart.fill" : "heart")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 30, height: 30)
+        }
+    }
+    
+    func toggleFavorite() {
+        if let phone = personModel.fetchedPerson?.phone {
+            if isFavorite {
+                // Remove from favorites
+                personModel.removeFavoriteByPhone(phone: phone, orgId: orgId) { success, error in
+                    if success {
+                        isFavorite = false
+                    } else {
+                        print("Failed to remove from favorites. Error: \(error?.localizedDescription ?? "Unknown error")")
+                    }
+                }
+            } else {
+                // Add to favorites
+                personModel.addFavoriteByPhone(phone: phone, orgId: orgId) { success, error in
+                    if success {
+                        isFavorite = true
+                    } else {
+                        print("Failed to add to favorites. Error: \(error?.localizedDescription ?? "Unknown error")")
+                    }
+                }
+            }
+        }
+    }
+}
+

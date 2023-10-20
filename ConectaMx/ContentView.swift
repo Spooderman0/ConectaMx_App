@@ -25,15 +25,15 @@ struct ContentView: View {
             VStack {
                 switch activePage {
                 case .home:
-                    HomeView(tags: tagsModel.tags, orgModel: orgModel, personsModel: personModel)
+                    HomeView(tags: tagsModel.tags, orgModel: orgModel, personsModel: personModel,  LL: LL)
                 case .search:
-                    SearchView(orgModel: orgModel, tags: tagsModel.tags, personModel: personModel, selectedT: selectedT)
+                    SearchView(orgModel: orgModel, tags: tagsModel.tags, personModel: personModel, selectedT: selectedT, LL: LL)
                 case .map:
                     UserOrganizationMap()
                 case .favorites:
-                    FavoritesView(orgModel: orgModel, personModel: personModel)
+                    FavoritesView(orgModel: orgModel, personModel: personModel, LL: LL)
                 case .profile:
-                    ProfileView(personModel: personModel)//personsModel: personsModel)
+                    ProfileView(personModel: personModel,  LL: LL)//personsModel: personsModel)
                 }
             }
             VStack {
@@ -45,63 +45,30 @@ struct ContentView: View {
             tagsModel.fetchTags()
             postsModel.fetchPosts()
             orgModel.fetchOrganizations()
-//            personsModel.fetchPerson(phoneNumber: fetchedPerson?.phone ?? "", completion: { (person, error) in
-//                if let error = error {
-//                    // Handle the error
-//                    print("An error occurred: \(error)")
-//                } else if let person = person {
-//                    // Successfully fetched the person, now you can access the person's properties and methods
-//                    print("Successfully fetched person: \(person.name)") // Assuming person has a name property
-//                } else {
-//                    // Handle the case where there is no error but the person object is also nil (unlikely, but good to handle all cases)
-//                    print("No error occurred, but no person was fetched.")
-//                }
-//            })
             
-            
-            
-            
-            
-            // Check if selectedT is empty and assign tags from tagsModel
-//            if selectedT.isEmpty {
-//                print(fetchedPerson?.interestedTags ?? [])
-//                selectedT = Set(fetchedPerson?.interestedTags ?? [])
-//                print("This print is is selectedT is empty, set selectedT to tags from user")
-//                print(selectedT)
-//            }else{
-//                let stArray = Array(selectedT)
-//                personsModel.updatePersonTags(phone: fetchedPerson?.phone ?? "", newTags: stArray) { success in
-//                    if success {
-//                        print("Tags updated successfully")                }
-//                }
-//                
-//                print("Printing Selected tags")
-//                print(selectedT)
-//            }
-            print("====================")
-            print(personModel.fetchedPerson)
-            print(selectedT)
-            print("====================")
 
+            
+            print("====================")
+            print("Printing LL")
+            print(LL)
+            print("====================")
             
             if let phone = personModel.fetchedPerson?.phone {
                 if selectedT.isEmpty {
                     selectedT = Set(personModel.fetchedPerson?.interestedTags ?? [])
-                    print("This print is if seleccionadosT is empty, set seleccionadosT to tags from user")
-                    print(selectedT)
                 } else {
                     personModel.updatePersonTags(phone: phone, newTags: Array(selectedT)) { success in
                         if success {
-                            print("Person tags updated successfully")
+//                            print("Person tags updated successfully")
                         } else {
-                            print("Failed to update person tags")
+//                            print("Failed to update person tags")
                         }
                     }
-                    print("Printing Selected tags")
-                    print(selectedT)
+//                    print("Printing Selected tags")
+//                    print(selectedT)
                 }
             } else {
-                print("Phone number not available")
+//                print("Phone number not available")
             }
             
             
