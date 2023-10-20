@@ -33,6 +33,7 @@ struct OrganizationRegistrationView: View {
     
     var tagsModel = TagsModel()
     var organizationModel = OrganizationModel()
+    @State var LL: Bool = true
     
     @State /*private*/ var fetchedOrganization: Organization?
     
@@ -261,13 +262,14 @@ struct OrganizationRegistrationView: View {
                                                 print("Failed to fetch organization")
                                             }
                                         }
+                                        navigateToOrgTags = true
                                         
                                     } else {
                                         print("Failed to post organization")
                                     }
                                 }
                                 
-                                navigateToOrgTags = true
+                                
                             }) {
                                 
 

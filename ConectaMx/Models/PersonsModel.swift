@@ -102,26 +102,25 @@ class PersonModel: ObservableObject {
             "password": password
         ]
         
-        AF.request(urlString, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON { response in
+        AF.request(urlString, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON { [self] response in
             switch response.result {
             case .success(let value):
                 let json = JSON(value)
                 
                 if response.response?.statusCode == 200 {
-                    if let personJSON = json.dictionary {
+                    if let clientInfoJSON = json["client_info"].dictionary {
                         let person = Person(
-                            id: personJSON["id"]?.string ?? "",
-                            name: personJSON["name"]?.string ?? "",
-                            phone: personJSON["phone"]?.string ?? "",
-                            email: personJSON["email"]?.string ?? "",
-                            password: personJSON["password"]?.string ?? "",
-                            interestedTags: personJSON["interestedTags"]?.arrayObject as? [String] ?? [],
-                            favorites: personJSON["favorites"]?.arrayObject as? [String] ?? []
+                            id: "", 
+                            name: clientInfoJSON["name"]?.string ?? "",
+                            phone: clientInfoJSON["phone"]?.string ?? "",
+                            email: clientInfoJSON["email"]?.string ?? "",
+                            password: clientInfoJSON["password"]?.string ?? "",
+                            interestedTags: clientInfoJSON["interestedTags"]?.arrayObject as? [String] ?? [],
+                            favorites: clientInfoJSON["favorites"]?.arrayObject as? [String] ?? []
                         )
-                        
+                        self.fetchedPerson = person
                         completion(true, person, nil)
                     }
-                    
                 } else {
                     let errorMessage = json["error"].string ?? "Unknown error occurred"
                     completion(false, nil, errorMessage)

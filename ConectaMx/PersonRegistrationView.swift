@@ -17,6 +17,9 @@ struct PersonRegistrationView: View {
     var personModel = PersonModel()  
     var tagsModel = TagsModel()
     
+    var LL = true
+    
+    
     
     func loginUser() {
         
@@ -38,7 +41,7 @@ struct PersonRegistrationView: View {
                     
                     VStack(alignment: .leading, spacing: 10){
                         
-                        Text("Name*")
+                        Text("Name")
                         TextField("Name", text: $name)
                             .padding()
                             .background(RoundedRectangle(cornerRadius: 8)
@@ -55,7 +58,7 @@ struct PersonRegistrationView: View {
                             .background(RoundedRectangle(cornerRadius: 8)
                                 .stroke(Color.gray.opacity(0.5), lineWidth: 1))
                         
-                        Text("Email*")
+                        Text("Email")
                         TextField("Email", text: $email)
                             .padding()
                             .background(RoundedRectangle(cornerRadius: 8)
@@ -64,14 +67,14 @@ struct PersonRegistrationView: View {
                         
                         
                     }
-                    NavigationLink(destination: Intereses_Tags_Login(tags: tagsModel.tags, personModel: personModel, phoneNumber: phone), isActive: $navigateToITL) {
+                    NavigationLink(destination: Intereses_Tags_Login(tags: tagsModel.tags, personModel: personModel, phoneNumber: phone, LL: LL), isActive: $navigateToITL) {
                         EmptyView()
                     }
                     
              
                     Button(action: {
                             
-                            let newPerson = Person(
+                            var newPerson = Person(
                                 id: "",
                                 name: self.name,
                                 phone: self.phone,
@@ -85,17 +88,13 @@ struct PersonRegistrationView: View {
                                 if success {
                                     print("Person posted successfully")
                                     
-//                                    // Fetching the details of the newly registered person
-//                                    self.personModel.fetchPerson(phoneNumber: self.phone) { (person, error) in
-//                                        if let person = person {
-//                                            print("Person fetched successfully")
-//                                            self.personModel.fetchedPerson = person // Save fetched person details
-//                                            self.navigateToITL = true // Navigate to the next view
                                     personModel.login(phone: phone, password: password) { success, person, error in
                                          if success, let person = person {
+                                             
                                              print("Login successful")
-                                             self.personModel.fetchedPerson = person // Save fetched person details
-                                             self.navigateToITL = true // Navigate to the next view
+                                             personModel.fetchedPerson = person
+                                             self.navigateToITL = true
+                                             
                                          } else {
                                              print("Login failed: \(error ?? "Unknown error")")
                                          }
@@ -108,6 +107,7 @@ struct PersonRegistrationView: View {
                                     print("Failed to post person")
                                 }
                             }
+                        
                             
                         }) {
                             Text("Registrarte")

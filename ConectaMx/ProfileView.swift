@@ -14,9 +14,8 @@ struct ProfileView: View {
     @State private var profileImage: UIImage? = UIImage(named: "messi_mock")
     
     
-    var personsModel: PersonModel
-    var personas = [PersonModel]()
-    var fetchedPerson: Person?
+    var personModel: PersonModel
+    
     
     //let personT = personsModel.fetchedPerson
     
@@ -107,7 +106,7 @@ struct ProfileView: View {
         Button(action: {
             // Acción para botones
             if text == "Datos personales" {
-                let editProfileView = EditProfileView(profileImage: $profileImage, personsModel: personsModel, fetchedPerson: fetchedPerson)
+                let editProfileView = EditProfileView(profileImage: $profileImage, personModel: personModel)
                 let navigationController = UINavigationController(rootViewController: UIHostingController(rootView: editProfileView))
                 navigationController.navigationBar.prefersLargeTitles = true
                 UIApplication.shared.windows.first?.rootViewController?.present(navigationController, animated: true, completion: nil)
@@ -129,6 +128,6 @@ struct ProfileView: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView(personsModel: PersonModel())
+        ProfileView(personModel: PersonModel())
     }
 }

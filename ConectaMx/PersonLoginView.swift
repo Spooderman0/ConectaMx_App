@@ -10,7 +10,6 @@ struct PersonLoginView: View {
     var personModel = PersonModel()
     var tagsModel = TagsModel()
     @State var seleccionadosT = Set<String>()
-    @EnvironmentObject var session: SessionModel
     
     var body: some View {
         
@@ -53,24 +52,25 @@ struct PersonLoginView: View {
                         
                     }
                     
-                    NavigationLink(destination: ContentView(selectedT: seleccionadosT, fetchedPerson: personModel.fetchedPerson), isActive: $navigateToCV) {
+                    NavigationLink(destination: ContentView(selectedT: seleccionadosT, personModel: personModel), isActive: $navigateToCV) {
                         EmptyView()
                     }
                     
 
                     
                     Button(action: {
-                        print("printing")
+                        print("printing in lofiin view")
                         personModel.login(phone: phone, password: password) { success, person, error in
                             if success {
+                                //print(person)
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                    self.personModel.fetchedPerson = person
-                                    //self.seleccionadosT.removeAll()
+//                                    self.personModel.fetchedPerson = person
                                     self.navigateToCV = true
                                 }
                             }else{
                                 print("Not succesful")
                             }
+                            print(personModel.fetchedPerson)
                         }
                         
                     }) {

@@ -20,11 +20,9 @@ struct SearchView: View {
 //    @StateObject var orgModel = OrganizationModel()
     var tags: [String]
     @State var selectedTags: Set<String> = []
-    var personsModel: PersonModel
-    var personas = [PersonModel]()
-    var PersonsModel = PersonModel()
+    @ObservedObject var personModel: PersonModel
     @State var selectedT: Set<String>
-    @State var fetchedPerson: Person?
+  
     
 
     
@@ -49,7 +47,7 @@ struct SearchView: View {
                             .foregroundColor(Color(hex: "625C87"))
                     }
                     .sheet(isPresented: $showFilterSheet) {
-                        FilterSheetView(selectedT: $selectedT, tags: tags, orgModel: orgModel, fetchedPerson: $fetchedPerson, personsModel: personsModel)
+                        FilterSheetView(selectedT: $selectedT, tags: tags, orgModel: orgModel,  personModel: personModel)
                     }
 
                 }
@@ -71,7 +69,7 @@ struct SearchView: View {
                                 .background(Color(hex: "625C87"))
                                 .cornerRadius(10)
                                 .onTapGesture {
-                                orgModel.fetchOrganizationsByTag(tag: tag)
+                                
                                         }
                         }
                         
@@ -83,7 +81,8 @@ struct SearchView: View {
                 // Lista de organizaciones
                 ScrollView {
                     VStack {
- 
+                        
+                        
 
                         ForEach(orgModel.tagOrgs) { organization in
                             NavigationLink {
@@ -91,10 +90,12 @@ struct SearchView: View {
                             } label: {
                                 OrganizationView(organization: organization)
                             }
+                        
                             .cornerRadius(10)
                             .shadow(radius: 5)
                             .padding(.bottom, 10)
                             .padding(.horizontal, 20)
+                            
                         }
                    
                     }
@@ -109,20 +110,28 @@ struct SearchView: View {
         }
         .padding(.top, 10)
         .onAppear {
-                    for tag in selectedT {
-                        print(tag)
-                        orgModel.fetchOrganizationsByTag(tag: tag)
-                    }
+            
+            print("printing selected tags")
+            print(selectedT)
+            print("calling FObT")
+            orgModel.fetchOrganizationsByTags(tags: Array(selectedTags))
+            var updatedTags = Array(selectedT)
+            orgModel.fetchOrganizationsByTags(tags: Array(updatedTags))
+            print("Printing fetched orgs count")
+            print(orgModel.tagOrgs.count)
+            
         }
         
     }
+    
+    
 }
 
 struct SearchView_Previews: PreviewProvider {
     @State static var dummyTags: [String] = []
 
     static var previews: some View {
-        SearchView(orgModel: OrganizationModel(), tags: ["autismo", "Cancer"], personsModel: PersonModel(), selectedT: [""])
+        SearchView(orgModel: OrganizationModel(), tags: ["autismo", "Cancer"], personModel: PersonModel(), selectedT: [""])
     }
 }
 

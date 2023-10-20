@@ -14,6 +14,7 @@ struct Inicio_Sesion: View {
     var tagsModel = TagsModel()
     @State private var navigateToPRV = false
     @State private var navigateToPLV = false
+    @State var LL: Bool = false
     var body: some View {
         NavigationView{
             VStack(spacing: 30) {
@@ -47,7 +48,7 @@ struct Inicio_Sesion: View {
                 .padding([.leading, .trailing], 20)
                 
                 // Botón para continuar sin registro
-                NavigationLink(destination: Intereses_Tags_Login(tags: tagsModel.tags)) {
+                NavigationLink(destination: Intereses_Tags_Login(tags: tagsModel.tags, LL: LL)) {
                     Text("Continuar sin Registro")
                         .foregroundColor(Color(hex: "625C87"))
                         .fontWeight(.medium)

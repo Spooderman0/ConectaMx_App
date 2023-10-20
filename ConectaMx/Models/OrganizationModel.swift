@@ -281,14 +281,76 @@ class OrganizationModel {
     }
 
     
-    func fetchOrganizationsByTag(tag: String) {
+//    func fetchOrganizationsByTag(tag: String) {
+//        tagOrgs.removeAll()
+//        
+//        let url = "\(baseURL)/get_organizations_by_tags?tags=\(tag)"
+//        
+//        AF.request(url, method: .get, encoding: URLEncoding.default).responseData { [self] data in
+//            if let error = data.error {
+//                print("Error in fetching organizations by tag: \(error)")
+//            } else {
+//                let json = try! JSON(data: data.data!)
+//                
+//                for organization in json.arrayValue {
+//                    let location = Location(
+//                        address: organization["location"]["address"].stringValue,
+//                        city: organization["location"]["city"].stringValue,
+//                        state: organization["location"]["state"].stringValue,
+//                        country: organization["location"]["country"].stringValue,
+//                        zip: organization["location"]["zip"].stringValue
+//                    )
+//                    
+//                    let contact = Contact(
+//                        email: organization["contact"]["email"].stringValue,
+//                        first_phone: organization["contact"]["first_phone"].stringValue,
+//                        second_phone: organization["contact"]["second_phone"].stringValue
+//                    )
+//                    
+//                    let socialMedia = SocialMedia(
+//                        facebook: json["socialMedia"]["facebook"].stringValue,
+//                        twitter: json["socialMedia"]["twitter"].stringValue,
+//                        instagram: json["socialMedia"]["instagram"].stringValue,
+//                        linkedIn: json["socialMedia"]["linkedIn"].stringValue,
+//                        youtube: json["socialMedia"]["youtube"].stringValue, // Added youtube
+//                        tiktok: json["socialMedia"]["tiktok"].stringValue, // Added tiktok
+//                        whatsapp: json["socialMedia"]["whatsapp"].stringValue // Added whatsapp
+//                    )
+//                    
+//                    let newOrganization = Organization(
+//                        id: json["_id"]["$oid"].stringValue,
+//                        name: json["name"].stringValue,
+//                        alias: json["alias"].stringValue,
+//                        location: location,
+//                        contact: contact,
+//                        serviceHours: json["serviceHours"].stringValue,
+//                        website: json["website"].stringValue,
+//                        socialMedia: socialMedia,
+//                        missionStatement: json["missionStatement"].stringValue,
+//                        logo: json["logo"].stringValue,
+//                        tags: (json["tags"].arrayObject as? [String]) ?? [],
+//                        RFC: json["RFC"].stringValue,
+//                        postId: (json["postId"].arrayObject as? [String]) ?? [],
+//                        followers: (json["followers"].arrayObject as? [String]) ?? [],
+//                        password: json["password"].stringValue
+//                    )
+//                    print("Priting fetched org by tag")
+//                    print(newOrganization)
+//                    tagOrgs.append(newOrganization)
+//                }
+//            }
+//        }
+//    }
+    
+    func fetchOrganizationsByTags(tags: [String]) {
         tagOrgs.removeAll()
         
-        let url = "\(baseURL)/get_organizations_by_tags?tags=\(tag)"
+        let tagsQueryString = tags.map { "tags=\($0)" }.joined(separator: "&")
+        let url = "\(baseURL)/get_organizations_by_tags?\(tagsQueryString)"
         
         AF.request(url, method: .get, encoding: URLEncoding.default).responseData { [self] data in
             if let error = data.error {
-                print("Error in fetching organizations by tag: \(error)")
+                print("Error in fetching organizations by tags: \(error)")
             } else {
                 let json = try! JSON(data: data.data!)
                 
@@ -308,38 +370,40 @@ class OrganizationModel {
                     )
                     
                     let socialMedia = SocialMedia(
-                        facebook: json["socialMedia"]["facebook"].stringValue,
-                        twitter: json["socialMedia"]["twitter"].stringValue,
-                        instagram: json["socialMedia"]["instagram"].stringValue,
-                        linkedIn: json["socialMedia"]["linkedIn"].stringValue,
-                        youtube: json["socialMedia"]["youtube"].stringValue, // Added youtube
-                        tiktok: json["socialMedia"]["tiktok"].stringValue, // Added tiktok
-                        whatsapp: json["socialMedia"]["whatsapp"].stringValue // Added whatsapp
+                        facebook: organization["socialMedia"]["facebook"].stringValue,
+                        twitter: organization["socialMedia"]["twitter"].stringValue,
+                        instagram: organization["socialMedia"]["instagram"].stringValue,
+                        linkedIn: organization["socialMedia"]["linkedIn"].stringValue,
+                        youtube: organization["socialMedia"]["youtube"].stringValue,
+                        tiktok: organization["socialMedia"]["tiktok"].stringValue,
+                        whatsapp: organization["socialMedia"]["whatsapp"].stringValue
                     )
                     
                     let newOrganization = Organization(
-                        id: json["_id"]["$oid"].stringValue,
-                        name: json["name"].stringValue,
-                        alias: json["alias"].stringValue,
+                        id: organization["_id"]["$oid"].stringValue,
+                        name: organization["name"].stringValue,
+                        alias: organization["alias"].stringValue,
                         location: location,
                         contact: contact,
-                        serviceHours: json["serviceHours"].stringValue,
-                        website: json["website"].stringValue,
+                        serviceHours: organization["serviceHours"].stringValue,
+                        website: organization["website"].stringValue,
                         socialMedia: socialMedia,
-                        missionStatement: json["missionStatement"].stringValue,
-                        logo: json["logo"].stringValue,
-                        tags: (json["tags"].arrayObject as? [String]) ?? [],
-                        RFC: json["RFC"].stringValue,
-                        postId: (json["postId"].arrayObject as? [String]) ?? [],
-                        followers: (json["followers"].arrayObject as? [String]) ?? [],
-                        password: json["password"].stringValue
+                        missionStatement: organization["missionStatement"].stringValue,
+                        logo: organization["logo"].stringValue,
+                        tags: (organization["tags"].arrayObject as? [String]) ?? [],
+                        RFC: organization["RFC"].stringValue,
+                        postId: (organization["postId"].arrayObject as? [String]) ?? [],
+                        followers: (organization["followers"].arrayObject as? [String]) ?? [],
+                        password: organization["password"].stringValue
                     )
-                    print(newOrganization)
+                    print("Printing fetched org by tags")
+                    //print(newOrganization)
                     tagOrgs.append(newOrganization)
                 }
             }
         }
     }
+
 
 }
     

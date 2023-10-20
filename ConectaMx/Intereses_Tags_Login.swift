@@ -11,8 +11,10 @@ import SwiftUI
 
 struct Intereses_Tags_Login: View {
     var tags: [String]
-    var personModel: PersonModel? // Make this an optional
-    var phoneNumber: String? // Add a phone number to identify the user
+    var personModel: PersonModel? 
+    var phoneNumber: String?
+    var LL: Bool
+    
     
     @State var seleccionadosT = Set<String>()
     @State private var navigateToContent = false
@@ -50,25 +52,52 @@ struct Intereses_Tags_Login: View {
                 }
             }
             
-            NavigationLink(destination: ContentView(selectedT: seleccionadosT), isActive: $navigateToContent) {
+//            NavigationLink(destination: ContentView(selectedT: seleccionadosT, personModel: personModel!), isActive: $navigateToContent) {
+//                EmptyView()
+//            }
+            
+            NavigationLink(destination: personModel.map { ContentView(selectedT: seleccionadosT, personModel: $0) } ?? ContentView(selectedT: seleccionadosT, personModel: PersonModel()), isActive: $navigateToContent) {
                 EmptyView()
             }
 
+
             
             // Botón "Comenzar"
+//            Button(action: {
+//                            if let phone = phoneNumber, let model = personModel {
+//                                personModel?.updatePersonTags(phone: fetchedPerson?.phone ?? , newTags: Array(seleccionadosT)) { success in
+//                                    if success {
+//                                        print("Person tags updated successfully")
+//                                    } else {
+//                                        print("Failed to update person tags")
+//                                    }
+//                                }
+//                            }
+//                            navigateToContent = true
+//                        }, label: {
+            
+                
+            
             Button(action: {
-                            if let phone = phoneNumber, let model = personModel {
-                                model.updatePersonTags(phone: phone, newTags: Array(seleccionadosT)) { success in
-                                    if success {
-                                        print("Person tags updated successfully")
-                                    } else {
-                                        print("Failed to update person tags")
-                                    }
-                                }
-                            }
-                            navigateToContent = true
-                        }, label: {
-                            Text("Comenzar")
+                if LL == true{
+                    if let model = personModel, let phone = model.fetchedPerson?.phone {
+                        model.updatePersonTags(phone: phone, newTags: Array(seleccionadosT)) { success in
+                            if success {
+                            print("Person tags updated successfully")
+                        } else {
+                            print("Failed to update person tags")
+                        }
+                    }
+                    
+                }else{
+                    print("was NOT able")
+                }
+                    navigateToContent = true
+                }else {
+                    navigateToContent = true
+                }
+            }, label: {
+                    Text("Comenzar")
                     .foregroundColor(.white)
                     .padding()
                     .frame(maxWidth: .infinity)
@@ -78,7 +107,7 @@ struct Intereses_Tags_Login: View {
             .padding([.leading, .trailing], 20)
             
             
-            NavigationLink(destination: ContentView(selectedT: seleccionadosT)) {
+            NavigationLink(destination: ContentView(selectedT: seleccionadosT, personModel: personModel!)) {
                 Text("Saltar este paso")
                     .underline()
                     .font(.footnote)
@@ -86,12 +115,17 @@ struct Intereses_Tags_Login: View {
             }
         }
         .padding(10)
+        .onAppear{
+            print("Value of LL is:")
+            print(LL)
+  
+        }
         
     }
 }
 
 struct Intereses_Tags_Login_Previews: PreviewProvider {
     static var previews: some View {
-        Intereses_Tags_Login(tags: ["autismo", "cancer"])
+        Intereses_Tags_Login(tags: ["autismo", "cancer"], LL: false)
     }
 }

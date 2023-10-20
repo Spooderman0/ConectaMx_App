@@ -11,10 +11,9 @@ struct FilterSheetView: View {
     @Binding var selectedT: Set<String>
     var tags: [String]
     var orgModel: OrganizationModel
-    @Binding var fetchedPerson: Person?
 
     
-    @ObservedObject var personsModel: PersonModel
+    @ObservedObject var personModel: PersonModel
     @State private var navigateToSV = false
 
     
@@ -79,13 +78,13 @@ struct FilterSheetView: View {
                 
                 
                     let updatedTags = Array(selectedT)
-                personsModel.updatePersonTags(phone: fetchedPerson?.phone ?? "", newTags: updatedTags) { success in
+                personModel.updatePersonTags(phone: personModel.fetchedPerson?.phone ?? "", newTags: updatedTags) { success in
                         if success {
                             print("Tags updated successfully")
                             
                             
-                            let tagsToSearch = selectedT.joined(separator: ",")
-                            orgModel.fetchOrganizationsByTag(tag: tagsToSearch)
+                            //let tagsToSearch = selectedT.joined(separator: ",")
+                            orgModel.fetchOrganizationsByTags(tags: Array(updatedTags))
                             
                         } else {
                             print("Failed to update tags")
@@ -112,11 +111,12 @@ struct FilterSheetView: View {
 //
 //        }
         .onAppear {
-            if let person = fetchedPerson, !person.interestedTags.isEmpty {
+            if let person = personModel.fetchedPerson, !person.interestedTags.isEmpty {
                             if selectedT.isEmpty {
                                 selectedT = Set(person.interestedTags)
                             }
                         }
+            
         }
         
         
@@ -128,7 +128,7 @@ struct FilterSheetView_Previews: PreviewProvider {
     static var previews: some View {
         @State var dummyTags: Set<String> = []
         @State var fetchedPerson: Person? = Person(id: "", name: "", phone: "", email: "", password: "", interestedTags: [""], favorites: [""]) // Assuming Person is your model and it can be initialized like this
-        FilterSheetView(selectedT:  $dummyTags,tags: ["autismo", "cancer"], orgModel: OrganizationModel(), fetchedPerson: $fetchedPerson, personsModel: PersonModel())
+        FilterSheetView(selectedT:  $dummyTags,tags: ["autismo", "cancer"], orgModel: OrganizationModel(), personModel: PersonModel())
     }
 }
 
