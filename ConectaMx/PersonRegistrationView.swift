@@ -17,7 +17,7 @@ struct PersonRegistrationView: View {
     var personModel = PersonModel()  
     var tagsModel = TagsModel()
     
-    var LL = true
+    @State var LL = true
     
     
     

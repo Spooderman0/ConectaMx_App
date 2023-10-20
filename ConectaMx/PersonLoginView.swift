@@ -10,6 +10,7 @@ struct PersonLoginView: View {
     var personModel = PersonModel()
     var tagsModel = TagsModel()
     @State var seleccionadosT = Set<String>()
+    @State var LL = true
     
     var body: some View {
         
@@ -52,7 +53,7 @@ struct PersonLoginView: View {
                         
                     }
                     
-                    NavigationLink(destination: ContentView(selectedT: seleccionadosT, personModel: personModel), isActive: $navigateToCV) {
+                    NavigationLink(destination: ContentView(selectedT: seleccionadosT, personModel: personModel, LL: LL), isActive: $navigateToCV) {
                         EmptyView()
                     }
                     

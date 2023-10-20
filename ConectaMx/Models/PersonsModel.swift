@@ -6,6 +6,7 @@ import Alamofire
 class PersonModel: ObservableObject {
     @Published var persons = [Person]()
     @Published var fetchedPerson: Person?
+    @Published var favOrgs: [Organization] = []
     init() {
         
     }
@@ -64,36 +65,7 @@ class PersonModel: ObservableObject {
             }
         }
     }
-    
-//    func login(phone: String, password: String, completion: @escaping (Bool, String?) -> Void) {
-//        let urlString = "http://10.14.255.172:5000/login_client"
-//
-//        // Parameters based on the API expectations
-//        let parameters: [String: Any] = [
-//            "phone": phone,
-//            "password": password
-//        ]
-//
-//        // Alamofire POST request
-//        AF.request(urlString, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON { response in
-//            switch response.result {
-//            case .success(let value):
-//                let json = JSON(value)
-//
-//                if let message = json["message"].string {
-//                    completion(true, message)  // Login successful
-//                } else if let error = json["error"].string {
-//                    completion(false, error)  // Login failed with an error message
-//                } else {
-//                    completion(false, "Unknown error")  // An unknown error occurred
-//                }
-//
-//            case .failure(let error):
-//                completion(false, error.localizedDescription)  // Handling failure in network request
-//            }
-//        }
-//    }
-    
+
     func login(phone: String, password: String, completion: @escaping (Bool, Person?, String?) -> Void) {
         let urlString = "http://10.14.255.172:5000/login_client"
         
@@ -176,7 +148,51 @@ class PersonModel: ObservableObject {
         }
     }
     
-    func getFavoritesByPhone(phone: String, completion: @escaping ([String]?, Error?) -> Void) {
+//    func getFavoritesByPhone(phone: String, completion: @escaping ([String]?, Error?) -> Void) {
+//        let urlString = "\(baseURL)/get_favorites_by_phone/\(phone)"
+//        
+//        AF.request(urlString, method: .get, encoding: URLEncoding.default).responseData { response in
+//            switch response.result {
+//            case .success(let data):
+//                do {
+//                    let json = try JSON(data: data)
+//                    if let favoritesArray = json.arrayObject as? [String] {
+//                        completion(favoritesArray, nil)
+//                    } else {
+//                        completion(nil, NSError(domain: "", code: -1, userInfo: ["message": "Invalid data format"]))
+//                    }
+//                } catch {
+//                    completion(nil, error)
+//                }
+//            case .failure(let error):
+//                completion(nil, error)
+//            }
+//        }
+//    }
+    
+//    func getFavoritesByPhone(phone: String, completion: @escaping ([String]?, Error?) -> Void) {
+//        let urlString = "\(baseURL)/get_favorites_by_phone/+52\(phone)"
+//        
+//        AF.request(urlString, method: .get, encoding: URLEncoding.default).responseData { response in
+//            switch response.result {
+//            case .success(let data):
+//                do {
+//                    let json = try JSON(data: data)
+//                    if let favoritesArray = json.arrayObject as? [String] {
+//                        completion(favoritesArray, nil)
+//                    } else {
+//                        completion(nil, NSError(domain: "", code: -1, userInfo: ["message": "Invalid data format"]))
+//                    }
+//                } catch {
+//                    completion(nil, error)
+//                }
+//            case .failure(let error):
+//                completion(nil, error)
+//            }
+//        }
+//    }
+    
+    func getFavoritesByPhone(phone: String, completion: @escaping ([Organization]?, Error?) -> Void) {
         let urlString = "\(baseURL)/get_favorites_by_phone/\(phone)"
         
         AF.request(urlString, method: .get, encoding: URLEncoding.default).responseData { response in
@@ -184,11 +200,56 @@ class PersonModel: ObservableObject {
             case .success(let data):
                 do {
                     let json = try JSON(data: data)
-                    if let favoritesArray = json.arrayObject as? [String] {
-                        completion(favoritesArray, nil)
-                    } else {
-                        completion(nil, NSError(domain: "", code: -1, userInfo: ["message": "Invalid data format"]))
+                    var organizations = [Organization]()
+                    
+                    for organizationData in json.arrayValue {
+                        // You might need to adjust this part based on the actual JSON structure
+                        let location = Location(
+                            address: organizationData["location"]["address"].stringValue,
+                            city: organizationData["location"]["city"].stringValue,
+                            state: organizationData["location"]["state"].stringValue,
+                            country: organizationData["location"]["country"].stringValue,
+                            zip: organizationData["location"]["zip"].stringValue
+                        )
+                        
+                        let contact = Contact(
+                            email: organizationData["contact"]["email"].stringValue,
+                            first_phone: organizationData["contact"]["first_phone"].stringValue,
+                            second_phone: organizationData["contact"]["second_phone"].stringValue
+                        )
+                        
+                        let socialMedia = SocialMedia(
+                            facebook: organizationData["socialMedia"]["facebook"].stringValue,
+                            twitter: organizationData["socialMedia"]["twitter"].stringValue,
+                            instagram: organizationData["socialMedia"]["instagram"].stringValue,
+                            linkedIn: organizationData["socialMedia"]["linkedIn"].stringValue,
+                            youtube: organizationData["socialMedia"]["youtube"].stringValue, // Added youtube
+                            tiktok: organizationData["socialMedia"]["tiktok"].stringValue, // Added tiktok
+                            whatsapp: organizationData["socialMedia"]["whatsapp"].stringValue // Added whatsapp
+                        )
+                        
+                        let organization = Organization(
+                            id: organizationData["_id"]["$oid"].stringValue,
+                            name: organizationData["name"].stringValue,
+                            alias: organizationData["alias"].stringValue,
+                            location: location,
+                            contact: contact,
+                            serviceHours: organizationData["serviceHours"].stringValue,
+                            website: organizationData["website"].stringValue,
+                            socialMedia: socialMedia,
+                            missionStatement: organizationData["missionStatement"].stringValue,
+                            logo: organizationData["logo"].stringValue,
+                            tags: (organizationData["tags"].arrayObject as? [String]) ?? [],
+                            RFC: organizationData["RFC"].stringValue,
+                            postId: (organizationData["postId"].arrayObject as? [String]) ?? [],
+                            followers: (organizationData["followers"].arrayObject as? [String]) ?? [],
+                            password: organizationData["password"].stringValue
+                        )
+                        self.favOrgs.append(organization)
                     }
+                    
+                    completion(self.favOrgs, nil)
+                    
                 } catch {
                     completion(nil, error)
                 }
@@ -197,6 +258,52 @@ class PersonModel: ObservableObject {
             }
         }
     }
+
+
+    
+    func addFavoriteByPhone(phone: String, orgId: String, completion: @escaping (Bool, Error?) -> Void) {
+        let urlString = "\(baseURL)/add_favorite_by_phone/\(phone)"
+        
+        let parameters: [String: Any] = [
+            "org_id": orgId
+        ]
+        
+        AF.request(urlString, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON { response in
+            switch response.result {
+            case .success:
+                if let json = response.value as? [String: Any], let _ = json["message"] as? String {
+                    completion(true, nil)
+                } else {
+                    completion(false, NSError(domain: "", code: -1, userInfo: ["message": "Invalid data format"]))
+                }
+            case .failure(let error):
+                completion(false, error)
+            }
+        }
+    }
+    
+    func removeFavoriteByPhone(phone: String, orgId: String, completion: @escaping (Bool, Error?) -> Void) {
+        let urlString = "\(baseURL)/remove_favorite_by_phone/\(phone)"
+        
+        let parameters: [String: Any] = [
+            "org_id": orgId
+        ]
+        
+        AF.request(urlString, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON { response in
+            switch response.result {
+            case .success:
+                if let json = response.value as? [String: Any], let _ = json["message"] as? String {
+                    completion(true, nil)
+                } else {
+                    completion(false, NSError(domain: "", code: -1, userInfo: ["message": "Invalid data format"]))
+                }
+            case .failure(let error):
+                completion(false, error)
+            }
+        }
+    }
+
+
     
 }
 

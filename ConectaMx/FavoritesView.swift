@@ -8,22 +8,17 @@
 import SwiftUI
 
 struct FavoritesView: View {
-    let organizaciones = [
-        "Organización 1",
-        "Organización 2",
-        "Organización 3",
-        "Organización 4",
-        "Organización 5"
-    ]
     
     @State private var activePage: ActivePage = .favorites
     @State private var showDetails = false
     @State private var selectedOrganization = ""
     
     var orgModel = OrganizationModel()
+    var personModel: PersonModel
+    @State private var favorites: [Organization] = [] // Assuming Organization is a model
     
-   // @Binding 
-    var tags: [String]
+    
+    
     
     var body: some View {
         ZStack {
@@ -36,35 +31,16 @@ struct FavoritesView: View {
                 
                 ScrollView {
                     VStack {
-//                        ForEach(organizaciones, id: \.self) { organizacion in
-//                            Button(action: {
-//                                self.selectedOrganization = organizacion
-//                                self.showDetails = true
-//                            }) {
-//                                OrganizationView(/*organizationName: organizacion*/)
-//                            }
-//                            .cornerRadius(10)
-//                            .shadow(radius: 5)
-//                            .padding(.bottom, 10)
-//                            .padding(.horizontal, 20)
-//                        }
-//                        .sheet(isPresented: $showDetails) {
-//                            OrganizationDetailView(/*organizationName: selectedOrganization*/)
-//                        }
-
-                        
-                        ForEach(orgModel.organizations) { organization in
+                        ForEach(favorites) { organization in
                             
-                            NavigationLink {
-                                OrganizationDetailView(organization: organization)
-                            } label: {
+                            NavigationLink(destination: OrganizationDetailView(organization: organization)) {
                                 OrganizationView(organization: organization)
                             }
                             .cornerRadius(10)
                             .shadow(radius: 5)
                             .padding(.bottom, 10)
                             .padding(.horizontal, 20)
-
+                            
                         }
                     }
                 }
@@ -78,6 +54,24 @@ struct FavoritesView: View {
             }
             .zIndex(1)
         }
+        .onAppear{
+            if let phone = personModel.fetchedPerson?.phone {
+                print("first if passed")
+                print(phone)
+                personModel.getFavoritesByPhone(phone: phone) { (fetchedOrganizations, error) in
+                    print("second if passed")
+                    if let fetchedOrganizations = fetchedOrganizations {
+                        print("third if passed")
+                        self.favorites = fetchedOrganizations
+                        for organization in fetchedOrganizations {
+                            print(organization.name) // Printing organization names as an example
+                        }
+                    } else if let error = error {
+                        print("An error occurred: \(error)")
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -85,7 +79,7 @@ struct FavoritesView_Previews: PreviewProvider {
     @State static var dummyTags: [String] = []
 
     static var previews: some View {
-        FavoritesView(orgModel: OrganizationModel(), tags: ["austismo", "CanCer"])
+        FavoritesView(orgModel: OrganizationModel(), personModel: PersonModel())
     }
 }
 

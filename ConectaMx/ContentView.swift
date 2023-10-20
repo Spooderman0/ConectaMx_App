@@ -15,6 +15,7 @@ struct ContentView: View {
     var orgModel = OrganizationModel()
     var postsModel = PostModel()
     @StateObject var personModel: PersonModel
+    var LL: Bool
     
     
     
@@ -30,7 +31,7 @@ struct ContentView: View {
                 case .map:
                     UserOrganizationMap()
                 case .favorites:
-                    FavoritesView(orgModel: orgModel, tags: tagsModel.tags)
+                    FavoritesView(orgModel: orgModel, personModel: personModel)
                 case .profile:
                     ProfileView(personModel: personModel)//personsModel: personsModel)
                 }
@@ -125,7 +126,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(selectedT: [""], personModel: PersonModel())
+        ContentView(selectedT: [""], personModel: PersonModel(), LL: Bool())
     }
 }
 

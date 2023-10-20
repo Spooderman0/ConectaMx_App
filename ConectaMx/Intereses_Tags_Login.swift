@@ -56,7 +56,7 @@ struct Intereses_Tags_Login: View {
 //                EmptyView()
 //            }
             
-            NavigationLink(destination: personModel.map { ContentView(selectedT: seleccionadosT, personModel: $0) } ?? ContentView(selectedT: seleccionadosT, personModel: PersonModel()), isActive: $navigateToContent) {
+            NavigationLink(destination: personModel.map { ContentView(selectedT: seleccionadosT, personModel: $0, LL: LL) } ?? ContentView(selectedT: seleccionadosT, personModel: PersonModel(), LL: LL), isActive: $navigateToContent) {
                 EmptyView()
             }
 
@@ -107,7 +107,7 @@ struct Intereses_Tags_Login: View {
             .padding([.leading, .trailing], 20)
             
             
-            NavigationLink(destination: ContentView(selectedT: seleccionadosT, personModel: personModel!)) {
+            NavigationLink(destination: ContentView(selectedT: seleccionadosT, personModel: personModel!, LL: LL)) {
                 Text("Saltar este paso")
                     .underline()
                     .font(.footnote)
