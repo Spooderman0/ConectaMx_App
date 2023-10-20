@@ -183,15 +183,19 @@ struct OrganizationDetailView: View {
                 
                 Spacer()
                 
-                Button(action: {
-                    if LL == true{
-//                        isHeartFilled.toggle()
-                        FavoriteButton(personModel: personModel, orgId: organization.id)
-
-                    }
-                }){
-                    
-                }
+//                Button(action: {
+//                    if LL == true{
+////                        isHeartFilled.toggle()
+//                        FavoriteButton(personModel: personModel, orgId: organization.id)
+//                        print("favs button should be working")
+//
+//                    }
+//                }){
+//                    
+//                }
+                
+                FavoriteButton(personModel: personModel, orgId: organization.id)
+//                print("favs button should be working")
 //                {
 //                    if isHeartFilled {
 //                        Image(systemName: "heart.fill") // Filled heart icon
@@ -321,6 +325,7 @@ struct FavoriteButton: View {
     }
     
     func toggleFavorite() {
+        print("calling toggle favs function")
         if let phone = personModel.fetchedPerson?.phone {
             if isFavorite {
                 // Remove from favorites
