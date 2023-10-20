@@ -183,18 +183,11 @@ struct OrganizationDetailView: View {
                 
                 Spacer()
                 
-//                Button(action: {
-//                    if LL == true{
-////                        isHeartFilled.toggle()
-//                        FavoriteButton(personModel: personModel, orgId: organization.id)
-//                        print("favs button should be working")
-//
-//                    }
-//                }){
-//                    
-//                }
-                
-                FavoriteButton(personModel: personModel, orgId: organization.id)
+                if LL == true{
+                    FavoriteButton(personModel: personModel, orgId: organization.id)
+                }else {
+                    
+                }
 //                print("favs button should be working")
 //                {
 //                    if isHeartFilled {
@@ -321,6 +314,19 @@ struct FavoriteButton: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 30, height: 30)
+                .onAppear(perform: checkIfFavorite) // Call the function when the view appears
+        }
+    }
+    
+    func checkIfFavorite() {
+        if let phone = personModel.fetchedPerson?.phone {
+            personModel.checkFavoriteByPhone(phone: phone, orgId: orgId) { isInFavorites, error in
+                if let error = error {
+                    print("Error checking favorite status: \(error.localizedDescription)")
+                } else {
+                    isFavorite = isInFavorites
+                }
+            }
         }
     }
     
@@ -349,4 +355,5 @@ struct FavoriteButton: View {
         }
     }
 }
+
 

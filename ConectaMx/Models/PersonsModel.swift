@@ -150,6 +150,7 @@ class PersonModel: ObservableObject {
     
     
     func getFavoritesByPhone(phone: String, completion: @escaping ([Organization]?, Error?) -> Void) {
+        favOrgs.removeAll()
         let urlString = "\(baseURL)/get_favorites_by_phone/\(phone)"
         
         AF.request(urlString, method: .get, encoding: URLEncoding.default).responseData { response in
@@ -259,6 +260,28 @@ class PersonModel: ObservableObject {
             }
         }
     }
+    
+    func checkFavoriteByPhone(phone: String, orgId: String, completion: @escaping (Bool, Error?) -> Void) {
+        let urlString = "\(baseURL)/check_favorite_by_phone/\(phone)?org_id=\(orgId)"
+        
+        AF.request(urlString, method: .get, encoding: URLEncoding.default).responseJSON { response in
+            switch response.result {
+            case .success(let value):
+                if let json = value as? [String: Any], let message = json["message"] as? String {
+                    if message.contains("Organization ID is in favorites!") {
+                        completion(true, nil)
+                    } else {
+                        completion(false, nil)
+                    }
+                } else {
+                    completion(false, NSError(domain: "", code: -1, userInfo: ["message": "Invalid data format"]))
+                }
+            case .failure(let error):
+                completion(false, error)
+            }
+        }
+    }
+
 
 
     
